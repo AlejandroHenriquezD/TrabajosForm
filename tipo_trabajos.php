@@ -3,7 +3,7 @@ include "config.php";
 include "utils.php";
 
 
-$dbConn =  connect($db);
+$dbConn =  connect($db); 
 
 /*
   listar todos los tipos_trabajos o solo uno
