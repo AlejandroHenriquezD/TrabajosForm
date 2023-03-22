@@ -5,7 +5,7 @@ $datos = [];
 //Tipos de trabajos
 function tipos_trabajos()
 {
-    $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipos_trabajos.php"), true);
+    $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
     echo "<h1>Tipos Trabajos</h1>";
     for ($p = 0; $p < count($tiposTrabajos); $p++) {
         echo "<p><input type='checkbox' id={{$tiposTrabajos[$p]['id']}} name={{$tiposTrabajos[$p]['id']}} value={{$tiposTrabajos[$p]['nombre']}} onclick={{tipos_articulos()}}/>" . "<label for={{$tiposTrabajos[$p]['id']}}>" . $tiposTrabajos[$p]['nombre'] . "</label></p>";
