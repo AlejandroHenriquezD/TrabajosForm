@@ -23,62 +23,74 @@
   }
 
    
-  // Inputs de trabajos del formulario
-  const algo = 1;
-  const trabajo1 = elementFromHtml(`
-    <div class="trabajo">
+  // Inputs de articulos del formulario
+  const articulo1 = elementFromHtml(`
+    <div id="articulo">
       <hr>
-      Tipo de trabajo: <br>
-      <div id="form-control4">
-        <input type="checkbox" id="serigrafiado" name="serigrafiado" value="Serigrafiado" onclick='mostrarPosicion("form-control4")'>
-        <label for="serigrafiado">Serigrafiado</label><br>
+      Tipo de artículo: <br>
+      <div id="form-control2-1">
+        <input type="checkbox" id="camisa" name="camisa" value="Camisa" onclick='mostrarPosicion("form-control2-1")'>
+        <label for="pechoIzquierdo">Camisa</label><br>
       </div>
-      <div id="form-control5">
-        <input type="checkbox" id="bordado" name="bordado" value="Bordado" onclick='mostrarPosicion("form-control5")'>
-        <label for="bordado">Bordado</label><br>
+      <div id="form-control2-2">
+        <input type="checkbox" id="camiseta" name="camiseta" value="Camiseta" onclick='mostrarPosicion("form-control2-2")'>
+        <label for="pechoDerecho">Camiseta</label><br>
       </div>
-      <div id="form-control6">
-        <input type="checkbox" id="impresion" name="impresion" value="Impresión digital" onclick='mostrarPosicion("form-control6")'>
-        <label for="impresion">Impresión digital</label><br>
+      <div id="form-control2-3">
+        <input type="checkbox" id="polo" name="polo" value="Polo" onclick='mostrarPosicion("form-control2-3")'>
+        <label for="polo">Polo</label><br>
       </div>
       <hr>
     </div>
   `)
-  const trabajo2 = trabajo1.cloneNode(true);
-  const trabajo3 = trabajo1.cloneNode(true);
+  const articulo2 = articulo1.cloneNode(true);
+  articulo2.querySelector("#form-control2-1").setAttribute("id", "form-control3-1");
+  articulo2.querySelector("#form-control2-2").setAttribute("id", "form-control3-2");
+  articulo2.querySelector("#form-control2-3").setAttribute("id", "form-control3-3");
+  articulo2.querySelector("#camisa").setAttribute("onclick", 'mostrarPosicion("form-control3-1")');
+  articulo2.querySelector("#camiseta").setAttribute("onclick", 'mostrarPosicion("form-control3-2")');
+  articulo2.querySelector("#polo").setAttribute("onclick", 'mostrarPosicion("form-control3-3")');
+  const articulo3 = articulo1.cloneNode(true);
+  articulo3.querySelector("#form-control2-1").setAttribute("id", "form-control4-1");
+  articulo3.querySelector("#form-control2-2").setAttribute("id", "form-control4-2");
+  articulo3.querySelector("#form-control2-3").setAttribute("id", "form-control4-3");
+  articulo3.querySelector("#camisa").setAttribute("onclick", 'mostrarPosicion("form-control4-1")');
+  articulo3.querySelector("#camiseta").setAttribute("onclick", 'mostrarPosicion("form-control4-2")');
+  articulo3.querySelector("#polo").setAttribute("onclick", 'mostrarPosicion("form-control4-3")');
 
   /* 
     Función que muestra estos inputs al seleccionar
     un checkbox
   */
-  function mostrarTrabajo(elemento) {
+  function mostrarArticulo(elemento) {
     switch (elemento) {
-      case "form-control1":
-        if(document.getElementById("camisa").checked) {
-          document.getElementById(elemento).appendChild(trabajo1);
+      case "form-control1-1":
+        if(document.getElementById("serigrafiado").checked) {
+          document.getElementById(elemento).appendChild(articulo1);
         } else {
-          document.getElementById(elemento).removeChild(trabajo1);
+          document.getElementById(elemento).removeChild(articulo1);
         }
         break;
-      case "form-control2":
-        if(document.getElementById("camiseta").checked) {
-          document.getElementById(elemento).appendChild(trabajo2);
+      case "form-control1-2":
+        if(document.getElementById("bordado").checked) {
+          document.getElementById(elemento).appendChild(articulo2);
         } else {
-          document.getElementById(elemento).removeChild(trabajo2);
+          document.getElementById(elemento).removeChild(articulo2);
         }
         break;
-      case "form-control3":
-        if(document.getElementById("polo").checked) {
-          document.getElementById(elemento).appendChild(trabajo3);
+      case "form-control1-3":
+        if(document.getElementById("impresion").checked) {
+          document.getElementById(elemento).appendChild(articulo3);
         } else {
-          document.getElementById(elemento).removeChild(trabajo3);
+          document.getElementById(elemento).removeChild(articulo3);
         }
         break;
     } 
   }
 
   // Inputs de posiciones del formulario
-  const posicion1 = elementFromHtml(`
+  const posicion = []
+  posicion[0] = elementFromHtml(`
     <div class="posicion">
       <hr>
       Posición: <br>
@@ -91,8 +103,9 @@
       <hr>
     </div>
   `)
-  const posicion2 = posicion1.cloneNode(true);
-  const posicion3 = posicion1.cloneNode(true);
+  for (var i = 1; i < 9; i++) {
+    posicion[i] = posicion[0].cloneNode(true);
+  }
 
   /* 
     Función que muestra estos inputs al seleccionar
@@ -100,25 +113,67 @@
   */
   function mostrarPosicion(elemento) {
     switch (elemento) {
-      case "form-control4":
-        if(document.getElementById("serigrafiado").checked) {
-          document.getElementById(elemento).appendChild(posicion1);
+      case "form-control2-1":
+        if(document.getElementById("camisa").checked) {
+          document.getElementById(elemento).appendChild(posicion[0]);
         } else {
-          document.getElementById(elemento).removeChild(posicion1);
+          document.getElementById(elemento).removeChild(posicion[0]);
         }
         break;
-      case "form-control5":
-        if(document.getElementById("bordado").checked) {
-          document.getElementById(elemento).appendChild(posicion2);
+      case "form-control3-1":
+        if(document.getElementById("camisa").checked) {
+          document.getElementById(elemento).appendChild(posicion[1]);
         } else {
-          document.getElementById(elemento).removeChild(posicion2);
+          document.getElementById(elemento).removeChild(posicion[1]);
         }
         break;
-      case "form-control6":
-        if(document.getElementById("impresion").checked) {
-          document.getElementById(elemento).appendChild(posicion3);
+      case "form-control4-1":
+        if(document.getElementById("camisa").checked) {
+          document.getElementById(elemento).appendChild(posicion[2]);
         } else {
-          document.getElementById(elemento).removeChild(posicion3);
+          document.getElementById(elemento).removeChild(posicion[2]);
+        }
+        break;
+      case "form-control2-2":
+        if(document.getElementById("camiseta").checked) {
+          document.getElementById(elemento).appendChild(posicion[3]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[3]);
+        }
+        break;
+      case "form-control3-2":
+        if(document.getElementById("camiseta").checked) {
+          document.getElementById(elemento).appendChild(posicion[4]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[4]);
+        }
+        break;
+      case "form-control4-2":
+        if(document.getElementById("camiseta").checked) {
+          document.getElementById(elemento).appendChild(posicion[5]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[5]);
+        }
+        break;
+      case "form-control2-3":
+        if(document.getElementById("polo").checked) {
+          document.getElementById(elemento).appendChild(posicion[6]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[6]);
+        }
+        break;
+      case "form-control3-3":
+        if(document.getElementById("polo").checked) {
+          document.getElementById(elemento).appendChild(posicion[7]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[7]);
+        }
+        break;
+      case "form-control4-3":
+        if(document.getElementById("polo").checked) {
+          document.getElementById(elemento).appendChild(posicion[8]);
+        } else {
+          document.getElementById(elemento).removeChild(posicion[8]);
         }
         break;
     } 
@@ -126,20 +181,22 @@
   </script>
 
   <form action="resultado.php" method="post">
-    <div id="articulo">
-      Tipo de artículo: <br>
-      <div id="form-control1">
-        <input type="checkbox" id="camisa" name="camisa" value="Camisa" onclick='mostrarTrabajo("form-control1")'>
-        <label for="pechoIzquierdo">Camisa</label><br>
+    <div class="trabajo">
+      <hr>
+      Tipo de trabajo: <br>
+      <div id="form-control1-1">
+        <input type="checkbox" id="serigrafiado" name="serigrafiado" value="Serigrafiado" onclick='mostrarArticulo("form-control1-1")'>
+        <label for="serigrafiado">Serigrafiado</label><br>
       </div>
-      <div id="form-control2">
-        <input type="checkbox" id="camiseta" name="camiseta" value="Camiseta" onclick='mostrarTrabajo("form-control2")'>
-        <label for="pechoDerecho">Camiseta</label><br>
+      <div id="form-control1-2">
+        <input type="checkbox" id="bordado" name="bordado" value="Bordado" onclick='mostrarArticulo("form-control1-2")'>
+        <label for="bordado">Bordado</label><br>
       </div>
-      <div id="form-control3">
-          <input type="checkbox" id="polo" name="polo" value="Polo" onclick='mostrarTrabajo("form-control3")'>
-          <label for="polo">Polo</label><br>
+      <div id="form-control1-3">
+        <input type="checkbox" id="impresion" name="impresion" value="Impresión digital" onclick='mostrarArticulo("form-control1-3")'>
+        <label for="impresion">Impresión digital</label><br>
       </div>
+      <hr>
     </div>
     Logo: <input type="text" name="logo"><br>
     <input type="submit">
