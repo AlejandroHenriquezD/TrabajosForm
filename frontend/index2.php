@@ -1,6 +1,6 @@
 <?php
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
 $tiposPosiciones = array(
   0 => "Pecho izquierdo",
   1 => "Pecho derecho",
@@ -16,31 +16,31 @@ $numeroPosiciones = count($tiposPosiciones);
 $trabajos = "";
 $articulos = array();
 $posiciones = array();
-for ($t = 0; $t < count($tiposTrabajos); $t++) {
-    $trabajos .= "<div id='form-control-$t'>";
-    $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarArticulos(\"form-control-$t\")'>";
-    $trabajos .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
-    $trabajos .= "</div>";
-    $articulos[$t] = "<div class='articulo'><hr>Tipo de articulo: <br>";
-    for ($a = 0; $a < count($tiposArticulos); $a++) {
-      $articulos[$t] .= "<div id='form-control-$t-$a'>";
-      $articulos[$t] .= "<input type='checkbox' id=\"articulo-{$tiposArticulos[$a]['id']}\" name={{$tiposArticulos[$a]['nombre']}} value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-$t-$a\")'>";
-      $articulos[$t] .= "<label for={{$tiposArticulos[$a]['id']}}>" . $tiposArticulos[$a]['nombre'] . "</label><br>";
-      $articulos[$t] .= "</div>";
-      $posiciones[$t][$a] = "<div class='posicion'><hr>Posiciones: <br>";
-      for ($p = 0; $p < count($tiposPosiciones); $p++) {
-        $posiciones[$t][$a] .= "<div id='form-control-$t-$a-$p'>";
-        $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-{$p}\" name={{$tiposPosiciones[$p]}} value={{$tiposPosiciones[$p]}} onclick='mostrarLogos(\"form-control-$t-$a-$p\")'>";
-        $posiciones[$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
-        $posiciones[$t][$a] .= "</div>";
-      }
-      $posiciones[$t][$a] .= "<hr></div>";
+for ($t = 0; $t < $numeroTrabajos; $t++) {
+  $trabajos .= "<div id='form-control-$t'>";
+  $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarArticulos(\"form-control-$t\")'>";
+  $trabajos .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
+  $trabajos .= "</div>";
+  $articulos[$t] = "<div class='articulo'><hr>Tipo de articulo: <br>";
+  for ($a = 0; $a < $numeroArticulos; $a++) {
+    $articulos[$t] .= "<div id='form-control-$t-$a'>";
+    $articulos[$t] .= "<input type='checkbox' id=\"articulo-$t-{$tiposArticulos[$a]['id']}\" name={{$tiposArticulos[$a]['nombre']}} value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-$t-$a\")'>";
+    $articulos[$t] .= "<label for={{$tiposArticulos[$a]['id']}}>" . $tiposArticulos[$a]['nombre'] . "</label><br>";
+    $articulos[$t] .= "</div>";
+    $posiciones[$t][$a] = "<div class='posicion'><hr>Posiciones: <br>";
+    for ($p = 0; $p < $numeroPosiciones; $p++) {
+      $posiciones[$t][$a] .= "<div id='form-control-$t-$a-$p'>";
+      $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-$t-$a-{$p}\" name=\"".$tiposPosiciones[$p]."\" value=\"".$tiposPosiciones[$p]."\" onclick='mostrarLogos(\"form-control-$t-$a-$p\")'>";
+      $posiciones[$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
+      $posiciones[$t][$a] .= "</div>";
     }
-    $articulos[$t] .= "<hr></div>";
+    $posiciones[$t][$a] .= "<hr></div>";
+  }
+  $articulos[$t] .= "<hr></div>";
 }
 $arrayArticulos = json_encode($articulos);
-$arrayPosiciones = json_encode($posiciones);
-
+$arrayPosiciones = json_encode($posiciones, JSON_HEX_QUOT | JSON_HEX_TAG);
+// echo $arrayPosiciones;
 echo "<!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -87,7 +87,7 @@ echo "<!DOCTYPE html>
     var numeroElemento = elemento.split('-')[3];
     var numeroArticulo = parseInt(numeroElemento)+1
     console.log(numeroElemento);
-    if (document.getElementById('articulo-'+numeroArticulo).checked) {
+    if (document.getElementById('articulo-'+numeroPadre+'-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(posiciones[numeroPadre][numeroElemento]);
     } else {
       document.getElementById(elemento).removeChild(posiciones[numeroPadre][numeroElemento]);
@@ -106,5 +106,3 @@ echo "<hr>
   </form>
 </body>
 </html>";
-
-
