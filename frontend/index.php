@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,36 +30,44 @@
     // Inputs de articulos del formulario
     <?php
     $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+    // $html = ob_get_contents();
+    // $dom = new DOMDocument();
+    // $dom->loadHTML($html);
+    // $finder = new DomXPath($dom);
+    // $numeroTrabajos = $finder->query("//*[contains(@class, 'form-controlx')]")->length;
+    // echo $html;
     $articulos = "<div id='articulo'><hr>Tipo de artículo: <br>";
     for ($p = 0; $p < count($tiposArticulos); $p++) {
-      $articulos .= "<div id='form-control2-$p'>";
-      $articulos .= "<input type='checkbox' id=\"articulo-{$tiposArticulos[$p]['id']}\" name={{$tiposArticulos[$p]['nombre']}} value={{$tiposArticulos[$p]['nombre']}} onclick='mostrarPosicion(\"form-control2-$p\")'>";
-      $articulos .= "<label for={{$tiposArticulos[$p]['id']}}>" . $tiposArticulos[$p]['nombre'] . "</label></p><br>";
+      $articulos .= "<div id='form-controlx-$p'>";
+      $articulos .= "<input type='checkbox' id=\"articulo-{$tiposArticulos[$p]['id']}\" name={{$tiposArticulos[$p]['nombre']}} value={{$tiposArticulos[$p]['nombre']}} onclick='mostrarPosicion(\"form-controlx-$p\")'>";
+      $articulos .= "<label for={{$tiposArticulos[$p]['id']}}>" . $tiposArticulos[$p]['nombre'] . "</label><br>";
       $articulos .= "</div>";
     }
     $articulos .= "<hr></div>";
     ?>
     var articulo1 = <?php echo json_encode($articulos); ?>;
+
+    articulo1 = elementFromHtml(articulo1);
+    //   const articulo1 = elementFromHtml(`
+    //   <div id="articulo">
+    //     <hr>
+    //     Tipo de artículo: <br>
+    //     <div id="form-control2-1">
+    //       <input type="checkbox" id="camisa" name="camisa" value="Camisa" onclick='mostrarPosicion("form-control2-1")'>
+    //       <label for="pechoIzquierdo">Camisa</label><br>
+    //     </div>
+    //     <div id="form-control2-2">
+    //       <input type="checkbox" id="camiseta" name="camiseta" value="Camiseta" onclick='mostrarPosicion("form-control2-2")'>
+    //       <label for="pechoDerecho">Camiseta</label><br>
+    //     </div>
+    //     <div id="form-control2-3">
+    //       <input type="checkbox" id="polo" name="polo" value="Polo" onclick='mostrarPosicion("form-control2-3")'>
+    //       <label for="polo">Polo</label><br>
+    //     </div>
+    //     <hr>
+    //   </div>
+    // `)
     console.log(articulo1);
-  //   const articulo1 = elementFromHtml(`
-  //   <div id="articulo">
-  //     <hr>
-  //     Tipo de artículo: <br>
-  //     <div id="form-control2-1">
-  //       <input type="checkbox" id="camisa" name="camisa" value="Camisa" onclick='mostrarPosicion("form-control2-1")'>
-  //       <label for="pechoIzquierdo">Camisa</label><br>
-  //     </div>
-  //     <div id="form-control2-2">
-  //       <input type="checkbox" id="camiseta" name="camiseta" value="Camiseta" onclick='mostrarPosicion("form-control2-2")'>
-  //       <label for="pechoDerecho">Camiseta</label><br>
-  //     </div>
-  //     <div id="form-control2-3">
-  //       <input type="checkbox" id="polo" name="polo" value="Polo" onclick='mostrarPosicion("form-control2-3")'>
-  //       <label for="polo">Polo</label><br>
-  //     </div>
-  //     <hr>
-  //   </div>
-  // `)
     const articulo2 = articulo1.cloneNode(true);
     articulo2.querySelector("#form-control2-1").setAttribute("id", "form-control3-1");
     articulo2.querySelector("#form-control2-2").setAttribute("id", "form-control3-2");
@@ -80,21 +89,21 @@
     */
     function mostrarArticulo(elemento) {
       switch (elemento) {
-        case "form-control1-0":
+        case "form-control0":
           if (document.getElementById("trabajo-1").checked) {
             document.getElementById(elemento).appendChild(articulo1);
           } else {
             document.getElementById(elemento).removeChild(articulo1);
           }
           break;
-        case "form-control1-1":
+        case "form-control1":
           if (document.getElementById("trabajo-2").checked) {
             document.getElementById(elemento).appendChild(articulo2);
           } else {
             document.getElementById(elemento).removeChild(articulo2);
           }
           break;
-        case "form-control1-2":
+        case "form-control2":
           if (document.getElementById("trabajo-3").checked) {
             document.getElementById(elemento).appendChild(articulo3);
           } else {
@@ -216,11 +225,12 @@
       $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
       $trabajos = "";
       for ($p = 0; $p < count($tiposTrabajos); $p++) {
-        $trabajos .= "<div id='form-control1-$p'>";
-        $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$p]['id']}\" name={{$tiposTrabajos[$p]['nombre']}} value={{$tiposTrabajos[$p]['nombre']}} onclick='mostrarArticulo(\"form-control1-$p\")'>";
+        $trabajos .= "<div id='form-control$p' classname='form-controlx'>";
+        $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$p]['id']}\" name={{$tiposTrabajos[$p]['nombre']}} value={{$tiposTrabajos[$p]['nombre']}} onclick='mostrarArticulo(\"form-control$p\")'>";
         $trabajos .= "<label for={{$tiposTrabajos[$p]['id']}}>" . $tiposTrabajos[$p]['nombre'] . "</label><br>";
         $trabajos .= "</div>";
       }
+      $numeroTrabajos = $p;
       echo $trabajos;
       ?>
       <hr>
