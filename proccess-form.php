@@ -11,7 +11,7 @@ $filename = $base . "." . $pathinfo["extension"];
 
 $destination = __DIR__ . "/uploads/" . $filename;
 
-$img = __DIR__ . "/uploads/" . $filename;
+$img = "./uploads/" . $filename;
 $img_vectorizada = "img_vectorizada";
 $id_cliente = 1;
 $obsoleto = 0;

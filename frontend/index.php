@@ -28,7 +28,7 @@
 
     // Inputs de articulos del formulario
     <?php
-    $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+    $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
     $articulos = "<div id='articulo'><hr>Tipo de artículo: <br>";
     for ($p = 0; $p < count($tiposArticulos); $p++) {
       $articulos .= "<div id='form-control2-$p'>";
@@ -213,7 +213,7 @@
         <label for="impresion">Impresión digital</label><br>
       </div> -->
       <?php
-      $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+      $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
       $trabajos = "";
       for ($p = 0; $p < count($tiposTrabajos); $p++) {
         $trabajos .= "<div id='form-control1-$p'>";

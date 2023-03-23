@@ -1,0 +1,27 @@
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.fila:hover {
+  background-color: #d6eeee;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td {
+  text-align: center;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+th,
+td {
+  padding: 15px;
+}
