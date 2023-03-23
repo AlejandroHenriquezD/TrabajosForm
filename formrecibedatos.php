@@ -23,3 +23,4 @@ function tipos_articulos()
 }
 
 tipos_trabajos();
+tipos_articulos();
