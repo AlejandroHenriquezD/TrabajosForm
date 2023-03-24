@@ -38,9 +38,12 @@ for ($t = 0; $t < $numeroTrabajos; $t++) {
   }
   $articulos[$t] .= "<hr></div>";
 }
+for ($d = $numeroTrabajos; $d < $numeroArticulos; $d++) {
+  $posiciones[$d] = "";
+}
+
 $arrayArticulos = json_encode($articulos);
-$arrayPosiciones = json_encode($posiciones, JSON_HEX_QUOT | JSON_HEX_TAG);
-// echo $arrayPosiciones;
+$arrayPosiciones = json_encode($posiciones);
 echo "<!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -63,12 +66,10 @@ echo "<!DOCTYPE html>
 
   var articulos = $arrayArticulos;
   var posiciones = $arrayPosiciones;
-  console.log(posiciones);
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
     for (var j = 0; j < posiciones.length; j++) {
       posiciones[i][j] = elementFromHtml(posiciones[i][j]);
-      console.log(posiciones[i][j]);
     }
   }
 
@@ -86,7 +87,6 @@ echo "<!DOCTYPE html>
     var numeroPadre = elemento.split('-')[2];
     var numeroElemento = elemento.split('-')[3];
     var numeroArticulo = parseInt(numeroElemento)+1
-    console.log(numeroElemento);
     if (document.getElementById('articulo-'+numeroPadre+'-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(posiciones[numeroPadre][numeroElemento]);
     } else {
