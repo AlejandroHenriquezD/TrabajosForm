@@ -10,6 +10,8 @@ $tiposPosiciones = array(
   5 => "Manga derecha",
   6 => "Espalda"
 );
+$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+$logos_encoded = json_encode($logos);
 $numeroTrabajos = count($tiposTrabajos);
 $numeroArticulos = count($tiposArticulos);
 $numeroPosiciones = count($tiposPosiciones);
@@ -30,20 +32,25 @@ for ($t = 0; $t < $numeroTrabajos; $t++) {
     $posiciones[$t][$a] = "<div class='posicion'><hr>Posiciones: <br>";
     for ($p = 0; $p < $numeroPosiciones; $p++) {
       $posiciones[$t][$a] .= "<div id='form-control-$t-$a-$p'>";
-      $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-$t-$a-{$p}\" name=\"".$tiposPosiciones[$p]."\" value=\"".$tiposPosiciones[$p]."\" onclick='mostrarLogos(\"form-control-$t-$a-$p\")'>";
+      $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-$t-$a-{$p}\" class='posicion-checkbox' name=\"".$tiposPosiciones[$p]."\" value=\"".$tiposPosiciones[$p]."\" onclick='mostrarLogos(\"form-control-$t-$a-$p\")'>";
       $posiciones[$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
       $posiciones[$t][$a] .= "</div>";
+      $arrayLogos[$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-$t-$a-$p\")'>";
+      for ($l = 0; $l < count($logos); $l++) {
+        $arrayLogos[$t][$a][$p] .= "<option id='logo-$t-$a-$p-$l' value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";
+      }
+      $arrayLogos[$t][$a][$p] .= "</select>";
+      $arrayLogos[$t][$a][$p] .= "<img id='logo-img-$t-$a-$p' src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' alt='logo' height='20%'/></div>";
     }
     $posiciones[$t][$a] .= "<hr></div>";
   }
   $articulos[$t] .= "<hr></div>";
 }
-for ($d = $numeroTrabajos; $d < $numeroArticulos; $d++) {
-  $posiciones[$d] = "";
-}
 
 $arrayArticulos = json_encode($articulos);
 $arrayPosiciones = json_encode($posiciones);
+$arrayLogos = json_encode($arrayLogos);
+
 echo "<!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -66,10 +73,14 @@ echo "<!DOCTYPE html>
 
   var articulos = $arrayArticulos;
   var posiciones = $arrayPosiciones;
+  var logos = $arrayLogos;
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
-    for (var j = 0; j < posiciones.length; j++) {
+    for (var j = 0; j < posiciones[i].length; j++) {
       posiciones[i][j] = elementFromHtml(posiciones[i][j]);
+      for (var k = 0; k < logos[i][j].length; k++) {
+        logos[i][j][k] = elementFromHtml(logos[i][j][k]);
+      }
     }
   }
 
@@ -86,23 +97,64 @@ echo "<!DOCTYPE html>
   function mostrarPosiciones(elemento) {
     var numeroPadre = elemento.split('-')[2];
     var numeroElemento = elemento.split('-')[3];
-    var numeroArticulo = parseInt(numeroElemento)+1
+    var numeroArticulo = parseInt(numeroElemento)+1;
     if (document.getElementById('articulo-'+numeroPadre+'-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(posiciones[numeroPadre][numeroElemento]);
     } else {
       document.getElementById(elemento).removeChild(posiciones[numeroPadre][numeroElemento]);
     }
   }
+
+  function mostrarLogos(elemento) {
+    var numeroTrabajo = elemento.split('-')[2];
+    var numeroArticulo = elemento.split('-')[3];
+    var numeroPosicion = elemento.split('-')[4];
+    if (document.getElementById('posicion-'+numeroTrabajo+'-'+numeroArticulo+'-'+numeroPosicion).checked) {
+      document.getElementById(elemento).appendChild(logos[numeroTrabajo][numeroArticulo][numeroPosicion]);
+    } else {
+      document.getElementById(elemento).removeChild(logos[numeroTrabajo][numeroArticulo][numeroPosicion]);
+    }
+  }
+
+  function updateImage(id, logo) {
+    var img = document.getElementById(logo);
+    var logo = $logos_encoded;
+    for (var i = 0; i < logo.length; i++) {
+        if (logo[i].id == id) {
+            img.src = '.' + logo[i].img;
+            img.alt = '.' + logo[i].img;
+            break;
+        }
+    }
+  }
+
+  const form = document.querySelector('#formulario');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+  });
+
+  function enviarFormulario(e) {
+    e.preventDefault();
+    pCheckbox = document.getElementsByClassName(posicion-checkbox);
+    console.log(pCheckbox);
+    pCheckbox.forEach(function(cb) {
+      if (cb.checked) {
+        console.log(cb.id);
+      }
+    });
+  }
 </script>
-<form action='resultado.php' method='post'>
+<form id='formulario' onsubmit='enviarFormulario(e)' method='post'>
     <div class='trabajo'>
       <hr>
       Tipo de trabajo: <br>";
 echo $trabajos;
 echo "<hr>
     </div>
-    Logo: <input type='text' name='logo'><br>
     <input type='submit'>
   </form>
 </body>
 </html>";
+
+// action='resultado.php'
