@@ -1,8 +1,12 @@
+.articulo {
+  background-color: rgb(89, 215, 112);
+}
+
 .trabajo {
   background-color: rgb(255, 206, 100);
 }
 
-.articulo {
+.tipoArticulo {
   background-color: rgb(134, 147, 246);
 }
 
