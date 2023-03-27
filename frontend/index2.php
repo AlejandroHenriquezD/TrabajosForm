@@ -19,28 +19,29 @@ $trabajos = "";
 $articulos = array();
 $posiciones = array();
 for ($t = 0; $t < $numeroTrabajos; $t++) {
-  $trabajos .= "<div id='form-control-$t'>";
-  $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarArticulos(\"form-control-$t\")'>";
+  $trabajos .= "<div id=\"form-control-{$tiposTrabajos[$t]['id']}\">";
+  $trabajos .= "<input type='checkbox' id=\"trabajo-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarArticulos(\"form-control-{$tiposTrabajos[$t]['id']}\")'>";
   $trabajos .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
   $trabajos .= "</div>";
   $articulos[$t] = "<div class='articulo'><hr>Tipo de articulo: <br>";
   for ($a = 0; $a < $numeroArticulos; $a++) {
-    $articulos[$t] .= "<div id='form-control-$t-$a'>";
-    $articulos[$t] .= "<input type='checkbox' id=\"articulo-$t-{$tiposArticulos[$a]['id']}\" name={{$tiposArticulos[$a]['nombre']}} value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-$t-$a\")'>";
-    $articulos[$t] .= "<label for={{$tiposArticulos[$a]['id']}}>" . $tiposArticulos[$a]['nombre'] . "</label><br>";
+    $articulos[$t] .= "<div id=\"form-control-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
+    $articulos[$t] .= "<label for={{$tiposArticulos[$a]['id']}}>";
+    $articulos[$t] .= "<input type='radio' class='articuloRadio' id=\"articulo-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\" name='articuloRadio' value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\")'>";
+    $articulos[$t] .= $tiposArticulos[$a]['nombre'] . "</label><br>";
     $articulos[$t] .= "</div>";
     $posiciones[$t][$a] = "<div class='posicion'><hr>Posiciones: <br>";
     for ($p = 0; $p < $numeroPosiciones; $p++) {
-      $posiciones[$t][$a] .= "<div id='form-control-$t-$a-$p'>";
-      $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-$t-$a-{$p}\" class='posicion-checkbox' name=\"".$tiposPosiciones[$p]."\" value=\"".$tiposPosiciones[$p]."\" onclick='mostrarLogos(\"form-control-$t-$a-$p\")'>";
+      $posiciones[$t][$a] .= "<div id=\"form-control-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\">";
+      $posiciones[$t][$a] .= "<input type='checkbox' id=\"posicion-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name=\"" . $tiposPosiciones[$p] . "\" value=\"" . $tiposPosiciones[$p] . "\" onclick='mostrarLogos(\"form-control-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
       $posiciones[$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
       $posiciones[$t][$a] .= "</div>";
-      $arrayLogos[$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-$t-$a-$p\")'>";
+      $arrayLogos[$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
       for ($l = 0; $l < count($logos); $l++) {
-        $arrayLogos[$t][$a][$p] .= "<option id='logo-$t-$a-$p-$l' value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";
+        $arrayLogos[$t][$a][$p] .= "<option id=\"logo-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";
       }
       $arrayLogos[$t][$a][$p] .= "</select>";
-      $arrayLogos[$t][$a][$p] .= "<img id='logo-img-$t-$a-$p' src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' alt='logo' height='20%'/></div>";
+      $arrayLogos[$t][$a][$p] .= "<img id=\"logo-img-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' alt='logo' height='20%'/></div>";
     }
     $posiciones[$t][$a] .= "<hr></div>";
   }
@@ -86,23 +87,27 @@ echo "<!DOCTYPE html>
 
   function mostrarArticulos(elemento) {
     var numeroElemento = elemento.split('-')[2];
-    var numeroTrabajo = parseInt(numeroElemento)+1
-    if (document.getElementById('trabajo-'+numeroTrabajo).checked) {
-      document.getElementById(elemento).appendChild(articulos[numeroElemento]);
+    if (document.getElementById('trabajo-'+numeroElemento).checked) {
+      document.getElementById(elemento).appendChild(articulos[numeroElemento-1]);
     } else {
-      document.getElementById(elemento).removeChild(articulos[numeroElemento]);
+      document.getElementById(elemento).removeChild(articulos[numeroElemento-1]);
     }
   }
 
   function mostrarPosiciones(elemento) {
-    var numeroPadre = elemento.split('-')[2];
-    var numeroElemento = elemento.split('-')[3];
-    var numeroArticulo = parseInt(numeroElemento)+1;
-    if (document.getElementById('articulo-'+numeroPadre+'-'+numeroArticulo).checked) {
-      document.getElementById(elemento).appendChild(posiciones[numeroPadre][numeroElemento]);
-    } else {
-      document.getElementById(elemento).removeChild(posiciones[numeroPadre][numeroElemento]);
+    var radios = document.getElementsByClassName('articuloRadio');
+    for (let r of radios) {
+      var numeroPadre = r.id.split('-')[1];
+      var numeroElemento = r.id.split('-')[2];
+      if(r.checked) {
+        r.parentNode.appendChild(posiciones[numeroPadre-1][numeroElemento-1]);
+      } else {
+        if (posiciones[numeroPadre-1][numeroElemento-1].parentNode == r.parentNode) { 
+          r.parentNode.removeChild(posiciones[numeroPadre-1][numeroElemento-1]);
+        }
+      }
     }
+    
   }
 
   function mostrarLogos(elemento) {
@@ -110,9 +115,9 @@ echo "<!DOCTYPE html>
     var numeroArticulo = elemento.split('-')[3];
     var numeroPosicion = elemento.split('-')[4];
     if (document.getElementById('posicion-'+numeroTrabajo+'-'+numeroArticulo+'-'+numeroPosicion).checked) {
-      document.getElementById(elemento).appendChild(logos[numeroTrabajo][numeroArticulo][numeroPosicion]);
+      document.getElementById(elemento).appendChild(logos[numeroTrabajo-1][numeroArticulo-1][numeroPosicion]);
     } else {
-      document.getElementById(elemento).removeChild(logos[numeroTrabajo][numeroArticulo][numeroPosicion]);
+      document.getElementById(elemento).removeChild(logos[numeroTrabajo-1][numeroArticulo-1][numeroPosicion]);
     }
   }
 
@@ -139,10 +144,13 @@ echo "<!DOCTYPE html>
     pCheckbox = document.getElementsByClassName(posicion-checkbox);
     console.log(pCheckbox);
     pCheckbox.forEach(function(cb) {
+      var cdTrabajo = cd.split('-')[0];
+      var cdArticulo = cd.split('-')[1];
       if (cb.checked) {
         console.log(cb.id);
       }
     });
+    return false;
   }
 </script>
 <form id='formulario' onsubmit='enviarFormulario(e)' method='post'>
