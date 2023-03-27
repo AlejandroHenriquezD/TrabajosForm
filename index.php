@@ -48,6 +48,11 @@ switch ($parts[2]) {
         $gateway = new TrabajoGateway($database);
         $controller = new TrabajoController($gateway);
         break;
+
+    case "articulos":
+        $gateway = new ArticuloGateway($database);
+        $controller = new ArticuloController($gateway);
+        break;
         
 }
 
