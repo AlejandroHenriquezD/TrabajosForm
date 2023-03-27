@@ -56,7 +56,7 @@ for($i = 0; $i < $numeroArticulos; $i++) {
     }
     $arrayTipoArticulos[$i][$t] .= "<hr></div>";
   }
-  $trabajos[$i] .= "<hr></div>";
+  $trabajos[$i] .= "<hr></div>"; 
 }
 $arrayTrabajos = json_encode($trabajos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
