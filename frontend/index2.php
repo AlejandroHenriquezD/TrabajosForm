@@ -42,12 +42,12 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
       $posiciones[$i][$t][$a] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\"><hr>Posiciones: <br>";
       for ($p = 0; $p < $numeroPosiciones; $p++) {
         $posiciones[$i][$t][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\">";
-        $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"" . $tiposPosiciones[$p] . "\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
         $posiciones[$i][$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
         $posiciones[$i][$t][$a] .= "</div>";
-        $arrayLogos[$i][$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $arrayLogos[$i][$t][$a][$p] = "<div><select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
         for ($l = 0; $l < count($logos); $l++) {
-          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";          
+          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";          
         }
         $arrayLogos[$i][$t][$a][$p] .= "</select>";
         $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\" height='20%'/></div>";
@@ -156,6 +156,7 @@ echo "<!DOCTYPE html>
   }
 
   function updateImage(id, logo) {
+    id = id.split('-')[5];
     var img = document.getElementById(logo);
     var logo = $logos_encoded;
     for (var i = 0; i < logo.length; i++) {
@@ -167,27 +168,8 @@ echo "<!DOCTYPE html>
     }
   }
 
-  const form = document.querySelector('#formulario');
-
-  // form.addEventListener('submit', function(event) {
-  //   event.preventDefault();
-  // });
-
-  function enviarFormulario(e) {
-    e.preventDefault();
-    pCheckbox = document.getElementsByClassName(posicion-checkbox);
-    console.log(pCheckbox);
-    for (let cd of pCheckbox) {
-      var cdTrabajo = cd.split('-')[0];
-      var cdArticulo = cd.split('-')[1];
-      if (cb.checked) {
-        console.log(cb.id);
-      }
-    };
-    return false;
-  }
 </script>
-<form id='formulario' onsubmit='enviarFormulario(e)' action='resultado.php' method='post'>
+<form id='formulario' action='resultado.php' method='post'>
     <div class='articulo'>
       <hr>
       Articulos: <br>";

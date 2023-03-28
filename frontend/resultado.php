@@ -1,68 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resultado</title>
-  <link rel="shortcut icon" href="favicon.png">
-</head>
-<body>
-  <?php 
-    foreach($_POST['posicion-checkbox'] as $campo) {
-      echo "<p>Valor recibido: $campo</p>";
-    }
-    foreach($_POST['logo'] as $campo) {
-      echo "<p>Valor recibido: $campo</p>";
-    }
-    // foreach($_REQUEST['posicion-checkbox'] as $cb) {
-    //   echo $_POST[$cb]['id'];
-    //   // if(isset($_REQUEST[$cb])) {
-    //   //   echo $_POST[$cb];
-    //   //   echo "<br>";
-    //   // }
-    // }
-    // if (isset($_REQUEST['camisa'])) {
-    //   echo $_POST['camisa'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['camiseta'])) {
-    //   echo $_POST['camiseta'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['polo'])) {
-    //   echo $_POST['polo'];
-    //   echo "<br>";
-    // }
-    // echo "<br>";
-    // // echo $_POST['tecnica'];
-    // if (isset($_REQUEST['serigrafiado'])) {
-    //   echo $_POST['serigrafiado'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['bordado'])) {
-    //   echo $_POST['bordado'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['impresion'])) {
-    //   echo $_POST['impresion'];
-    //   echo "<br>";
-    // }
-    // echo "<br><br>";
-    // if (isset($_REQUEST['pechoIzquierdo'])) {
-    //   echo $_POST['pechoIzquierdo'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['pechoDerecho'])) {
-    //   echo $_POST['pechoDerecho'];
-    //   echo "<br>";
-    // }
-    // if (isset($_REQUEST['espalda'])) {
-    //   echo $_POST['espalda']; 
-    //   echo "<br>";
-    // }
-    // echo "<br>";
-    // echo $_POST['logo']; 
-  ?>
-</body>
-</html>
+<?php
+foreach ($_POST['img-select'] as $valor) {
+  echo "El valor seleccionado es $valor <br>";
+
+  var_dump($_FILES);
+  $tiposPosiciones = array(
+    0 => "Pecho izquierdo",
+    1 => "Pecho derecho",
+    2 => "Fuera bolsillo",
+    3 => "Dentro bolsillo",
+    4 => "Manga izquierda",
+    5 => "Manga derecha",
+    6 => "Espalda"
+  );
+  $valor = explode('-', $valor);
+
+  $posicion = $tiposPosiciones[$valor[4]];
+  $id_articulo = $valor[1];
+  $id_tipo_trabajo = $valor[2];
+  $id_pedido = 1;
+  $id_logo = $valor[5];
+  echo($valor[1]);
+
+  $host = "localhost";
+  $dbname = "centraluniformes";
+  $username = "root";
+  $password = "";
+
+  $conn = mysqli_connect(
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
+  );
+
+  if (mysqli_connect_errno()) {
+    die("Connection error: " . mysqli_connect_errno());
+  }
+
+  $sql = "INSERT INTO trabajos (posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo) VALUES (?,?,?,?,?)";
+
+  $stmt = mysqli_stmt_init($conn);
+
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    die(mysqli_errno($conn));
+  }
+
+  mysqli_stmt_bind_param(
+    $stmt,
+    "siiii",
+    $posicion,
+    $id_articulo,
+    $id_tipo_trabajo,
+    $id_pedido,
+    $id_logo
+  );
+
+  mysqli_stmt_execute($stmt);
+
+  echo "Registro Guardado.";
+}
+?>
