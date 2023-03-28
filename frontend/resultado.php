@@ -9,12 +9,19 @@
 </head>
 <body>
   <?php 
-    foreach($_REQUEST['posicion-checkbox'] as $cb) {
-      if(isset($_REQUEST[$cb])) {
-        echo $_POST[$cb];
-        echo "<br>";
-      }
+    foreach($_POST['posicion-checkbox'] as $campo) {
+      echo "<p>Valor recibido: $campo</p>";
     }
+    foreach($_POST['logo'] as $campo) {
+      echo "<p>Valor recibido: $campo</p>";
+    }
+    // foreach($_REQUEST['posicion-checkbox'] as $cb) {
+    //   echo $_POST[$cb]['id'];
+    //   // if(isset($_REQUEST[$cb])) {
+    //   //   echo $_POST[$cb];
+    //   //   echo "<br>";
+    //   // }
+    // }
     // if (isset($_REQUEST['camisa'])) {
     //   echo $_POST['camisa'];
     //   echo "<br>";

@@ -23,7 +23,7 @@ $arrayTipoArticulos = array();
 $posiciones = array();
 for ($i = 0; $i < $numeroArticulos; $i++) {
   $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-  $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name={{$articulos[$i]['descripcion']}} value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
+  $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
   $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
   $divArticulos .= "</div>";
   $trabajos[$i] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}\"><hr>Trabajos: <br>";
@@ -42,7 +42,7 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
       $posiciones[$i][$t][$a] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\"><hr>Posiciones: <br>";
       for ($p = 0; $p < $numeroPosiciones; $p++) {
         $posiciones[$i][$t][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\">";
-        $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name=\"" . $tiposPosiciones[$p] . "\" value=\"" . $tiposPosiciones[$p] . "\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"" . $tiposPosiciones[$p] . "\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
         $posiciones[$i][$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
         $posiciones[$i][$t][$a] .= "</div>";
         $arrayLogos[$i][$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
