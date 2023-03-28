@@ -118,7 +118,11 @@ echo "<!DOCTYPE html>
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
     var numeroTrabajo = elemento.split('-')[3];
-    var tipoArticulo = obtenerElemento(tipoArticulos[numeroArticulo-1], 'tipoArticulos-'+numeroArticulo+'-'+numeroTrabajo);
+
+    var trabajo = obtenerElemento(trabajos, 'trabajos-'+numeroArticulo);
+    var indexTrabajo = trabajos.indexOf(trabajo);
+
+    var tipoArticulo = obtenerElemento(tipoArticulos[indexTrabajo], 'tipoArticulos-'+numeroArticulo+'-'+numeroTrabajo);
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTrabajo).checked) {
       document.getElementById(elemento).appendChild(tipoArticulo);
     } else {
@@ -129,10 +133,16 @@ echo "<!DOCTYPE html>
   function mostrarPosiciones(elemento) {
     var numeroArticulo = elemento.split('-')[2];
     var numeroTrabajo = elemento.split('-')[3];
+
+    var trabajo = obtenerElemento(trabajos, 'trabajos-'+numeroArticulo);
+    var indexTrabajo = trabajos.indexOf(trabajo);
+    var tipoArticulo = obtenerElemento(tipoArticulos[indexTrabajo], 'tipoArticulos-'+numeroArticulo+'-'+numeroTrabajo);
+    var indexTipoArticulo = tipoArticulos[indexTrabajo].indexOf(tipoArticulo);
+
     var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+numeroTrabajo);
     for (let r of radios) {
       var numeroTipoArticulo = r.id.split('-')[3];
-      var pos = obtenerElemento(posiciones[numeroArticulo-1][numeroTrabajo-1], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
+      var pos = obtenerElemento(posiciones[indexTrabajo][indexTipoArticulo], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
       if(r.checked) {
         r.parentNode.appendChild(pos);
       } else {
@@ -148,10 +158,18 @@ echo "<!DOCTYPE html>
     var numeroTrabajo = elemento.split('-')[3];
     var numeroTipoArticulo = elemento.split('-')[4];
     var numeroPosicion = elemento.split('-')[5];
+
+    var trabajo = obtenerElemento(trabajos, 'trabajos-'+numeroArticulo);
+    var indexTrabajo = trabajos.indexOf(trabajo);
+    var tipoArticulo = obtenerElemento(tipoArticulos[indexTrabajo], 'tipoArticulos-'+numeroArticulo+'-'+numeroTrabajo);
+    var indexTipoArticulo = tipoArticulos[indexTrabajo].indexOf(tipoArticulo);
+    var pos = obtenerElemento(posiciones[indexTrabajo][indexTipoArticulo], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
+    var indexPosicion = posiciones[indexTrabajo][indexTipoArticulo].indexOf(pos);
+
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
-      document.getElementById(elemento).appendChild(logos[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1][numeroPosicion]);
+      document.getElementById(elemento).appendChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][numeroPosicion]);
     } else {
-      document.getElementById(elemento).removeChild(logos[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1][numeroPosicion]);
+      document.getElementById(elemento).removeChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][numeroPosicion]);
     }
   }
 
