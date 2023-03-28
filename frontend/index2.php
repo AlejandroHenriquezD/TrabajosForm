@@ -21,18 +21,18 @@ $divArticulos = "";
 $trabajos = array();
 $arrayTipoArticulos = array();
 $posiciones = array();
-for($i = 0; $i < $numeroArticulos; $i++) {
+for ($i = 0; $i < $numeroArticulos; $i++) {
   $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
   $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name={{$articulos[$i]['descripcion']}} value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
   $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
   $divArticulos .= "</div>";
-  $trabajos[$i] = "<div class='trabajos'><hr>Trabajos: <br>";
+  $trabajos[$i] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}\"><hr>Trabajos: <br>";
   for ($t = 0; $t < $numeroTrabajos; $t++) {
     $trabajos[$i] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\">";
     $trabajos[$i] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
     $trabajos[$i] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
     $trabajos[$i] .= "</div>";
-    $arrayTipoArticulos[$i][$t] = "<div class='tipoArticulo'><hr>Tipo de articulo: <br>";
+    $arrayTipoArticulos[$i][$t] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\"><hr>Tipo de articulo: <br>";
     for ($a = 0; $a < $numeroTipoArticulos; $a++) {
       $arrayTipoArticulos[$i][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
       $arrayTipoArticulos[$i][$t] .= "<label for={{$tiposArticulos[$a]['id']}}>";
@@ -47,16 +47,16 @@ for($i = 0; $i < $numeroArticulos; $i++) {
         $posiciones[$i][$t][$a] .= "</div>";
         $arrayLogos[$i][$t][$a][$p] = "<div><select name='img' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
         for ($l = 0; $l < count($logos); $l++) {
-          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";
+          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value='" . $logos[$l]['id'] . "'>Logo " . $l + 1 . "</option>";          
         }
         $arrayLogos[$i][$t][$a][$p] .= "</select>";
-        $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' alt='logo' height='20%'/></div>";
+        $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\" height='20%'/></div>";
       }
       $posiciones[$i][$t][$a] .= "<hr></div>";
     }
     $arrayTipoArticulos[$i][$t] .= "<hr></div>";
   }
-  $trabajos[$i] .= "<hr></div>"; 
+  $trabajos[$i] .= "<hr></div>";
 }
 $arrayTrabajos = json_encode($trabajos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
@@ -99,45 +99,48 @@ echo "<!DOCTYPE html>
       }
     }
   }
-  console.log(logos);
+
+  function obtenerElemento(array, id) {
+    var elemento = array.find(a => a.id === id);
+    return elemento;
+  }
 
   function mostrarTrabajos(elemento) {
-    var numeroElemento = elemento.split('-')[2];
-    if (document.getElementById('articulo-'+numeroElemento).checked) {
-      document.getElementById(elemento).appendChild(trabajos[numeroElemento-1]);
+    var numeroArticulo = elemento.split('-')[2];
+    var trabajo = obtenerElemento(trabajos, 'trabajos-'+numeroArticulo);
+    if (document.getElementById('articulo-'+numeroArticulo).checked) {
+      document.getElementById(elemento).appendChild(trabajo);
     } else {
-      document.getElementById(elemento).removeChild(trabajos[numeroElemento-1]);
+      document.getElementById(elemento).removeChild(trabajo);
     }
   }
 
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
     var numeroTrabajo = elemento.split('-')[3];
+    var tipoArticulo = obtenerElemento(tipoArticulos[numeroArticulo-1], 'tipoArticulos-'+numeroArticulo+'-'+numeroTrabajo);
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTrabajo).checked) {
-      document.getElementById(elemento).appendChild(tipoArticulos[numeroArticulo-1][numeroTrabajo-1]);
+      document.getElementById(elemento).appendChild(tipoArticulo);
     } else {
-      document.getElementById(elemento).removeChild(tipoArticulos[numeroArticulo-1][numeroTrabajo-1]);
+      document.getElementById(elemento).removeChild(tipoArticulo);
     }
   }
 
   function mostrarPosiciones(elemento) {
     var numeroArticulo = elemento.split('-')[2];
     var numeroTrabajo = elemento.split('-')[3];
-    var numeroTipoArticulo = elemento.split('-')[4];
     var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+numeroTrabajo);
     for (let r of radios) {
       var numeroTipoArticulo = r.id.split('-')[3];
-      console.log(posiciones[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1]);
+      var pos = obtenerElemento(posiciones[numeroArticulo-1][numeroTrabajo-1], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
       if(r.checked) {
-        r.parentNode.appendChild(posiciones[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1]);
+        r.parentNode.appendChild(pos);
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
-          r.parentNode.removeChild(posiciones[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1]);
-          console.log(posiciones[numeroArticulo-1][numeroTrabajo-1][numeroTipoArticulo-1]);
+          r.parentNode.removeChild(pos);
         }
       }
-    }
-    
+    } 
   }
 
   function mostrarLogos(elemento) {
@@ -166,25 +169,25 @@ echo "<!DOCTYPE html>
 
   const form = document.querySelector('#formulario');
 
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-  });
+  // form.addEventListener('submit', function(event) {
+  //   event.preventDefault();
+  // });
 
   function enviarFormulario(e) {
     e.preventDefault();
     pCheckbox = document.getElementsByClassName(posicion-checkbox);
     console.log(pCheckbox);
-    pCheckbox.forEach(function(cb) {
+    for (let cd of pCheckbox) {
       var cdTrabajo = cd.split('-')[0];
       var cdArticulo = cd.split('-')[1];
       if (cb.checked) {
         console.log(cb.id);
       }
-    });
+    };
     return false;
   }
 </script>
-<form id='formulario' onsubmit='enviarFormulario(e)' method='post'>
+<form id='formulario' onsubmit='enviarFormulario(e)' action='resultado.php' method='post'>
     <div class='articulo'>
       <hr>
       Articulos: <br>";
@@ -195,5 +198,3 @@ echo "<hr>
   </form>
 </body>
 </html>";
-
-// action='resultado.php'
