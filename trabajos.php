@@ -16,26 +16,26 @@
     $datos = [];
     function trabajos()
     {
-        $trabajos = json_decode(file_get_contents("http://localhost/API/trabajos"), true);
+        $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
         echo "<table>
            <tr>
               <th>Posición</th>
-              <th>Tipo de artículo</th>
+              <th>Artículo</th>
               <th>Tipo de trabajo</th>
               <th>Fecha de pedido</th>
               <th>Logo</th>
            </tr>";
         for ($p = 0; $p < count($trabajos); $p++) {
-            $tipo_articulo = json_decode(file_get_contents("http://localhost/API/tipo_articulos/" . $trabajos[$p]['id_tipo_articulo']), true);
-            $tipo_trabajo = json_decode(file_get_contents("http://localhost/API/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-            $pedido = json_decode(file_get_contents("http://localhost/API/pedidos/" . $trabajos[$p]['id_pedido']), true);
-            $logo = json_decode(file_get_contents("http://localhost/API/logos/" . $trabajos[$p]['id_logo']), true);
+            $articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
+            $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
+            $pedido = json_decode(file_get_contents("http://localhost/trabajosform/pedidos/" . $trabajos[$p]['id_pedido']), true);
+            $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
 
 
             echo
             "<tr class='fila'>
            <td>" . $trabajos[$p]['posicion'] . "</td> 
-           <td>" . $tipo_articulo['nombre'] . "</td>
+           <td>" . $articulo['descripcion'] . "</td>
            <td>" . $tipo_trabajo['nombre'] . "</td>
            <td>" . $pedido['fecha_pedido'] . "</td>
            <td><img src='" . $logo['img'] . "' alt='hola' height=150px></td>

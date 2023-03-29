@@ -1,6 +1,6 @@
 <?php
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 $tiposPosiciones = array(
   0 => "Pecho izquierdo",
   1 => "Pecho derecho",
@@ -10,7 +10,7 @@ $tiposPosiciones = array(
   5 => "Manga derecha",
   6 => "Espalda"
 );
-$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroTrabajos = count($tiposTrabajos);
 $numeroArticulos = count($tiposArticulos);
