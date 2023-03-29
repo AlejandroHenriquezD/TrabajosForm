@@ -1,11 +1,18 @@
-.trabajo {
-  background-color: rgb(255, 206, 100);
+.articulo {
+  background-color: rgb(89, 215, 112);
 }
 
-.articulo {
+.trabajos {
+  background-color: rgb(255, 206, 100);
+  margin-left: 20px;
+}
+
+.tipoArticulo {
   background-color: rgb(134, 147, 246);
+  margin-left: 20px;
 }
 
 .posicion {
   background-color: rgb(255, 100, 100);
+  margin-left: 20px;
 }
