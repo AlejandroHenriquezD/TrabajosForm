@@ -1,6 +1,6 @@
 <?php
 
-class TrabajoGateway
+class Posicion_TipoArticuloGateway
 {
     private PDO $conn;
 
@@ -13,7 +13,7 @@ class TrabajoGateway
     {
 
         $sql = "SELECT *
-                FROM trabajos";
+                FROM posicionestipoarticulos";
 
         $stmt = $this->conn->query($sql);
 
@@ -32,17 +32,13 @@ class TrabajoGateway
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO trabajos (id_posicion, id_tipo_articulo, id_tipo_trabajo, id_pedido, id_logo, id_articulo)
-                VALUES (:id_posicion, :id_tipo_articulo, :id_tipo_trabajo, :id_pedido, :id_logo, :id_articulo)";
+        $sql = "INSERT INTO posicionestipoarticulos (id_tipo_articulo, id_posicion)
+                VALUES (:id_tipo_articulo, :id_posicion)";
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_posicion", $data["id_posicion"], PDO::PARAM_INT);
         $stmt->bindValue(":id_tipo_articulo", $data["id_tipo_articulo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_tipo_trabajo", $data["id_tipo_trabajo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_pedido", $data["id_pedido"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_logo", $data["id_logo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_articulo", $data["id_articulo"], PDO::PARAM_INT);
+        $stmt->bindValue(":id_posicion", $data["id_posicion"], PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -52,7 +48,7 @@ class TrabajoGateway
     public function get(string $id): array | false
     {
         $sql = "SELECT *
-                FROM trabajos
+                FROM posicionestipoarticulos
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($sql);
@@ -72,20 +68,16 @@ class TrabajoGateway
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE trabajos
-        SET id_posicion = :id_posicion, id_tipo_articulo = :id_tipo_articulo, id_tipo_trabajo = :id_tipo_trabajo, id_pedido = :id_pedido, id_logo = :id_logo, id_articulo = :id_articulo
+        $sql = "UPDATE posicionestipoarticulos
+        SET id_tipo_articulo = :id_tipo_articulo, id_posicion = :id_posicion
         WHERE id = :id";
 
         
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_posicion", $new["id_posicion"] ?? $current["id_posicion"], PDO::PARAM_INT);
         $stmt->bindValue(":id_tipo_articulo", $new["id_tipo_articulo"] ?? $current["id_tipo_articulo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_tipo_trabajo", $new["id_tipo_trabajo"] ?? $current["id_tipo_trabajo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_pedido", $new["id_pedido"] ?? $current["id_pedido"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_logo", $new["id_logo"] ?? $current["id_logo"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_articulo", $new["id_articulo"] ?? $current["id_articulo"], PDO::PARAM_INT);
+        $stmt->bindValue(":id_posicion", $new["id_posicion"] ?? $current["id_posicion"], PDO::PARAM_INT);
         $stmt->bindValue(":id", $current["id"], PDO::PARAM_INT);
 
         $stmt->execute();
@@ -95,7 +87,7 @@ class TrabajoGateway
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM trabajos
+        $sql = "DELETE FROM posicionestipoarticulos
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($sql);

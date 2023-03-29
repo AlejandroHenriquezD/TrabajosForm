@@ -1,8 +1,8 @@
 <?php
 
-class TrabajoController
+class Pedidos_ArticulosController
 {
-    public function __construct(private TrabajoGateway $gateway)
+    public function __construct(private Pedidos_ArticulosGateway $gateway)
     {}
 
     public function processRequest(string $method, ?string $id): void
@@ -16,17 +16,17 @@ class TrabajoController
 
     private function processResourceRequest(string $method, string $id): void
     {
-        $trabajo = $this->gateway->get($id);
+        $tipoarticulo = $this->gateway->get($id);
 
-        if ( ! $trabajo) {
+        if ( ! $tipoarticulo) {
             http_response_code(404);
-            echo json_encode(["message" => "Trabajo no encontrado"]);
+            echo json_encode(["message" => "Pedido-Articulo no encontrado"]);
             return;
         }
 
         switch ($method) {
             case "GET":
-                echo json_encode($trabajo);
+                echo json_encode($tipoarticulo);
                 break;
             
             case "PATCH":
@@ -42,10 +42,10 @@ class TrabajoController
                     break;
                 }
                 
-                $rows = $this->gateway->update($trabajo, $put_vars);
+                $rows = $this->gateway->update($tipoarticulo, $put_vars);
                 
                 echo json_encode([
-                    "message" => "Trabajo $id actualizado",
+                    "message" => "Pedido-Articulo $id actualizada",
                     "rows" => $rows
                 ]);
                 break;
@@ -54,7 +54,7 @@ class TrabajoController
                 $rows = $this->gateway->delete($id);
 
                 echo json_encode([
-                    "message" => "Trabajo $id borrado",
+                    "message" => "Pedido-Articulo $id borrada",
                     "rows" => $rows
                 ]);
                 break;
@@ -88,7 +88,7 @@ class TrabajoController
 
                 http_response_code(201);
                 echo json_encode([
-                    "message" => "Trabajo Creado",
+                    "message" => "Pedido-Articulo Creada",
                     "id" => $id
                 ]);
                 break;
@@ -103,24 +103,13 @@ class TrabajoController
     {
         $errors = [];
 
-        if ($is_new && empty($data["id_posicion"])) {
-            $errors[] = "Posicion es necesaria";
-        }
-        if ($is_new && empty($data["id_tipo_articulo"])) {
-            $errors[] = "Tipo prenda es necesario";
-        }
-        if ($is_new && empty($data["id_tipo_trabajo"])) {
-            $errors[] = "Trabajo es necesario";
-        }
-        if ($is_new && empty($data["id_pedido"])) {
-            $errors[] = "Numero pedido es necesario";
-        }
-        if ($is_new && empty($data["id_logo"])) {
-            $errors[] = "Logo es necesario";
-        }
         if ($is_new && empty($data["id_articulo"])) {
             $errors[] = "Articulo es necesario";
         }
+        if ($is_new && empty($data["id_pedido"])) {
+            $errors[] = "Pedido es necesario";
+        }
+
 
         return $errors;
     }

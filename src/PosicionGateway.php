@@ -1,6 +1,6 @@
 <?php
 
-class ArticuloGateway
+class PosicionGateway
 {
     private PDO $conn;
 
@@ -13,7 +13,7 @@ class ArticuloGateway
     {
 
         $sql = "SELECT *
-                FROM articulos";
+                FROM posiciones";
 
         $stmt = $this->conn->query($sql);
 
@@ -32,7 +32,7 @@ class ArticuloGateway
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO articulos (descripcion)
+        $sql = "INSERT INTO posiciones (descripcion)
                 VALUES (:descripcion)";
 
         $stmt = $this->conn->prepare($sql);
@@ -47,7 +47,7 @@ class ArticuloGateway
     public function get(string $id): array | false
     {
         $sql = "SELECT *
-                FROM articulos
+                FROM posiciones
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($sql);
@@ -67,7 +67,7 @@ class ArticuloGateway
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE articulos
+        $sql = "UPDATE posiciones
         SET descripcion = :descripcion
         WHERE id = :id";
 
@@ -85,7 +85,7 @@ class ArticuloGateway
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM articulos
+        $sql = "DELETE FROM posiciones
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($sql);

@@ -53,7 +53,18 @@ switch ($parts[2]) {
         $gateway = new ArticuloGateway($database);
         $controller = new ArticuloController($gateway);
         break;
-        
+    case "posiciones":
+        $gateway = new PosicionGateway($database);
+        $controller = new PosicionController($gateway);
+        break;
+    case "posiciones_tipo_articulos":
+        $gateway = new Posicion_TipoArticuloGateway($database);
+        $controller = new Posicion_TipoArticuloController($gateway);
+        break;
+    case "pedidos_articulos":
+        $gateway = new Pedidos_ArticulosGateway($database);
+        $controller = new Pedidos_ArticulosController($gateway);
+        break;    
 }
 
 

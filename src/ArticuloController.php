@@ -106,9 +106,6 @@ class ArticuloController
         if ($is_new && (empty($data["descripcion"]))) {
             $errors[] = "Descripcion es necesario";
         }
-        if ($is_new && (empty($data["id_tipo_articulo"]))) {
-            $errors[] = "Tipo articulo es necesario";
-        }
 
         return $errors;
     }
