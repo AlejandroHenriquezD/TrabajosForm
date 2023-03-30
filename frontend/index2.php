@@ -35,13 +35,15 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
     $trabajos[$i] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
     $trabajos[$i] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
     $trabajos[$i] .= "</div>";
-    $arrayTipoArticulos[$i][$t] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Tipo de articulo: </h1><fieldset><div class='coleccionHorizontal'>";
+    $arrayTipoArticulos[$i][$t] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\">";
+    $arrayTipoArticulos[$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo: </h1><div class='coleccionHorizontal'>";
     for ($a = 0; $a < $numeroTipoArticulos; $a++) {
-      $arrayTipoArticulos[$i][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
+      $arrayTipoArticulos[$i][$t] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
       $arrayTipoArticulos[$i][$t] .= "<label for={{$tiposArticulos[$a]['id']}}>";
       $arrayTipoArticulos[$i][$t] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\")'>";
-      $arrayTipoArticulos[$i][$t] .= $tiposArticulos[$a]['nombre'] . "</label><br>";
-      $arrayTipoArticulos[$i][$t] .= "</div>";
+      $arrayTipoArticulos[$i][$t] .= $tiposArticulos[$a]['nombre'];
+      $arrayTipoArticulos[$i][$t] .= "<img src=\".{$tiposArticulos[$a]['img']}\" alt=\".{$tiposArticulos[$a]['img']}\"/>";
+      $arrayTipoArticulos[$i][$t] .= "</label><br></div>";
       $posiciones[$i][$t][$a] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
       for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
         if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
@@ -51,9 +53,12 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
           $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
           $posiciones[$i][$t][$a] .= "<label for={$posicionesArticulos[$p]['id_posicion']}>" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
           $posiciones[$i][$t][$a] .= "</div>";
-          
         }
-        $arrayLogos[$i][$t][$a][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"><select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $arrayLogos[$i][$t][$a][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+        if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
+          $arrayLogos[$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div>";
+        }
+        $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
           for ($l = 0; $l < count($logos); $l++) {
             $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
           }
@@ -62,7 +67,7 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
       }
       $posiciones[$i][$t][$a] .= "</div></div>";
     }
-    $arrayTipoArticulos[$i][$t] .= "</div></fieldset></div>";
+    $arrayTipoArticulos[$i][$t] .= "</div></div>";
   }
   $trabajos[$i] .= "</div></div>";
 }
@@ -79,7 +84,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body>
 <script>
@@ -214,3 +219,15 @@ echo "
   </form>
 </body>
 </html>";
+
+// <div id='background'>
+  //   <div class='ball' id='greenball1'/>
+  //   <div class='ball' id='greenball2'/>
+  //   <div class='ball' id='greenball3'/>
+  //   <div class='ball' id='redball1'/>
+  //   <div class='ball' id='redball2'/>
+  //   <div class='ball' id='redball3'/>
+  //   <div class='ball' id='blueball1'/>
+  //   <div class='ball' id='blueball2'/>
+  //   <div class='ball' id='blueball3'/>
+  // </div>
