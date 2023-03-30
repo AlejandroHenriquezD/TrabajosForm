@@ -2,15 +2,6 @@
 $articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
-$tiposPosiciones = array(
-  0 => "Pecho izquierdo",
-  1 => "Pecho derecho",
-  2 => "Fuera bolsillo",
-  3 => "Dentro bolsillo",
-  4 => "Manga izquierda",
-  5 => "Manga derecha",
-  6 => "Espalda"
-);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
 $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
@@ -69,6 +60,10 @@ $arrayTrabajos = json_encode($trabajos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
 $arrayPosiciones = json_encode($posiciones);
 $arrayLogos = json_encode($arrayLogos);
+$art = json_encode($articulos);
+$tra = json_encode($tiposTrabajos);
+$tart = json_encode($tiposArticulos);
+$pos = json_encode($tiposPosiciones);
 
 echo "<!DOCTYPE html>
 <html lang='en'>
@@ -106,7 +101,6 @@ echo "<!DOCTYPE html>
       }
     }
   }
-  console.log(posiciones);
 
   function obtenerElemento(array, id) {
     var elemento = array.find(a => a.id === id);
@@ -199,8 +193,10 @@ echo "<!DOCTYPE html>
     }
   }
 
+
+
 </script>
-<form id='formulario' action='resultado.php' method='post'>
+<form id='formulario' action='' method='post'>
     <div class='articulo'>
       
       <h1>Articulos: </h1>";
@@ -209,5 +205,72 @@ echo "
     </div>
     <input type='submit'>
   </form>
+  <button id='validar'>Validar</button>
 </body>
 </html>";
+
+?>
+
+<script>
+  function validarPos() {
+
+    //Se cogen los diferentes menus de posiciones
+    const coleccionPos = document.getElementsByClassName('posicion');
+
+    //se cogen todos los checkbox de posicion
+    const checkboxes = document.getElementsByClassName('posicion-checkbox');
+
+    //Por cada menu de posiciones...
+    for (let cp of coleccionPos) {
+
+      var valido = false;
+
+      //se recogen todos sus checkboxes
+      const checkboxFiltrados = Array.from(checkboxes).filter(checkbox => {
+        return checkbox.id.includes(cp.id);
+      });
+
+      // Creamos un objeto para guardar el estado de los checkboxes
+      const estadosCheckboxes = {};
+
+      // se recorre dichos checkboxes
+      for (let cb of checkboxFiltrados) {
+        // Guardamos el estado del checkbox en el objeto
+        estadosCheckboxes[cb.id] = cb.checked;
+        //Si hay al menos uno seleccionado se da por válido
+        if (cb.checked) {
+          valido = true;
+        }
+      }
+
+      const divPosicion = document.getElementById(cp.id);
+      //Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + cp.id + " está completo.");
+        //y borramos el mensaje de error
+        divPosicion.innerHTML = divPosicion.innerHTML.replace(/<br>Error: Debe seleccionar al menos una opción\./g, '');
+        // Recorremos el objeto con los estados de los checkboxes
+        for (const [id, estado] of Object.entries(estadosCheckboxes)) {
+          // Establecemos el estado del checkbox
+          const checkbox = document.getElementById(id);
+          if (checkbox) {
+            checkbox.checked = estado;
+          }
+        }
+      } else {
+        console.log("El menú con id " + cp.id + " está incompleto.");
+        if (!divPosicion.innerHTML.includes('Error:')) {
+          divPosicion.innerHTML += "<br>Error: Debe seleccionar al menos una opción.";
+        }
+      }
+    }
+  }
+
+
+  const boton = document.getElementById('validar');
+
+  boton.addEventListener('click', function(evento) {
+    evento.preventDefault();
+    validarPos();
+  });
+</script>
