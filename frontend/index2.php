@@ -51,13 +51,14 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
           $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
           $posiciones[$i][$t][$a] .= "<label for={$posicionesArticulos[$p]['id_posicion']}>" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
           $posiciones[$i][$t][$a] .= "</div>";
-          $arrayLogos[$i][$t][$a][$p] = "<div class='logos'><select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+          
+        }
+        $arrayLogos[$i][$t][$a][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"><select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
           for ($l = 0; $l < count($logos); $l++) {
             $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
           }
           $arrayLogos[$i][$t][$a][$p] .= "</select>";
           $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
-        }
       }
       $posiciones[$i][$t][$a] .= "</div></div>";
     }
@@ -94,19 +95,19 @@ echo "<!DOCTYPE html>
   var tipoArticulos = $arrayTipoArticulos;
   var posiciones = $arrayPosiciones;
   var logos = $arrayLogos;
+  console.log(logos);
   for (var i = 0; i < trabajos.length; i++) {
     trabajos[i] = elementFromHtml(trabajos[i]);
     for (var j = 0; j < tipoArticulos[i].length; j++) {
       tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
       for (var k = 0; k < posiciones[i][j].length; k++) {
         posiciones[i][j][k] = elementFromHtml(posiciones[i][j][k]);
-        // for (var l = 0; l < logos[i][j][k].length; l++) {
-        //   logos[i][j][k][l] = elementFromHtml(logos[i][j][k][l]);
-        // }
+        for (var l = 0; l < logos[i][j][k].length; l++) {
+          logos[i][j][k][l] = elementFromHtml(logos[i][j][k][l]);
+        }
       }
     }
   }
-  console.log(posiciones);
 
   function obtenerElemento(array, id) {
     var elemento = array.find(a => a.id === id);
@@ -176,13 +177,15 @@ echo "<!DOCTYPE html>
     var indexTipoArticulo = tipoArticulos[indexTrabajo].indexOf(tipoArticulo);
     var pos = obtenerElemento(posiciones[indexTrabajo][indexTipoArticulo], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
     var indexPosicion = posiciones[indexTrabajo][indexTipoArticulo].indexOf(pos);
-
+    var log = obtenerElemento(logos[indexTrabajo][indexTipoArticulo][indexPosicion], 'logos-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+    var indexLogos = logos[indexTrabajo][indexTipoArticulo][indexPosicion].indexOf(log);
+    
     var divPosiciones = 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo;
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
-      document.getElementById(divPosiciones).appendChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][numeroPosicion]);
+      document.getElementById(divPosiciones).appendChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
     } else {
-      document.getElementById(divPosiciones).removeChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][numeroPosicion]);
+      document.getElementById(divPosiciones).removeChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
     }
   }
 
