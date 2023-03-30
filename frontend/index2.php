@@ -50,11 +50,11 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
           $arrayLogos[$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div>";
         }
         $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
-          for ($l = 0; $l < count($logos); $l++) {
-            $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
-          }
-          $arrayLogos[$i][$t][$a][$p] .= "</select>";
-          $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
+        for ($l = 0; $l < count($logos); $l++) {
+          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
+        }
+        $arrayLogos[$i][$t][$a][$p] .= "</select>";
+        $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
       }
       $posiciones[$i][$t][$a] .= "</div></div>";
     }
@@ -187,6 +187,7 @@ echo "<!DOCTYPE html>
     } else {
       document.getElementById(divPosiciones).removeChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
     }
+    validarPos();
   }
 
   function updateImage(id, logo) {
@@ -219,16 +220,16 @@ echo "
 </html>";
 
 // <div id='background'>
-  //   <div class='ball' id='greenball1'/>
-  //   <div class='ball' id='greenball2'/>
-  //   <div class='ball' id='greenball3'/>
-  //   <div class='ball' id='redball1'/>
-  //   <div class='ball' id='redball2'/>
-  //   <div class='ball' id='redball3'/>
-  //   <div class='ball' id='blueball1'/>
-  //   <div class='ball' id='blueball2'/>
-  //   <div class='ball' id='blueball3'/>
-  // </div>
+//   <div class='ball' id='greenball1'/>
+//   <div class='ball' id='greenball2'/>
+//   <div class='ball' id='greenball3'/>
+//   <div class='ball' id='redball1'/>
+//   <div class='ball' id='redball2'/>
+//   <div class='ball' id='redball3'/>
+//   <div class='ball' id='blueball1'/>
+//   <div class='ball' id='blueball2'/>
+//   <div class='ball' id='blueball3'/>
+// </div>
 
 ?>
 

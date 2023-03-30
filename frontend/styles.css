@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 
 body {
-  font-family: 'Tilt Neon', cursive;
+  font-family: "Tilt Neon", cursive;
   background-color: rgb(224, 176, 121);
   margin: 0px;
 }
@@ -13,28 +13,27 @@ h1 {
 input {
   margin: 5px;
   margin-right: 2px;
-  font-family: 'Tilt Neon', cursive;
+  font-family: "Tilt Neon", cursive;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   height: 20px;
   width: 20px;
 }
 
 select {
-  font-family: 'Tilt Neon', cursive;
+  font-family: "Tilt Neon", cursive;
 }
 
 option {
-  font-family: 'Tilt Neon', cursive;
+  font-family: "Tilt Neon", cursive;
 }
 
 form {
   z-index: 2;
-  position: absolute;
   width: 100vw;
-  
 }
+
 
 .articulo {
   border-top: 2px solid rgb(116, 65, 8);
@@ -45,7 +44,6 @@ form {
   border-top: 2px solid rgb(116, 65, 8);
   border-bottom: 2px solid rgb(116, 65, 8);
   pointer-events: auto;
-
 }
 
 .tipoArticulo {
@@ -81,17 +79,14 @@ form {
 
 .trabajos:hover:not(:focus-within) {
   background-color: rgb(209, 143, 68);
-
 }
 
 .tipoArticulo:hover:not(:focus-within) {
   background-color: rgb(209, 143, 68);
-
 }
 
 .posicion:hover:not(:focus-within) {
   background-color: rgb(209, 143, 68);
-
 }
 
 .coleccionHorizontal {
@@ -116,7 +111,7 @@ form {
 
 .seleccionado {
   background-color: rgb(116, 65, 8);
-  color: rgb(255,255,255);
+  color: rgb(255, 255, 255);
   align-self: start;
   width: 100%;
 }
@@ -137,7 +132,7 @@ form {
 .ball {
   border-radius: 50%;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  position:fixed;
+  position: fixed;
 }
 
 #greenball1 {
