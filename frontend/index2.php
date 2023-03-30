@@ -2,15 +2,7 @@
 $articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
-$tiposPosiciones = array(
-  0 => "Pecho izquierdo",
-  1 => "Pecho derecho",
-  2 => "Fuera bolsillo",
-  3 => "Dentro bolsillo",
-  4 => "Manga izquierda",
-  5 => "Manga derecha",
-  6 => "Espalda"
-);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
 $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroArticulos = count($articulos);
@@ -43,11 +35,11 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
       for ($p = 0; $p < $numeroPosiciones; $p++) {
         $posiciones[$i][$t][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\">";
         $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$p}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
-        $posiciones[$i][$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p] . "</label><br>";
+        $posiciones[$i][$t][$a] .= "<label for={$p}>" . $tiposPosiciones[$p]['descripcion'] . "</label><br>";
         $posiciones[$i][$t][$a] .= "</div>";
         $arrayLogos[$i][$t][$a][$p] = "<div><select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
         for ($l = 0; $l < count($logos); $l++) {
-          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";          
+          $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
         }
         $arrayLogos[$i][$t][$a][$p] .= "</select>";
         $arrayLogos[$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\" height='20%'/></div>";
@@ -187,14 +179,14 @@ echo "<!DOCTYPE html>
   }
 
 </script>
-<form id='formulario' action='resultado.php' method='post'>
+<form id='formulario' action='' method='post'>
     <div class='articulo'>
       <hr>
       Articulos: <br>";
 echo $divArticulos;
 echo "<hr>
     </div>
-    <input type='submit'>
+    <input type='submit' onclick='validar()'>
   </form>
 </body>
 </html>";
