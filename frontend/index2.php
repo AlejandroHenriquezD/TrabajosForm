@@ -46,7 +46,7 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
       for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
         if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
           // Obtiene la posición del array donde se encuentra el id de la posición
-          $posIndex = array_search($posicionesArticulos[$p]['id_posicion'],array_column($tiposPosiciones,'id'));
+          $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
           $posiciones[$i][$t][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
           $posiciones[$i][$t][$a] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
           $posiciones[$i][$t][$a] .= "<label for={$posicionesArticulos[$p]['id_posicion']}>" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
@@ -78,7 +78,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body>
 <script>
@@ -200,14 +200,14 @@ echo "<!DOCTYPE html>
   }
 
 </script>
-<form id='formulario' action='' method='post'>
+<form id='formulario' action='resultado.php' method='post'>
     <div class='articulo'>
       
       <h1>Articulos: </h1>";
 echo $divArticulos;
 echo "
     </div>
-    <input type='submit' onclick='validar()'>
+    <input type='submit'>
   </form>
 </body>
 </html>";
