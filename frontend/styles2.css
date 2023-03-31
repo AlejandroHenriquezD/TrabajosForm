@@ -2,7 +2,6 @@
 
 body {
   font-family: "Tilt Neon", cursive;
-  background-color: rgb(224, 176, 121);
   margin: 0px;
 }
 
@@ -11,14 +10,22 @@ h1 {
 }
 
 input {
-  margin: 5px;
-  margin-right: 2px;
+  margin: 0px;
+  /* margin-right: 2px; */
   font-family: "Tilt Neon", cursive;
 }
 
 input[type="checkbox"] {
   height: 20px;
   width: 20px;
+  border-radius: 0%;
+}
+
+input[type="radio"] {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
 }
 
 select {
@@ -29,37 +36,40 @@ option {
   font-family: "Tilt Neon", cursive;
 }
 
-form {
+#pagina {
   z-index: 2;
-  width: 100vw;
+  width: 80vw;
+  position: absolute;
+  left: 10vw;
+  top: 5vw;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
 }
 
-
 .articulo {
-  border-top: 2px solid rgb(116, 65, 8);
-  border-bottom: 2px solid rgb(116, 65, 8);
+  border-bottom: 2px solid #0e1c2e;
 }
 
 .trabajos {
-  border-top: 2px solid rgb(116, 65, 8);
-  border-bottom: 2px solid rgb(116, 65, 8);
+  border-top: 2px solid #0e1c2e;
+  border-bottom: 2px solid #0e1c2e;
   pointer-events: auto;
 }
 
 .tipoArticulo {
-  border-top: 2px solid rgb(116, 65, 8);
+  border-top: 2px solid #0e1c2e;
   pointer-events: auto;
 }
 
 .posicion {
-  border-top: 2px solid rgb(116, 65, 8);
+  border-top: 2px solid #0e1c2e;
   flex-direction: column;
   align-items: center;
   pointer-events: auto;
 }
 
 .logos {
-  border-top: 2px solid rgb(116, 65, 8);
+  border-top: 2px solid #0e1c2e;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,19 +84,19 @@ form {
 }
 
 .articulo:hover:not(:focus-within) {
-  background-color: rgb(209, 143, 68);
+  background-color: rgba(128, 128, 128, 0.7);
 }
 
 .trabajos:hover:not(:focus-within) {
-  background-color: rgb(209, 143, 68);
+  background-color: rgba(128, 128, 128, 0.7);
 }
 
 .tipoArticulo:hover:not(:focus-within) {
-  background-color: rgb(209, 143, 68);
+  background-color: rgba(128, 128, 128, 0.7);
 }
 
 .posicion:hover:not(:focus-within) {
-  background-color: rgb(209, 143, 68);
+  background-color: rgba(128, 128, 128, 0.7);
 }
 
 .coleccionHorizontal {
@@ -99,10 +109,16 @@ form {
 
 .ta {
   border: 2px solid rgba(116, 65, 8, 0);
+  position: relative;
 }
 
 .ta:hover {
-  border: 2px solid rgb(116, 65, 8);
+  border: 2px solid #0e1c2e;
+}
+
+.ta-seleccionado {
+  border: 2px solid #00bb2d;
+  /* pointer-events: none; */
 }
 
 .ta img {
@@ -110,7 +126,7 @@ form {
 }
 
 .seleccionado {
-  background-color: rgb(116, 65, 8);
+  background-color: rgba(0, 0, 0, 0.7);
   color: rgb(255, 255, 255);
   align-self: start;
   width: 100%;
@@ -137,18 +153,18 @@ form {
 
 #greenball1 {
   background-color: #00bb2d;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 10vw;
+  width: 10vw;
+  top: 25vw;
+  left: 25vw;
 }
 
 #greenball2 {
   background-color: #00bb2d;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 20vw;
+  width: 20vw;
+  top: 5vw;
+  left: 80vw;
 }
 
 #greenball3 {
@@ -161,48 +177,48 @@ form {
 
 #redball1 {
   background-color: #e1251a;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 10vw;
+  width: 10vw;
+  top: -5vw;
+  left: 40vw;
 }
 
 #redball2 {
   background-color: #e1251a;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 20vw;
+  width: 20vw;
+  top: 40vw;
+  left: -10vw;
 }
 
 #redball3 {
   background-color: #e1251a;
   height: 30vw;
   width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  top: 60vw;
+  left: 40vw;
 }
 
 #blueball1 {
   background-color: #0e1c2e;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 10vw;
+  width: 10vw;
+  top: 80vw;
+  left: 20vw;
 }
 
 #blueball2 {
   background-color: #0e1c2e;
-  height: 30vw;
-  width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  height: 20vw;
+  width: 20vw;
+  top: 25vw;
+  left: 50vw;
 }
 
 #blueball3 {
   background-color: #0e1c2e;
   height: 30vw;
   width: 30vw;
-  top: -15vw;
-  left: -15vw;
+  top: 50vw;
+  left: 90vw;
 }

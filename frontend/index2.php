@@ -1,4 +1,6 @@
 <?php
+$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
 $articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
@@ -6,21 +8,30 @@ $tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posicione
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
 $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
+$numeroPedidos = count($pedidos);
 $numeroArticulos = count($articulos);
 $numeroTrabajos = count($tiposTrabajos);
 $numeroTipoArticulos = count($tiposArticulos);
 $numeroPosicionesArticulos = count($posicionesArticulos);
 $numeroPosiciones = count($tiposPosiciones);
+
 $divArticulos = "";
 $trabajos = array();
 $arrayTipoArticulos = array();
 $posiciones = array();
+$divPedidos = "<h1>Pedido</h1><select>";
+for ($o = 0; $o < $numeroPedidos; $o++) {
+  $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
+}
+$divPedidos .= "</select>";
 for ($i = 0; $i < $numeroArticulos; $i++) {
-  $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-  $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
-  $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
-  $divArticulos .= "</div>";
-  $trabajos[$i] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}\"><h1>Trabajos: </h1><div class='coleccionHorizontal'>";
+  // if ($pedidosArticulos[$i]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
+    $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
+    $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
+    $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
+    $divArticulos .= "</div>";
+  // }
+  $trabajos[$i] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
   for ($t = 0; $t < $numeroTrabajos; $t++) {
     $trabajos[$i] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\">";
     $trabajos[$i] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
@@ -30,11 +41,9 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
     $arrayTipoArticulos[$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo: </h1><div class='coleccionHorizontal'>";
     for ($a = 0; $a < $numeroTipoArticulos; $a++) {
       $arrayTipoArticulos[$i][$t] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
-      $arrayTipoArticulos[$i][$t] .= "<label for={{$tiposArticulos[$a]['id']}}>";
       $arrayTipoArticulos[$i][$t] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\")'>";
-      $arrayTipoArticulos[$i][$t] .= $tiposArticulos[$a]['nombre'];
       $arrayTipoArticulos[$i][$t] .= "<img src=\".{$tiposArticulos[$a]['img']}\" alt=\".{$tiposArticulos[$a]['img']}\"/>";
-      $arrayTipoArticulos[$i][$t] .= "</label><br></div>";
+      $arrayTipoArticulos[$i][$t] .= "<br></div>";
       $posiciones[$i][$t][$a] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
       for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
         if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
@@ -79,7 +88,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body>
 <script>
@@ -157,8 +166,10 @@ echo "<!DOCTYPE html>
       var pos = obtenerElemento(posiciones[indexTrabajo][indexTipoArticulo], 'posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo);
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
+        r.parentNode.classList.add('ta-seleccionado');
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
+          r.parentNode.classList.remove('ta-seleccionado');
           document.getElementById(divTipoArticulos).removeChild(pos);
         }
       }
@@ -184,10 +195,10 @@ echo "<!DOCTYPE html>
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
+      validarPos();
     } else {
-      document.getElementById(divPosiciones).removeChild(logos[indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
+      document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion));
     }
-    validarPos();
   }
 
   function updateImage(id, logo) {
@@ -203,33 +214,34 @@ echo "<!DOCTYPE html>
     }
   }
 
-
-
 </script>
-<form id='formulario' action='' method='post'>
-    <div class='articulo'>
-      
-      <h1>Articulos: </h1>";
+  <div id='pagina'>
+    <form id='formulario' action='' method='post'>";
+      echo $divPedidos;
+echo      "<div class='articulo'>
+        <h1>Articulos </h1>";
 echo $divArticulos;
 echo "
-    </div>
-    <input type='submit'>
-  </form>
-  <button id='validar'>Validar</button>
+      </div>
+      <input type='submit'>
+    </form>
+    <button id='validar'>Validar</button>
+  </div>
+  <div id='background'>
+    <div class='ball' id='greenball1'/>
+    <div class='ball' id='greenball2'/>
+    <div class='ball' id='greenball3'/>
+    <div class='ball' id='redball1'/>
+    <div class='ball' id='redball2'/>
+    <div class='ball' id='redball3'/>
+    <div class='ball' id='blueball1'/>
+    <div class='ball' id='blueball2'/>
+    <div class='ball' id='blueball3'/>
+  </div>
 </body>
 </html>";
 
-// <div id='background'>
-//   <div class='ball' id='greenball1'/>
-//   <div class='ball' id='greenball2'/>
-//   <div class='ball' id='greenball3'/>
-//   <div class='ball' id='redball1'/>
-//   <div class='ball' id='redball2'/>
-//   <div class='ball' id='redball3'/>
-//   <div class='ball' id='blueball1'/>
-//   <div class='ball' id='blueball2'/>
-//   <div class='ball' id='blueball3'/>
-// </div>
+
 
 ?>
 
