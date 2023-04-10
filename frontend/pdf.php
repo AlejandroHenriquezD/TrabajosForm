@@ -1,5 +1,5 @@
 <?php
-require('../fpdf.php');
+require('../fpdf/fpdf.php');
 
 class PDF extends FPDF
 {
@@ -27,10 +27,10 @@ function BasicTable($header, $trabajos)
 		$this->Cell(40,19,$pedido['fecha_pedido'],1,0,'C');
 
 		$this->Cell(40,19,'',1,0,'C');
-		$this->Image('../.'.$tipo_articulo['img'] ,203,$ha,10);
+		$this->Image('.'.$tipo_articulo['img'] ,203,$ha,10);
 
 		$this->Cell(40,19,'',1,0,'C');
-		$this->Image('../.'.$logo['img'] ,242,$h,10);
+		$this->Image('.'.$logo['img'] ,242,$h,10);
 		$h +=19;
 		$ha +=19;
 		$this->Ln();
