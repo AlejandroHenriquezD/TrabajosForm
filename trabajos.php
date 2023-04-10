@@ -26,6 +26,7 @@
               <th>Logo</th>
            </tr>";
         for ($p = 0; $p < count($trabajos); $p++) {
+            $posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
             $articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
             $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
             $pedido = json_decode(file_get_contents("http://localhost/trabajosform/pedidos/" . $trabajos[$p]['id_pedido']), true);
@@ -34,7 +35,7 @@
 
             echo
             "<tr class='fila'>
-           <td>" . $trabajos[$p]['posicion'] . "</td> 
+           <td>" . $posicion['descripcion'] . "</td> 
            <td>" . $articulo['descripcion'] . "</td>
            <td>" . $tipo_trabajo['nombre'] . "</td>
            <td>" . $pedido['fecha_pedido'] . "</td>
