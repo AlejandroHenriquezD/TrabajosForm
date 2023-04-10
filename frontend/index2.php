@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroArticulos = count($articulos);
@@ -18,6 +18,7 @@ $numeroPosiciones = count($tiposPosiciones);
 $divArticulos = "";
 $trabajos = array();
 $arrayTipoArticulos = array();
+$arrayLogos = array();
 $posiciones = array();
 $divPedidos = "<h1>Pedido</h1><select>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
@@ -58,7 +59,7 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
         if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
           $arrayLogos[$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div>";
         }
-        $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
         for ($l = 0; $l < count($logos); $l++) {
           $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
         }
@@ -203,10 +204,13 @@ echo "<!DOCTYPE html>
 
   function updateImage(id, logo) {
     id = id.split('-')[5];
+    console.log(logo)
     var img = document.getElementById(logo);
     var logo = $logos_encoded;
     for (var i = 0; i < logo.length; i++) {
         if (logo[i].id == id) {
+            console.log(logo[i].img);
+            console.log(img);
             img.src = '.' + logo[i].img;
             img.alt = '.' + logo[i].img;
             break;
@@ -216,7 +220,7 @@ echo "<!DOCTYPE html>
 
 </script>
   <div id='pagina'>
-    <form id='formulario' action='' method='post'>";
+    <form id='formulario' action='resultado.php' method='post'>";
       echo $divPedidos;
 echo      "<div class='articulo'>
         <h1>Articulos </h1>";
