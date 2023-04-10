@@ -215,7 +215,7 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
         r.parentNode.classList.add('ta-seleccionado');
-        validarTipoAr()
+        // validarTipoAr()
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
           r.parentNode.classList.remove('ta-seleccionado');
