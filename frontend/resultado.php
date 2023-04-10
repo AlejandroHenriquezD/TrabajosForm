@@ -3,22 +3,14 @@ foreach ($_POST['img-select'] as $valor) {
   echo "El valor seleccionado es $valor <br>";
 
   var_dump($_FILES);
-  $tiposPosiciones = array(
-    0 => "Pecho izquierdo",
-    1 => "Pecho derecho",
-    2 => "Fuera bolsillo",
-    3 => "Dentro bolsillo",
-    4 => "Manga izquierda",
-    5 => "Manga derecha",
-    6 => "Espalda"
-  );
   $valor = explode('-', $valor);
 
-  $posicion = $tiposPosiciones[$valor[4]];
+  $id_posicion = $valor[4];
   $id_articulo = $valor[1];
   $id_tipo_trabajo = $valor[2];
   $id_pedido = 1;
   $id_logo = $valor[5];
+  $id_tipo_articulo = $valor[3];
   echo($valor[1]);
 
   $host = "localhost";
@@ -37,7 +29,7 @@ foreach ($_POST['img-select'] as $valor) {
     die("Connection error: " . mysqli_connect_errno());
   }
 
-  $sql = "INSERT INTO trabajos (posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo) VALUES (?,?,?,?,?)";
+  $sql = "INSERT INTO trabajos (id_posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo, id_tipo_articulo) VALUES (?,?,?,?,?,?)";
 
   $stmt = mysqli_stmt_init($conn);
 
@@ -47,12 +39,13 @@ foreach ($_POST['img-select'] as $valor) {
 
   mysqli_stmt_bind_param(
     $stmt,
-    "siiii",
-    $posicion,
+    "siiiii",
+    $id_posicion,
     $id_articulo,
     $id_tipo_trabajo,
     $id_pedido,
-    $id_logo
+    $id_logo,
+    $id_tipo_articulo
   );
 
   mysqli_stmt_execute($stmt);
