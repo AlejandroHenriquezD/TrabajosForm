@@ -263,7 +263,7 @@ echo "<!DOCTYPE html>
 
 </script>
   <div id='pagina'>
-    <form id='formulario' action='' method='post'>";
+    <form id='formulario' action='resultado.php' method='post'>";
 echo $divPedidos;
 echo "
       <input type='submit'>
