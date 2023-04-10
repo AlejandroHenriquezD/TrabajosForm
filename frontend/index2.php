@@ -18,6 +18,7 @@ $numeroPosiciones = count($tiposPosiciones);
 $divArticulos = "";
 $trabajos = array();
 $arrayTipoArticulos = array();
+$arrayLogos = array();
 $posiciones = array();
 $divPedidos = "<h1>Pedido</h1><select>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
@@ -26,10 +27,10 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 $divPedidos .= "</select>";
 for ($i = 0; $i < $numeroArticulos; $i++) {
   // if ($pedidosArticulos[$i]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
-    $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-    $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
-    $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
-    $divArticulos .= "</div>";
+  $divArticulos .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
+  $divArticulos .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}\")'>";
+  $divArticulos .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
+  $divArticulos .= "</div>";
   // }
   $trabajos[$i] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
   for ($t = 0; $t < $numeroTrabajos; $t++) {
@@ -58,7 +59,7 @@ for ($i = 0; $i < $numeroArticulos; $i++) {
         if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
           $arrayLogos[$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div>";
         }
-        $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-$p\")'>";
+        $arrayLogos[$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
         for ($l = 0; $l < count($logos); $l++) {
           $arrayLogos[$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
         }
@@ -167,6 +168,7 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
         r.parentNode.classList.add('ta-seleccionado');
+        validarTipoAr()
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
           r.parentNode.classList.remove('ta-seleccionado');
@@ -203,10 +205,13 @@ echo "<!DOCTYPE html>
 
   function updateImage(id, logo) {
     id = id.split('-')[5];
+    console.log(logo)
     var img = document.getElementById(logo);
     var logo = $logos_encoded;
     for (var i = 0; i < logo.length; i++) {
         if (logo[i].id == id) {
+            console.log(logo[i].img);
+            console.log(img);
             img.src = '.' + logo[i].img;
             img.alt = '.' + logo[i].img;
             break;
@@ -216,8 +221,8 @@ echo "<!DOCTYPE html>
 
 </script>
   <div id='pagina'>
-    <form id='formulario' action='' method='post'>";
-      echo $divPedidos;
+    <form id='formulario' action='resultado.php' method='post'>";
+echo $divPedidos;
 echo      "<div class='articulo'>
         <h1>Articulos </h1>";
 echo $divArticulos;
@@ -300,11 +305,66 @@ echo "
     }
   }
 
+  //estamos con esta ahora
+  function validarTipoAr() {
+
+    //Se cogen los diferentes menus de posiciones
+    const coleccionPos = document.getElementsByClassName('tipoArticulo');
+
+    //se cogen todos los checkbox de posicion
+    const checkboxes = document.getElementsByClassName('articul');
+
+    //Por cada menu de posiciones...
+    for (let cp of coleccionPos) {
+
+      var valido = false;
+
+      //se recogen todos sus checkboxes
+      const checkboxFiltrados = Array.from(checkboxes).filter(checkbox => {
+        return checkbox.id.includes(cp.id);
+      });
+
+      // Creamos un objeto para guardar el estado de los checkboxes
+      const estadosCheckboxes = {};
+
+      // se recorre dichos checkboxes
+      for (let cb of checkboxFiltrados) {
+        // Guardamos el estado del checkbox en el objeto
+        estadosCheckboxes[cb.id] = cb.checked;
+        //Si hay al menos uno seleccionado se da por válido
+        if (cb.checked) {
+          valido = true;
+        }
+      }
+
+      const divPosicion = document.getElementById(cp.id);
+      //Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + cp.id + " está completo.");
+        //y borramos el mensaje de error
+        divPosicion.innerHTML = divPosicion.innerHTML.replace(/<br>Error: Debe seleccionar al menos una opción\./g, '');
+        // Recorremos el objeto con los estados de los checkboxes
+        for (const [id, estado] of Object.entries(estadosCheckboxes)) {
+          // Establecemos el estado del checkbox
+          const checkbox = document.getElementById(id);
+          if (checkbox) {
+            checkbox.checked = estado;
+          }
+        }
+      } else {
+        console.log("El menú con id " + cp.id + " está incompleto.");
+        if (!divPosicion.innerHTML.includes('Error:')) {
+          divPosicion.innerHTML += "<br>Error: Debe seleccionar al menos una opción.";
+        }
+      }
+    }
+  }
+
 
   const boton = document.getElementById('validar');
 
   boton.addEventListener('click', function(evento) {
     evento.preventDefault();
-    validarPos();
+    validarTipoAr();
   });
 </script>
