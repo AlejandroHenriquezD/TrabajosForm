@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
@@ -54,7 +54,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         $trabajos[$o][$i] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
         $trabajos[$o][$i] .= "</div>";
         $arrayTipoArticulos[$o][$i][$t] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\">";
-        $arrayTipoArticulos[$o][$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo: </h1><div class='coleccionHorizontal'>";
+        $arrayTipoArticulos[$o][$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo: </h1><div class='slider'><div class='coleccion'>";
         for ($a = 0; $a < $numeroTipoArticulos; $a++) {
           $arrayTipoArticulos[$o][$i][$t] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
           $arrayTipoArticulos[$o][$i][$t] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\")'>";
@@ -83,7 +83,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           }
           $posiciones[$o][$i][$t][$a] .= "</div></div>";
         }
-        $arrayTipoArticulos[$o][$i][$t] .= "</div></div>";
+        $arrayTipoArticulos[$o][$i][$t] .= "</div></div></div>";
       }
       $trabajos[$o][$i] .= "</div></div>";
 
