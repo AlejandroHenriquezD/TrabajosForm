@@ -16,7 +16,7 @@
     $datos = [];
     function trabajos()
     {
-        $trabajos = json_decode(file_get_contents("http://localhost/API/trabajos"), true);
+        $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
         echo "<table>
            <tr>
               <th>Posición</th>
@@ -26,11 +26,11 @@
               <th>Logo</th>
            </tr>";
         for ($p = 0; $p < count($trabajos); $p++) {
-            $posicion = json_decode(file_get_contents("http://localhost/API/posiciones/" . $trabajos[$p]['id_posicion']), true);
-            $articulo = json_decode(file_get_contents("http://localhost/API/articulos/" . $trabajos[$p]['id_articulo']), true);
-            $tipo_trabajo = json_decode(file_get_contents("http://localhost/API/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-            $pedido = json_decode(file_get_contents("http://localhost/API/pedidos/" . $trabajos[$p]['id_pedido']), true);
-            $logo = json_decode(file_get_contents("http://localhost/API/logos/" . $trabajos[$p]['id_logo']), true);
+            $posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
+            $articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
+            $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
+            $pedido = json_decode(file_get_contents("http://localhost/trabajosform/pedidos/" . $trabajos[$p]['id_pedido']), true);
+            $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
 
             echo
             "<tr class='fila'>
