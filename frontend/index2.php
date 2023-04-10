@@ -19,6 +19,7 @@ $numeroPosiciones = count($tiposPosiciones);
 $arrayArticulos = array();
 $trabajos = array();
 $arrayTipoArticulos = array();
+$arrayLogos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
@@ -214,6 +215,7 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
         r.parentNode.classList.add('ta-seleccionado');
+        validarTipoAr()
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
           r.parentNode.classList.remove('ta-seleccionado');
@@ -250,10 +252,13 @@ echo "<!DOCTYPE html>
 
   function updateImage(id, logo) {
     id = id.split('-')[5];
+    console.log(logo)
     var img = document.getElementById(logo);
     var logo = $logos_encoded;
     for (var i = 0; i < logo.length; i++) {
         if (logo[i].id == id) {
+            console.log(logo[i].img);
+            console.log(img);
             img.src = '.' + logo[i].img;
             img.alt = '.' + logo[i].img;
             break;
@@ -343,11 +348,66 @@ echo "
     }
   }
 
+  //estamos con esta ahora
+  function validarTipoAr() {
+
+    //Se cogen los diferentes menus de posiciones
+    const coleccionPos = document.getElementsByClassName('tipoArticulo');
+
+    //se cogen todos los checkbox de posicion
+    const checkboxes = document.getElementsByClassName('articul');
+
+    //Por cada menu de posiciones...
+    for (let cp of coleccionPos) {
+
+      var valido = false;
+
+      //se recogen todos sus checkboxes
+      const checkboxFiltrados = Array.from(checkboxes).filter(checkbox => {
+        return checkbox.id.includes(cp.id);
+      });
+
+      // Creamos un objeto para guardar el estado de los checkboxes
+      const estadosCheckboxes = {};
+
+      // se recorre dichos checkboxes
+      for (let cb of checkboxFiltrados) {
+        // Guardamos el estado del checkbox en el objeto
+        estadosCheckboxes[cb.id] = cb.checked;
+        //Si hay al menos uno seleccionado se da por válido
+        if (cb.checked) {
+          valido = true;
+        }
+      }
+
+      const divPosicion = document.getElementById(cp.id);
+      //Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + cp.id + " está completo.");
+        //y borramos el mensaje de error
+        divPosicion.innerHTML = divPosicion.innerHTML.replace(/<br>Error: Debe seleccionar al menos una opción\./g, '');
+        // Recorremos el objeto con los estados de los checkboxes
+        for (const [id, estado] of Object.entries(estadosCheckboxes)) {
+          // Establecemos el estado del checkbox
+          const checkbox = document.getElementById(id);
+          if (checkbox) {
+            checkbox.checked = estado;
+          }
+        }
+      } else {
+        console.log("El menú con id " + cp.id + " está incompleto.");
+        if (!divPosicion.innerHTML.includes('Error:')) {
+          divPosicion.innerHTML += "<br>Error: Debe seleccionar al menos una opción.";
+        }
+      }
+    }
+  }
+
 
   const boton = document.getElementById('validar');
 
   boton.addEventListener('click', function (evento) {
     evento.preventDefault();
-    validarPos();
+    validarTipoAr();
   });
 </script>
