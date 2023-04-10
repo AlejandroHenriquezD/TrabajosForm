@@ -34,7 +34,6 @@
 
             echo
             "<tr class='fila'>
-           <td>" . $trabajos[$p]['id'] . "</td> 
            <td>" . $posicion['descripcion'] . "</td> 
            <td>" . $articulo['descripcion'] . "</td>
            <td>" . $tipo_trabajo['nombre'] . "</td>

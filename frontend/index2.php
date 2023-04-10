@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
@@ -22,7 +22,7 @@ $arrayTipoArticulos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
-$divPedidos = "<div id='pedidos'><h1>Pedido</h1><select id='selectPedido' onchange=mostrarArticulos(this.value)>";
+$divPedidos = "<div id='pedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
 }
