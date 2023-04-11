@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
@@ -86,7 +86,6 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         $arrayTipoArticulos[$o][$i][$t] .= "</div></div>";
       }
       $trabajos[$o][$i] .= "</div></div>";
-
     }
   }
   $arrayArticulos[$o] .= "</div>";
@@ -177,6 +176,8 @@ echo "<!DOCTYPE html>
     
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(trabajo);
+    validar();
+
     } else {
       document.getElementById(elemento).removeChild(trabajo);
     }
@@ -215,7 +216,6 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
         r.parentNode.classList.add('ta-seleccionado');
-        validarTipoAr()
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
           r.parentNode.classList.remove('ta-seleccionado');
@@ -244,7 +244,7 @@ echo "<!DOCTYPE html>
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
-      validarPos();
+      validar();
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion));
     }
@@ -294,120 +294,57 @@ echo "
 ?>
 
 <script>
-  function validarPos() {
+  function validar() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
 
-    //Se cogen los diferentes menus de posiciones
-    const coleccionPos = document.getElementsByClassName('posicion');
+    // Se cogen los diferentes menus de articulos
+    const marticulo = document.getElementsByClassName('articulo');
 
-    //se cogen todos los checkbox de posicion
-    const checkboxes = document.getElementsByClassName('posicion-checkbox');
+    // Por cada menu de posiciones...
+    for (let ma of marticulo) {
+      let valido = false;
+      const id = ma.id.split('-');
 
-    //Por cada menu de posiciones...
-    for (let cp of coleccionPos) {
-
-      var valido = false;
-
-      //se recogen todos sus checkboxes
-      const checkboxFiltrados = Array.from(checkboxes).filter(checkbox => {
-        return checkbox.id.includes(cp.id);
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('articulo-' + id[1]);
       });
 
-      // Creamos un objeto para guardar el estado de los checkboxes
-      const estadosCheckboxes = {};
+      const divPosicion = document.getElementById(ma.id);
 
-      // se recorre dichos checkboxes
-      for (let cb of checkboxFiltrados) {
-        // Guardamos el estado del checkbox en el objeto
-        estadosCheckboxes[cb.id] = cb.checked;
-        //Si hay al menos uno seleccionado se da por válido
-        if (cb.checked) {
+      // Si hay un mensaje de error, lo borramos
+      if (divPosicion.querySelector('p')) {
+        divPosicion.querySelector('p').remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
           valido = true;
         }
       }
 
-      const divPosicion = document.getElementById(cp.id);
-      //Si el formulario es válido, te lo indico
+      // Si el formulario es válido, te lo indico
       if (valido) {
-        console.log("El menú con id " + cp.id + " está completo.");
-        //y borramos el mensaje de error
-        divPosicion.innerHTML = divPosicion.innerHTML.replace(/<br>Error: Debe seleccionar al menos una opción\./g, '');
-        // Recorremos el objeto con los estados de los checkboxes
-        for (const [id, estado] of Object.entries(estadosCheckboxes)) {
-          // Establecemos el estado del checkbox
-          const checkbox = document.getElementById(id);
-          if (checkbox) {
-            checkbox.checked = estado;
-          }
-        }
+        console.log("El menú con id " + ma.id + " está completo.");
       } else {
-        console.log("El menú con id " + cp.id + " está incompleto.");
-        if (!divPosicion.innerHTML.includes('Error:')) {
-          divPosicion.innerHTML += "<br>Error: Debe seleccionar al menos una opción.";
+        console.log("El menú con id " + ma.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        if (!divPosicion.querySelector('p')) {
+          let msg = document.createElement('p');
+          msg.innerHTML = "Error: Debe seleccionar al menos una opción";
+          divPosicion.appendChild(msg);
         }
       }
     }
   }
-
-  //estamos con esta ahora
-  function validarTipoAr() {
-
-    //Se cogen los diferentes menus de posiciones
-    const coleccionPos = document.getElementsByClassName('tipoArticulo');
-
-    //se cogen todos los checkbox de posicion
-    const checkboxes = document.getElementsByClassName('articul');
-
-    //Por cada menu de posiciones...
-    for (let cp of coleccionPos) {
-
-      var valido = false;
-
-      //se recogen todos sus checkboxes
-      const checkboxFiltrados = Array.from(checkboxes).filter(checkbox => {
-        return checkbox.id.includes(cp.id);
-      });
-
-      // Creamos un objeto para guardar el estado de los checkboxes
-      const estadosCheckboxes = {};
-
-      // se recorre dichos checkboxes
-      for (let cb of checkboxFiltrados) {
-        // Guardamos el estado del checkbox en el objeto
-        estadosCheckboxes[cb.id] = cb.checked;
-        //Si hay al menos uno seleccionado se da por válido
-        if (cb.checked) {
-          valido = true;
-        }
-      }
-
-      const divPosicion = document.getElementById(cp.id);
-      //Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + cp.id + " está completo.");
-        //y borramos el mensaje de error
-        divPosicion.innerHTML = divPosicion.innerHTML.replace(/<br>Error: Debe seleccionar al menos una opción\./g, '');
-        // Recorremos el objeto con los estados de los checkboxes
-        for (const [id, estado] of Object.entries(estadosCheckboxes)) {
-          // Establecemos el estado del checkbox
-          const checkbox = document.getElementById(id);
-          if (checkbox) {
-            checkbox.checked = estado;
-          }
-        }
-      } else {
-        console.log("El menú con id " + cp.id + " está incompleto.");
-        if (!divPosicion.innerHTML.includes('Error:')) {
-          divPosicion.innerHTML += "<br>Error: Debe seleccionar al menos una opción.";
-        }
-      }
-    }
-  }
-
 
   const boton = document.getElementById('validar');
 
-  boton.addEventListener('click', function (evento) {
+  boton.addEventListener('click', function(evento) {
     evento.preventDefault();
-    validarTipoAr();
+    validar();
   });
 </script>
