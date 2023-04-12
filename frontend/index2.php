@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
@@ -23,6 +23,7 @@ $arrayLogos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
+$desplegables = array();
 $divPedidos = "<div id='pedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
@@ -54,7 +55,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         $trabajos[$o][$i] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
         $trabajos[$o][$i] .= "</div>";
         $arrayTipoArticulos[$o][$i][$t] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\">";
-        $arrayTipoArticulos[$o][$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo: </h1><div class='coleccionHorizontal'>";
+        $arrayTipoArticulos[$o][$i][$t] .= "<div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Tipo de articulo</h1><div class='slider'><div class='coleccion'>";
         for ($a = 0; $a < $numeroTipoArticulos; $a++) {
           $arrayTipoArticulos[$o][$i][$t] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\">";
           $arrayTipoArticulos[$o][$i][$t] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}\" value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}\")'>";
@@ -72,21 +73,29 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
             }
             $arrayLogos[$o][$i][$t][$a][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
-              $arrayLogos[$o][$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div>";
+              $arrayLogos[$o][$i][$t][$a][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
+              for ($l = 0; $l < count($logos); $l++) {
+                $arrayLogos[$o][$i][$t][$a][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">";
+                $arrayLogos[$o][$i][$t][$a][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+                $arrayLogos[$o][$i][$t][$a][$p] .= "<img src=\".{$logos[$l]['img']}\" alt=\".{$logos[$l]['img']}\"/>";
+                $arrayLogos[$o][$i][$t][$a][$p] .= "<br></div>";
+              }
             }
-            $arrayLogos[$o][$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-            for ($l = 0; $l < count($logos); $l++) {
-              $arrayLogos[$o][$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
-            }
-            $arrayLogos[$o][$i][$t][$a][$p] .= "</select>";
-            $arrayLogos[$o][$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
+            
+            // $arrayLogos[$o][$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+            // for ($l = 0; $l < count($logos); $l++) {
+            //   $arrayLogos[$o][$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
+            // }
+            // $arrayLogos[$o][$i][$t][$a][$p] .= "</select>";
+            // $arrayLogos[$o][$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
+            
           }
           $posiciones[$o][$i][$t][$a] .= "</div></div>";
         }
-        $arrayTipoArticulos[$o][$i][$t] .= "</div></div>";
+        $arrayTipoArticulos[$o][$i][$t] .= "</div></div></div>";
       }
-      $trabajos[$o][$i] .= "</div></div>";
-
+      $trabajos[$o][$i] .= "</div>";
+      $desplegables[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"trabajos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
     }
   }
   $arrayArticulos[$o] .= "</div>";
@@ -95,6 +104,7 @@ $divPedidos .= "</div>";
 
 $arrayArticulos = json_encode($arrayArticulos);
 $arrayTrabajos = json_encode($trabajos);
+$desplegables = json_encode($desplegables);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
 $arrayPosiciones = json_encode($posiciones);
 $arrayLogos = json_encode($arrayLogos);
@@ -112,7 +122,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='añadirPrimero();'>
 <script>
@@ -126,6 +136,7 @@ echo "<!DOCTYPE html>
 
   var articulos = $arrayArticulos;
   var trabajos = $arrayTrabajos;
+  var desplegables = $desplegables;
   var tipoArticulos = $arrayTipoArticulos;
   var posiciones = $arrayPosiciones;
   var logos = $arrayLogos;
@@ -133,6 +144,7 @@ echo "<!DOCTYPE html>
     articulos[i] = elementFromHtml(articulos[i]);
     for (var j = 0; j < trabajos[i].length; j++) {
       trabajos[i][j] = elementFromHtml(trabajos[i][j]);
+      desplegables[i][j] = elementFromHtml(desplegables[i][j]);
       for (var k = 0; k < tipoArticulos[i][j].length; k++) {
         tipoArticulos[i][j][k] = elementFromHtml(tipoArticulos[i][j][k]);
         for (var l = 0; l < posiciones[i][j][k].length; l++) {
@@ -174,11 +186,13 @@ echo "<!DOCTYPE html>
   function mostrarTrabajos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
     var trabajo = obtenerElemento(trabajos[indexPedido()], 'trabajos-'+numeroArticulo);
-    
+    var desplegable = obtenerElemento(desplegables[indexPedido()], 'desplegable-'+numeroArticulo);
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(trabajo);
+      document.getElementById(elemento).appendChild(desplegable);
     } else {
       document.getElementById(elemento).removeChild(trabajo);
+      document.getElementById(elemento).removeChild(desplegable);
     }
   }
 
@@ -244,9 +258,38 @@ echo "<!DOCTYPE html>
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
-      validarPos();
+      // validarPos();
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion));
+    }
+  }
+
+  function logoSeleccionado(radios) {
+    var numeroArticulo = radios.split('-')[1];
+    var numeroTrabajo = radios.split('-')[2];
+    var numeroTipoArticulo = radios.split('-')[3];
+    var numeroPosicion = radios.split('-')[4];
+    radios = document.getElementsByClassName(radios);
+    for (let r of radios) {
+      var numeroLogo = r.id.split('-')[5];
+      if(r.checked) {
+        r.parentNode.classList.add('ta-seleccionado');
+      } else { 
+        if (document.getElementById('logo-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroLogo)) {
+          r.parentNode.classList.remove('ta-seleccionado');
+        }  
+      }
+    } 
+  }
+
+  function desplegable(elemento) {
+    var numeroArticulo = elemento.split('-')[1];
+    if(document.getElementById(elemento).classList.contains('trabajos-oculto')) {
+      document.getElementById(elemento).classList.remove('trabajos-oculto');
+      document.getElementById('flecha-'+numeroArticulo).classList.remove('flecha-invertida');
+    } else {
+      document.getElementById(elemento).classList.add('trabajos-oculto');
+      document.getElementById('flecha-'+numeroArticulo).classList.add('flecha-invertida');
     }
   }
 

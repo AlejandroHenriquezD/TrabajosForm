@@ -3,8 +3,8 @@ $id_pedido = $_POST['selectPedido'][0];
 echo "<form action='pdf.php'>
         <button >Ver PDF</button>
       </form>";
-foreach ($_POST['img-select'] as $valor) {
-  echo "El valor seleccionado es $valor <br>";
+foreach ($_POST['img-input'] as $grupo => $valor) {
+  echo "El valor seleccionado es $valor del grupo $grupo <br>";
 
   var_dump($_FILES);
   $valor = explode('-', $valor);
