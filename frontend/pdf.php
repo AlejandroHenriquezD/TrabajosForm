@@ -13,12 +13,12 @@ function BasicTable($header, $trabajos)
 	$h = 22;
 	$ha = 19;
 	for ($p = 0; $p < count($trabajos); $p++) {
-		$posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
-        $articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
-        $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-        $pedido = json_decode(file_get_contents("http://localhost/trabajosform/pedidos/" . $trabajos[$p]['id_pedido']), true);
-		$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajos[$p]['id_tipo_articulo']), true);
-        $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
+		$posicion = json_decode(file_get_contents("http://localhost/API/posiciones/" . $trabajos[$p]['id_posicion']), true);
+        $articulo = json_decode(file_get_contents("http://localhost/API/articulos/" . $trabajos[$p]['id_articulo']), true);
+        $tipo_trabajo = json_decode(file_get_contents("http://localhost/API/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
+        $pedido = json_decode(file_get_contents("http://localhost/API/pedidos/" . $trabajos[$p]['id_pedido']), true);
+		$tipo_articulo = json_decode(file_get_contents("http://localhost/API/tipo_articulos/" . $trabajos[$p]['id_tipo_articulo']), true);
+        $logo = json_decode(file_get_contents("http://localhost/API/logos/" . $trabajos[$p]['id_logo']), true);
 
 		$this->Cell(18,19,'');
 		$this->Cell(40,19,$posicion['descripcion'],1,0,'C');
@@ -44,7 +44,7 @@ $pdf = new PDF('L','mm','A4');
 // T�tulos de las columnas
 $header = array('Posicion', 'Articulo', 'TipoTrabajo', 'Pedido', 'TipoArticulo', 'Logo');
 // Carga de datos
-$trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
+$trabajos = json_decode(file_get_contents("http://localhost/API/trabajos"), true);
 $pdf->SetFont('Times','',11);
 $pdf->AddPage();
 $pdf->BasicTable($header,$trabajos);

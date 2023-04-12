@@ -23,7 +23,9 @@ $arrayLogos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
-$desplegables = array();
+$desplegablesTipoArticulos = array();
+$desplegablesPosiciones = array();
+$desplegablesLogos = array();
 $divPedidos = "<div id='pedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
@@ -60,7 +62,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $trabajos[$o][$i][$a] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
           $trabajos[$o][$i][$a] .= "</div>";
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
-          for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
+          for ($p = 0; $p < $numeroPosicionesArticulos; $p++) { 
             $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
               // Obtiene la posición del array donde se encuentra el id de la posición
@@ -74,16 +76,18 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
                 $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">";
                 $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
                 $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$l]['img']}\" alt=\".{$logos[$l]['img']}\"/>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<br></div>";
+                $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
               }
             }
+            $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
           }
           $posiciones[$o][$i][$a][$t] .= "</div></div>";
+          $desplegablesPosiciones[$o][$i][$a][$t] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" onclick='desplegable(\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"></div></div>";
         }
         $trabajos[$o][$i][$a] .= "</div>"; 
       }
       $arrayTipoArticulos[$o][$i] .= "</div></div></div>";
-      $desplegables[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
+      $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
     }
   }
   $arrayArticulos[$o] .= "</div>";
@@ -91,11 +95,13 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 $divPedidos .= "</div>";
 
 $arrayArticulos = json_encode($arrayArticulos);
-$arrayTrabajos = json_encode($trabajos);
-$desplegables = json_encode($desplegables);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
+$desplegablesTipoArticulos = json_encode($desplegablesTipoArticulos);
+$arrayTrabajos = json_encode($trabajos);
 $arrayPosiciones = json_encode($posiciones);
+$desplegablesPosiciones = json_encode($desplegablesPosiciones);
 $arrayLogos = json_encode($arrayLogos);
+$desplegablesLogos = json_encode($desplegablesLogos);
 $art = json_encode($articulos);
 $tra = json_encode($tiposTrabajos);
 $tart = json_encode($tiposArticulos);
@@ -124,21 +130,25 @@ echo "<!DOCTYPE html>
 
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
-  var desplegables = $desplegables;
+  var desplegablesTipoArticulos = $desplegablesTipoArticulos;
   var trabajos = $arrayTrabajos;
   var posiciones = $arrayPosiciones;
+  var desplegablesPosiciones = $desplegablesPosiciones;
   var logos = $arrayLogos;
+  var desplegablesLogos = $desplegablesLogos;
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
     for (var j = 0; j < tipoArticulos[i].length; j++) {
       tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
-      desplegables[i][j] = elementFromHtml(desplegables[i][j]);
+      desplegablesTipoArticulos[i][j] = elementFromHtml(desplegablesTipoArticulos[i][j]);
       for (var k = 0; k < trabajos[i][j].length; k++) {
         trabajos[i][j][k] = elementFromHtml(trabajos[i][j][k]);
         for (var l = 0; l < posiciones[i][j][k].length; l++) {
           posiciones[i][j][k][l] = elementFromHtml(posiciones[i][j][k][l]);
+          desplegablesPosiciones[i][j][k][l] = elementFromHtml(desplegablesPosiciones[i][j][k][l]);
           for (var m = 0; m < logos[i][j][k][l].length; m++) {
             logos[i][j][k][l][m] = elementFromHtml(logos[i][j][k][l][m]);
+            desplegablesLogos[i][j][k][l][m] = elementFromHtml(desplegablesLogos[i][j][k][l][m]);
           }
         }
       }
@@ -174,7 +184,7 @@ echo "<!DOCTYPE html>
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
 
-    var desplegable = obtenerElemento(desplegables[indexPedido()], 'desplegable-'+numeroArticulo);
+    var desplegable = obtenerElemento(desplegablesTipoArticulos[indexPedido()], 'desplegable-'+numeroArticulo);
     var tipoArticulo = obtenerElemento(tipoArticulos[indexPedido()], 'tipoArticulos-'+numeroArticulo);
 
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
@@ -226,11 +236,15 @@ echo "<!DOCTYPE html>
 
     var divTrabajos = 'trabajos-'+numeroArticulo+'-'+numeroTipoArticulo;
 
+    var desplegable = obtenerElemento(desplegablesPosiciones[indexPedido()][indexTipoArticulo][indexTrabajo], 'desplegable-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
+
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo).checked) {
       document.getElementById(divTrabajos).appendChild(posiciones[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion]);
+      document.getElementById(divTrabajos).appendChild(desplegable);
       // validarPos()
     } else {
       document.getElementById(divTrabajos).removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
+      document.getElementById(divTrabajos).removeChild(desplegable);
     }
   }
 
@@ -246,17 +260,19 @@ echo "<!DOCTYPE html>
     var indexTrabajo = trabajos[indexPedido()][indexTipoArticulo].indexOf(trabajo);
     var posicion = obtenerElemento(posiciones[indexPedido()][indexTipoArticulo][indexTrabajo], 'posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
     var indexPosicion = posiciones[indexPedido()][indexTipoArticulo][indexTrabajo].indexOf(posicion);
-    console.log(logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion]);
     var log = obtenerElemento(logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion], 'logos-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion);
     var indexLogos = logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion].indexOf(log);
     
     var divPosiciones = 'posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo;
+    var desplegable = obtenerElemento(desplegablesLogos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion], 'desplegable-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion);
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion][indexLogos]);
-      validarPos()
+      document.getElementById(divPosiciones).appendChild(desplegable);
+      // validarPos()
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
+      document.getElementById(divPosiciones).removeChild(desplegable);
     }
   }
 
@@ -280,13 +296,14 @@ echo "<!DOCTYPE html>
   }
 
   function desplegable(elemento) {
-    var numeroArticulo = elemento.split('-')[1];
-    if(document.getElementById(elemento).classList.contains('trabajos-oculto')) {
-      document.getElementById(elemento).classList.remove('trabajos-oculto');
-      document.getElementById('flecha-'+numeroArticulo).classList.remove('flecha-invertida');
+    var indices = elemento.substring(elemento.indexOf('-'));
+    console.log(indices);
+    if(document.getElementById(elemento).classList.contains('div-oculto')) {
+      document.getElementById(elemento).classList.remove('div-oculto');
+      document.getElementById('flecha'+indices).classList.remove('flecha-invertida');
     } else {
-      document.getElementById(elemento).classList.add('trabajos-oculto');
-      document.getElementById('flecha-'+numeroArticulo).classList.add('flecha-invertida');
+      document.getElementById(elemento).classList.add('div-oculto');
+      document.getElementById('flecha'+indices).classList.add('flecha-invertida');
     }
   }
 
@@ -311,6 +328,8 @@ echo "<!DOCTYPE html>
     <form id='formulario' action='resultado.php' method='post'>";
 echo $divPedidos;
 echo "
+      <h1>Observaciones</h1>
+      <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
       <input type='submit'>
     </form>
     <button id='validar'>Validar</button>

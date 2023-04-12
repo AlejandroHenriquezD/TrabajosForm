@@ -54,5 +54,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   mysqli_stmt_execute($stmt);
 
   echo "Registro Guardado.";
+  echo "<br/>";
 }
+echo $_POST['observaciones'];
 ?>
