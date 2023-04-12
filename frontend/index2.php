@@ -81,14 +81,14 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
                 $arrayLogos[$o][$i][$t][$a][$p] .= "<br></div>";
               }
             }
-            
+
             // $arrayLogos[$o][$i][$t][$a][$p] .= "<select name='img-select[]' onchange='updateImage(this.value, \"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
             // for ($l = 0; $l < count($logos); $l++) {
             //   $arrayLogos[$o][$i][$t][$a][$p] .= "<option id=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" value=\"logo-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">Logo " . $l + 1 . "</option>";
             // }
             // $arrayLogos[$o][$i][$t][$a][$p] .= "</select>";
             // $arrayLogos[$o][$i][$t][$a][$p] .= "<img id=\"logo-img-{$articulos[$i]['id']}-{$tiposTrabajos[$t]['id']}-{$tiposArticulos[$a]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" src=\".{$logos[0]['img']}\" alt=\".{$logos[0]['img']}\"/></div>";
-            
+
           }
           $posiciones[$o][$i][$t][$a] .= "</div></div>";
         }
@@ -190,6 +190,7 @@ echo "<!DOCTYPE html>
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(trabajo);
       document.getElementById(elemento).appendChild(desplegable);
+      validarAr();      
     } else {
       document.getElementById(elemento).removeChild(trabajo);
       document.getElementById(elemento).removeChild(desplegable);
@@ -207,6 +208,7 @@ echo "<!DOCTYPE html>
     var divTrabajos = 'trabajos-'+numeroArticulo;
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTrabajo).checked) {
       document.getElementById(divTrabajos).appendChild(tipoArticulo);
+      validarTra();      
     } else {
       document.getElementById(divTrabajos).removeChild(tipoArticulo);
     }
@@ -229,7 +231,7 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(pos);
         r.parentNode.classList.add('ta-seleccionado');
-        // validarTipoAr()
+        validarTar();
       } else {
         if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo)) { 
           r.parentNode.classList.remove('ta-seleccionado');
@@ -258,7 +260,7 @@ echo "<!DOCTYPE html>
 
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTrabajo][indexTipoArticulo][indexPosicion][indexLogos]);
-      // validarPos();
+      validarPos()
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion));
     }
@@ -274,6 +276,7 @@ echo "<!DOCTYPE html>
       var numeroLogo = r.id.split('-')[5];
       if(r.checked) {
         r.parentNode.classList.add('ta-seleccionado');
+        validarLogos();
       } else { 
         if (document.getElementById('logo-'+numeroArticulo+'-'+numeroTrabajo+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroLogo)) {
           r.parentNode.classList.remove('ta-seleccionado');
@@ -337,7 +340,7 @@ echo "
 ?>
 
 <script>
-  function validar() {
+  function validarAr() {
     // Se cogen todos los inputs
     const inputs = document.getElementsByTagName('input');
 
@@ -357,8 +360,8 @@ echo "
       const divPosicion = document.getElementById(ma.id);
 
       // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('p')) {
-        divPosicion.querySelector('p').remove();
+      if (divPosicion.querySelector('ar')) {
+        divPosicion.querySelector('ar').remove();
       }
 
       // Se recorre dichos checkboxes
@@ -375,13 +378,210 @@ echo "
       } else {
         console.log("El menú con id " + ma.id + " está incompleto.");
         // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('p')) {
-          let msg = document.createElement('p');
-          msg.innerHTML = "Error: Debe seleccionar al menos una opción";
+        if (!divPosicion.querySelector('ar')) {
+          let msg = document.createElement('ar');
+          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
           divPosicion.appendChild(msg);
         }
       }
     }
+  }
+
+  function validarTra() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
+
+    // Se cogen los diferentes menus de articulos
+    const marticulo = document.getElementsByClassName('trabajos');
+
+    // Por cada menu de posiciones...
+    for (let mt of marticulo) {
+      let valido = false;
+      const id = mt.id.split('-');
+
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('trabajo-' + id[1]);
+      });
+
+      const divPosicion = document.getElementById(mt.id);
+
+      // Si hay un mensaje de error, lo borramos
+      if (divPosicion.querySelector('tra')) {
+        divPosicion.querySelector('tra').remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          valido = true;
+        }
+      }
+
+      // Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + mt.id + " está completo.");
+      } else {
+        console.log("El menú con id " + mt.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        if (!divPosicion.querySelector('tra')) {
+          let msg = document.createElement('tra');
+          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
+          divPosicion.appendChild(msg);
+        }
+      }
+    }
+  }
+
+  function validarTar() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
+
+    // Se cogen los diferentes menus de articulos
+    const mtarticulo = document.getElementsByClassName('tipoArticulo');
+
+    // Por cada menu de posiciones...
+    for (let mta of mtarticulo) {
+      let valido = false;
+      const id = mta.id.split('-');
+
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('tipoArticulo-' + id[1] + '-' + id[2]);
+      });
+
+      const divPosicion = document.getElementById(mta.id);
+
+      // Si hay un mensaje de error, lo borramos
+      if (divPosicion.querySelector('tar')) {
+        divPosicion.querySelector('tar').remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          valido = true;
+        }
+      }
+
+      // Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + mta.id + " está completo.");
+      } else {
+        console.log("El menú con id " + mta.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        if (!divPosicion.querySelector('tar')) {
+          let msg = document.createElement('tar');
+          msg.innerHTML = "<p>Error: Debe seleccionar una opción</p>";
+          divPosicion.appendChild(msg);
+        }
+      }
+    }
+  }
+
+  function validarPos() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
+
+    // Se cogen los diferentes menus de articulos
+    const mposiciones = document.getElementsByClassName('posicion');
+
+    // Por cada menu de posiciones...
+    for (let mp of mposiciones) {
+      let valido = false;
+      const id = mp.id.split('-');
+
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]);
+      });
+
+      const divPosicion = document.getElementById(mp.id);
+
+      // Si hay un mensaje de error, lo borramos
+      if (divPosicion.querySelector('pos')) {
+        divPosicion.querySelector('pos').remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          valido = true;
+        }
+      }
+
+      // Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + mp.id + " está completo.");
+      } else {
+        console.log("El menú con id " + mp.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        if (!divPosicion.querySelector('pos')) {
+          let msg = document.createElement('pos');
+          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
+          divPosicion.appendChild(msg);
+        }
+      }
+    }
+  }
+
+
+  function validarLogos() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
+
+    // Se cogen los diferentes menus de articulos
+    const mlogos = document.getElementsByClassName('logos');
+
+    // Por cada menu de posiciones...
+    for (let ml of mlogos) {
+      let valido = false;
+      const id = ml.id.split('-');
+
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('logo-' + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4]);
+      });
+
+      const divPosicion = document.getElementById(ml.id);
+
+      // Si hay un mensaje de error, lo borramos
+      if (divPosicion.querySelector('logos')) {
+        divPosicion.querySelector('logos').remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          valido = true;
+        }
+      }
+
+      // Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + ml.id + " está completo.");
+      } else {
+        console.log("El menú con id " + ml.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        if (!divPosicion.querySelector('logos')) {
+          let msg = document.createElement('logos');
+          msg.innerHTML = "<p>Error: Debe seleccionar una opción</p>";
+          divPosicion.appendChild(msg);
+        }
+      }
+    }
+  }
+
+  function validar() {
+    validarAr();
+    validarTra();
+    validarTar();
+    validarPos();
+    validarLogos();
   }
 
   const boton = document.getElementById('validar');

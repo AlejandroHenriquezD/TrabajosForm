@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 
-html, body {    
-  height:100%;
+html,
+body {
+  height: 100%;
   font-family: "Tilt Neon", cursive;
   margin: 0;
-  overflow-x:unset;
+  overflow-x: unset;
 }
 
 h1 {
@@ -283,4 +284,8 @@ option {
 /* Estilo de la barra de desplazamiento al hacer hover */
 .slider:hover::-webkit-scrollbar-thumb {
   background-color: #0e1c2e; /* color del pulgar de la barra de desplazamiento al hacer hover */
+}
+
+p {
+  color: red;
 }
