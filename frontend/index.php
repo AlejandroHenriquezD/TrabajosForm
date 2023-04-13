@@ -62,7 +62,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
           $trabajos[$o][$i][$a] .= "</div>";
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
-          for ($p = 0; $p < $numeroPosicionesArticulos; $p++) { 
+          for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
             $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
               // Obtiene la posición del array donde se encuentra el id de la posición
@@ -84,7 +84,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $posiciones[$o][$i][$a][$t] .= "</div></div>";
           $desplegablesPosiciones[$o][$i][$a][$t] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" onclick='desplegable(\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"></div></div>";
         }
-        $trabajos[$o][$i][$a] .= "</div>"; 
+        $trabajos[$o][$i][$a] .= "</div>";
       }
       $arrayTipoArticulos[$o][$i] .= "</div></div></div>";
       $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
@@ -214,13 +214,13 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(trabajo);
         r.parentNode.classList.add('ta-seleccionado');
-        validarTar();
       } else {
         if (document.getElementById('trabajos-'+numeroArticulo+'-'+numeroTipoArticulo)) { 
           document.getElementById(divTipoArticulos).removeChild(trabajo);
           r.parentNode.classList.remove('ta-seleccionado');
         }
       }
+      validar();
     } 
   }
 
@@ -427,44 +427,42 @@ echo "
     const mtarticulo = document.getElementsByClassName('tipoArticulo');
 
     // Por cada menu de posiciones...
+
     for (let mta of mtarticulo) {
-      let valido = false;
-      const id = mta.id.split('-');
+      for (let msgArt of document.querySelectorAll('msg-art')) {
+        let valido = false;
+        const id = mta.id.split('-');
 
-      // Se recogen todos sus checkboxes
-      const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('tipoArticulo-' + id[1]);
-      });
+        // Se recogen todos sus checkboxes
+        const inputsFiltrados = Array.from(inputs).filter(input => {
+          return input.id.includes('tipoArticulo-' + id[1]);
+        });
 
-      const divPosicion = document.getElementById(mta.id);
+        const divPosicion = document.getElementById(mta.id);
 
-      // Si hay un mensaje de error, lo borramos
-      // if (listaCheck.querySelector('tar')) {
-      //   listaCheck.querySelector('tar').remove();
-      // }
-      for (let tar of listaCheck.querySelectorAll('tar')) {
-        console.log(tar);
-        tar.remove();
-      }
-
-      // Se recorre dichos checkboxes
-      for (let inf of inputsFiltrados) {
-        // Si hay al menos uno seleccionado se da por válido
-        if (inf.checked) {
-          valido = true;
+        if (msgArt.querySelector('#tar-' + id[1])) {
+          msgArt.querySelector('#tar-' + id[1]).remove();
         }
-      }
 
-      // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + mta.id + " está completo.");
-      } else {
-        console.log("El menú con id " + mta.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('tar')) {
-          let msg = document.createElement('tar');
-          msg.innerHTML = "<p>Seleccione un tipo de artículo</p>";
-          listaCheck.appendChild(msg);
+        // Se recorre dichos checkboxes
+        for (let inf of inputsFiltrados) {
+          // Si hay al menos uno seleccionado se da por válido
+          if (inf.checked) {
+            valido = true;
+            console.log(valido + inf.value);
+          }
+        }
+
+        // Si el formulario es válido, te lo indico
+        if (valido) {
+          console.log("El menú con id " + mta.id + " está completo.");
+        } else {
+          console.log("El menú con id " + mta.id + " está incompleto.");
+          // Si no hay mensajes de error, añadimos uno
+          if (!msgArt.querySelector('#tar-' + id[1])) {
+            let msg = elementFromHtml("<div id='tar-' + id[1] ><p>Seleccione un tipo de artículo</p></div>");
+            msgArt.appendChild(msg);
+          }
         }
       }
     }
@@ -622,7 +620,7 @@ echo "
 
   const boton = document.getElementById('validar');
 
-  boton.addEventListener('click', function (evento) {
+  boton.addEventListener('click', function(evento) {
     evento.preventDefault();
     validar();
   });
