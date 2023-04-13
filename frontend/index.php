@@ -44,7 +44,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       if ($relacion[$o][$j] == $articulos[$i]['id']) {
         echo $relacion[$o][$j];
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
+        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
         $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
         $arrayArticulos[$o] .= "</div>";
       }
@@ -52,7 +52,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $arrayTipoArticulos[$o][$i] .= "<h1>Tipo de articulo</h1><div class='slider'><div class='coleccion'>";
       for ($a = 0; $a < $numeroTipoArticulos; $a++) {
         $arrayTipoArticulos[$o][$i] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\">";
-        $arrayTipoArticulos[$o][$i] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}\" value={{$tiposArticulos[$a]['nombre']}} onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\")'>";
+        $arrayTipoArticulos[$o][$i] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}\" value=\"{$tiposArticulos[$a]['nombre']}\" onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\")'>";
         $arrayTipoArticulos[$o][$i] .= "<img src=\".{$tiposArticulos[$a]['img']}\" alt=\".{$tiposArticulos[$a]['img']}\"/>";
         $arrayTipoArticulos[$o][$i] .= "<br></div>";
         $trabajos[$o][$i][$a] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
@@ -116,9 +116,9 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles3.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
-<body onload='añadirPrimero();'>
+<body onload='primeraFuncion();'>
 <script>
   function elementFromHtml(html) {
     const template = document.createElement('template');
@@ -157,10 +157,11 @@ echo "<!DOCTYPE html>
 
   var elementoActual = null;
   
-  function añadirPrimero() {
+  function primeraFuncion() {
     document.getElementById('pedidos').appendChild(articulos[0]);
     var select = document.getElementById('selectPedido');
     elementoActual = select.options[select.selectedIndex].value;
+    validar();
   }
 
   function obtenerElemento(array, id) {
@@ -189,12 +190,13 @@ echo "<!DOCTYPE html>
 
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(tipoArticulo);
-      document.getElementById(elemento).appendChild(desplegable);
-      validarAr()     
+      document.getElementById(elemento).appendChild(desplegable); 
+       
     } else {
       document.getElementById(elemento).removeChild(tipoArticulo);
-      document.getElementById(elemento).appendChild(desplegable);
+      document.getElementById(elemento).removeChild(desplegable);
     }
+    validar();
   }
 
   function mostrarTrabajos(elemento) {
@@ -333,6 +335,8 @@ echo "
     </form>
     <button id='validar'>Validar</button>
   </div>
+  <div id='listaCheck'>
+  </div>
   <div id='background'>
     <div class='ball' id='greenball1'/>
     <div class='ball' id='greenball2'/>
@@ -346,9 +350,6 @@ echo "
   </div>
 </body>
 </html>";
-
-
-
 ?>
 
 <script>
@@ -359,6 +360,9 @@ echo "
     // Se cogen los diferentes menus de articulos
     const marticulo = document.getElementsByClassName('articulo');
 
+    // Se coge la lista lateral de artículos
+    const listaCheck = document.getElementById('listaCheck');
+
     // Por cada menu de posiciones...
     for (let ma of marticulo) {
       let valido = false;
@@ -366,14 +370,81 @@ echo "
 
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('articulo-' + id[1]);
+        return input.id.includes('articulo');
       });
 
       const divPosicion = document.getElementById(ma.id);
 
       // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('ar')) {
-        divPosicion.querySelector('ar').remove();
+      if (listaCheck.querySelector('ar')) {
+        // divPosicion.querySelector('ar').remove();
+        listaCheck.querySelector('ar').remove();
+      }
+
+      // Borramos todos los artículos de la lista de checks
+      for (let msgArt of listaCheck.querySelectorAll('msg-art')) {
+        msgArt.remove();
+      }
+
+      // Se recorre dichos checkboxes
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          valido = true;
+          // Añadimos los articulos a la lista de checks
+          let msgArt = document.createElement('msg-art');
+          msgArt.innerHTML = "<p id='msg-art-titulo'>" + inf.value + "</p>";
+          msgArt.innerHTML += "<img src='./cancelar.png' alt=''/>";
+          listaCheck.appendChild(msgArt);
+        }
+      }
+
+      // Si el formulario es válido, te lo indico
+      if (valido) {
+        console.log("El menú con id " + ma.id + " está completo.");
+      } else {
+        console.log("El menú con id " + ma.id + " está incompleto.");
+        // Si no hay mensajes de error, añadimos uno
+        // if (!divPosicion.querySelector('ar')) {
+        //   let msg = document.createElement('ar');
+        //   msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
+        //   divPosicion.appendChild(msg);
+        // }
+        if (!listaCheck.querySelector('ar')) {
+          let msg = document.createElement('ar');
+          msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
+          listaCheck.appendChild(msg);
+        }
+      }
+    }
+  }
+
+  function validarTar() {
+    // Se cogen todos los inputs
+    const inputs = document.getElementsByTagName('input');
+
+    // Se cogen los diferentes menus de articulos
+    const mtarticulo = document.getElementsByClassName('tipoArticulo');
+
+    // Por cada menu de posiciones...
+    for (let mta of mtarticulo) {
+      let valido = false;
+      const id = mta.id.split('-');
+
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('tipoArticulo-' + id[1]);
+      });
+
+      const divPosicion = document.getElementById(mta.id);
+
+      // Si hay un mensaje de error, lo borramos
+      // if (listaCheck.querySelector('tar')) {
+      //   listaCheck.querySelector('tar').remove();
+      // }
+      for (let tar of listaCheck.querySelectorAll('tar')) {
+        console.log(tar);
+        tar.remove();
       }
 
       // Se recorre dichos checkboxes
@@ -386,14 +457,14 @@ echo "
 
       // Si el formulario es válido, te lo indico
       if (valido) {
-        console.log("El menú con id " + ma.id + " está completo.");
+        console.log("El menú con id " + mta.id + " está completo.");
       } else {
-        console.log("El menú con id " + ma.id + " está incompleto.");
+        console.log("El menú con id " + mta.id + " está incompleto.");
         // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('ar')) {
-          let msg = document.createElement('ar');
-          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
-          divPosicion.appendChild(msg);
+        if (!divPosicion.querySelector('tar')) {
+          let msg = document.createElement('tar');
+          msg.innerHTML = "<p>Seleccione un tipo de artículo</p>";
+          listaCheck.appendChild(msg);
         }
       }
     }
@@ -440,53 +511,6 @@ echo "
         if (!divPosicion.querySelector('tra')) {
           let msg = document.createElement('tra');
           msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
-          divPosicion.appendChild(msg);
-        }
-      }
-    }
-  }
-
-  function validarTar() {
-    // Se cogen todos los inputs
-    const inputs = document.getElementsByTagName('input');
-
-    // Se cogen los diferentes menus de articulos
-    const mtarticulo = document.getElementsByClassName('tipoArticulo');
-
-    // Por cada menu de posiciones...
-    for (let mta of mtarticulo) {
-      let valido = false;
-      const id = mta.id.split('-');
-
-      // Se recogen todos sus checkboxes
-      const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('tipoArticulo-' + id[1]);
-      });
-
-      const divPosicion = document.getElementById(mta.id);
-
-      // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('tar')) {
-        divPosicion.querySelector('tar').remove();
-      }
-
-      // Se recorre dichos checkboxes
-      for (let inf of inputsFiltrados) {
-        // Si hay al menos uno seleccionado se da por válido
-        if (inf.checked) {
-          valido = true;
-        }
-      }
-
-      // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + mta.id + " está completo.");
-      } else {
-        console.log("El menú con id " + mta.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('tar')) {
-          let msg = document.createElement('tar');
-          msg.innerHTML = "<p>Error: Debe seleccionar una opción</p>";
           divPosicion.appendChild(msg);
         }
       }

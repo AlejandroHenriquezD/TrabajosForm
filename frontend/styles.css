@@ -53,13 +53,26 @@ textarea {
 
 #pagina {
   z-index: 2;
-  width: 80vw;
+  width: 60vw;
   position: absolute;
-  left: 10vw;
+  left: 5vw;
   top: 5vw;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
+}
+
+#listaCheck {
+  z-index: 2;
+  width: 25vw;
+  position: fixed;
+  left: 70vw;
+  top: 5vw;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .articulo {
@@ -299,4 +312,24 @@ textarea {
 
 p {
   color: red;
+}
+
+msg-art {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: grid;
+  grid-template-columns: 5fr 1fr; /* Define el tamaño de las columnas, en este caso, 1fr para la columna 1 y 2fr para la columna 2 */
+  align-items: center;
+}
+
+msg-art img {
+  height: 30px;
+  right: 10px;
+  position: absolute;
+}
+
+#msg-art-titulo {
+  font-weight: 600;
 }
