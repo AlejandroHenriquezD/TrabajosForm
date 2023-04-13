@@ -24,6 +24,7 @@
            <tr>
               <th>Id</th>
               <th>Nombre</th>
+              <th>Imagen</th>
               <th>Acciones</th>
             </tr>";
             for ($p = 0; $p < count($tipo_articulos); $p++) {
@@ -31,6 +32,7 @@
                 "<tr class='fila'>
                     <td>" . $tipo_articulos[$p]["id"] . "</td>
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
+                    <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
                     <td> 
                         <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input> <button>Borrar</button> </form> 
                         

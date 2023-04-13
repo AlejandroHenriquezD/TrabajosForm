@@ -1,10 +1,8 @@
 <?php
+// echo json_encode($_GET["id"][0]);
+$id = $_GET["id"][0];
 
-$nombre = $_POST["nombre"];
-
-// if ( ! $terms){
-//     die("Terms must be accepted");
-// }
+// echo $id;
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -20,7 +18,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "INSERT INTO tipos_articulos (nombre) VALUES (?)";
+$sql = "DELETE FROM `clientes` WHERE id =" . $id ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -28,13 +26,14 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
-mysqli_stmt_bind_param($stmt, "s",
-                       $nombre);
+// mysqli_stmt_bind_param($stmt, "i",
+//                        $id);
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado."; 
-
-echo "<form action='tiposarticulo.php'>
+echo "Registro Borrado."; 
+echo "<form action='clientes.php'>
         <button >Volver</button>
       </form>";
+
+?>
