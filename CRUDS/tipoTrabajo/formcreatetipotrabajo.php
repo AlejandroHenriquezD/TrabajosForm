@@ -9,14 +9,11 @@
 
 <body>
 
-    <h1>Tipo Articulo</h1>
+    <h1>Tipo Trabajo</h1>
 
-    <form action="../../createtipoarticulo.php" method="post" enctype="multipart/form-data">
+    <form action="createtipotrabajo.php" method="post" enctype="multipart/form-data">
         <label for="nombre">Nombre</label>
         <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
-
-        <label for="image">Image file</label>
-        <input type="file" id="image" name="image">
 
         </br>
 
