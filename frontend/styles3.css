@@ -65,6 +65,7 @@ textarea {
 .articulo {
   border-top: 2px solid #0e1c2e;
   border-bottom: 2px solid #0e1c2e;
+  /* border: 10px solid rgba(14, 28, 46, 0.9); */
 }
 
 .trabajos {
@@ -75,6 +76,8 @@ textarea {
 
 .desplegable {
   height: 15px;
+  /* border-top: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff; */
   width: 100%;
   background-color: #0e1c2e;
   display: flex;
@@ -282,16 +285,16 @@ textarea {
 
 .slider::-webkit-scrollbar {
   width: 10px; /* ancho de la barra de desplazamiento */
-  background-color: #18304fd6; /* color de fondo de la barra de desplazamiento */
+  background-color: #5aed7c60; /* color de fondo de la barra de desplazamiento */
 }
 
 .slider::-webkit-scrollbar-thumb {
-  background-color: #18304f; /* color del pulgar de la barra de desplazamiento */
+  background-color: #00bb2d; /* color del pulgar de la barra de desplazamiento */
 }
 
 /* Estilo de la barra de desplazamiento al hacer hover */
 .slider:hover::-webkit-scrollbar-thumb {
-  background-color: #0e1c2e; /* color del pulgar de la barra de desplazamiento al hacer hover */
+  background-color: #00871f; /* color del pulgar de la barra de desplazamiento al hacer hover */
 }
 
 p {

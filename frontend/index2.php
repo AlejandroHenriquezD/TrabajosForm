@@ -45,7 +45,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         echo $relacion[$o][$j];
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
         $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value={{$articulos[$i]['descripcion']}} onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
-        $arrayArticulos[$o] .= "<label for={{$articulos[$i]['id']}}>" . $articulos[$i]['descripcion'] . "</label><br>";
+        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
         $arrayArticulos[$o] .= "</div>";
       }
       $arrayTipoArticulos[$o][$i] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}\">";
@@ -59,7 +59,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         for ($t = 0; $t < $numeroTrabajos; $t++) {
           $trabajos[$o][$i][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
           $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
-          $trabajos[$o][$i][$a] .= "<label for={{$tiposTrabajos[$t]['id']}}>" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
+          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
           $trabajos[$o][$i][$a] .= "</div>";
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) { 
@@ -69,7 +69,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
               $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
               $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
               $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-              $posiciones[$o][$i][$a][$t] .= "<label for={$posicionesArticulos[$p]['id_posicion']}>" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
+              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
               $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
               for ($l = 0; $l < count($logos); $l++) {
@@ -116,7 +116,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles3.css'>
 </head>
 <body onload='añadirPrimero();'>
 <script>
@@ -190,7 +190,7 @@ echo "<!DOCTYPE html>
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(tipoArticulo);
       document.getElementById(elemento).appendChild(desplegable);
-      // validarTra();      
+      validarAr()     
     } else {
       document.getElementById(elemento).removeChild(tipoArticulo);
       document.getElementById(elemento).appendChild(desplegable);
@@ -212,7 +212,7 @@ echo "<!DOCTYPE html>
       if(r.checked) {
         document.getElementById(divTipoArticulos).appendChild(trabajo);
         r.parentNode.classList.add('ta-seleccionado');
-        // validarTar();
+        validarTar();
       } else {
         if (document.getElementById('trabajos-'+numeroArticulo+'-'+numeroTipoArticulo)) { 
           document.getElementById(divTipoArticulos).removeChild(trabajo);
@@ -241,7 +241,7 @@ echo "<!DOCTYPE html>
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo).checked) {
       document.getElementById(divTrabajos).appendChild(posiciones[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion]);
       document.getElementById(divTrabajos).appendChild(desplegable);
-      // validarPos()
+      validarTra()
     } else {
       document.getElementById(divTrabajos).removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
       document.getElementById(divTrabajos).removeChild(desplegable);
@@ -269,7 +269,7 @@ echo "<!DOCTYPE html>
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion][indexLogos]);
       document.getElementById(divPosiciones).appendChild(desplegable);
-      // validarPos()
+      validarPos()
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
       document.getElementById(divPosiciones).removeChild(desplegable);
@@ -297,7 +297,6 @@ echo "<!DOCTYPE html>
 
   function desplegable(elemento) {
     var indices = elemento.substring(elemento.indexOf('-'));
-    console.log(indices);
     if(document.getElementById(elemento).classList.contains('div-oculto')) {
       document.getElementById(elemento).classList.remove('div-oculto');
       document.getElementById('flecha'+indices).classList.remove('flecha-invertida');
@@ -414,7 +413,7 @@ echo "
 
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('trabajo-' + id[1]);
+        return input.id.includes('trabajo-' + id[1] + '-' + id[2]);
       });
 
       const divPosicion = document.getElementById(mt.id);
@@ -461,7 +460,7 @@ echo "
 
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('tipoArticulo-' + id[1] + '-' + id[2]);
+        return input.id.includes('tipoArticulo-' + id[1]);
       });
 
       const divPosicion = document.getElementById(mta.id);
