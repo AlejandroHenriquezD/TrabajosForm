@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Articulos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../trabajos.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -34,21 +34,23 @@
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
                     <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
                     <td> 
-                        <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input> <button>Borrar</button> </form> 
+                        <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatetipoarticulo.php' method='post'> 
                             <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input>
                             <input name='nombre[]' type='hidden' value=". urlencode($tipo_articulos[$p]["nombre"]) ."></input> 
-                            <button>Editar Nombre</button> 
+                            <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
 
-                        <form action='temp.php'> <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input> <button>Editar Posiciones</button> </form>
+                        <form action='temp.php'> <input name='id[]' type='hidden' value=". $tipo_articulos[$p]["id"] ."></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
 
                     </td>
                 </tr>"; 
    
             }
-            ?>
+        ?>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

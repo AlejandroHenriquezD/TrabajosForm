@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Trabajo</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../trabajos.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -32,18 +32,20 @@
                     <td>" . $tipo_trabajos[$p]["id"] . "</td>
                     <td>" . $tipo_trabajos[$p]["nombre"] . "</td>
                     <td> 
-                        <form action='deletetipotrabajo.php'> <input name='id[]' type='hidden' value=". $tipo_trabajos[$p]["id"] ."></input> <button>Borrar</button> </form> 
+                        <form action='deletetipotrabajo.php'> <input name='id[]' type='hidden' value=". $tipo_trabajos[$p]["id"] ."></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatetipotrabajo.php' method='post'> 
                             <input name='id[]' type='hidden' value=". $tipo_trabajos[$p]["id"] ."></input>
                             <input name='nombre[]' type='hidden' value=". urlencode($tipo_trabajos[$p]["nombre"]) ."></input> 
-                            <button>Editar Nombre</button> 
+                            <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
                     </td>
                 </tr>"; 
    
             }
             ?>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
