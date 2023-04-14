@@ -64,7 +64,11 @@ switch ($parts[2]) {
     case "pedidos_articulos":
         $gateway = new Pedidos_ArticulosGateway($database);
         $controller = new Pedidos_ArticulosController($gateway);
-        break;    
+        break;
+    case "bocetos":
+        $gateway = new BocetoGateway($database);
+        $controller = new BocetoController($gateway);
+        break;  
 }
 
 
