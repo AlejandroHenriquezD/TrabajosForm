@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../trabajos.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -34,19 +34,22 @@
                     <td>" . $clientes[$p]["nombre"] . "</td>
                     <td>" . $clientes[$p]["telefono"] . "</td>
                     <td> 
-                        <form action='deletecliente.php'> <input name='id[]' type='hidden' value=". $clientes[$p]["id"] ."></input> <button>Borrar</button> </form> 
+                        <form action='deletecliente.php'> <input name='id[]' type='hidden' value=". $clientes[$p]["id"] ."></input><button>Borrar <ion-icon name='trash'></ion-icon>
+                        </button> </form> 
                         
                         <form action='formupdatecliente.php' method='post'> 
                             <input name='id[]' type='hidden' value=". $clientes[$p]["id"] ."></input>
                             <input name='nombre[]' type='hidden' value=". urlencode($clientes[$p]["nombre"]) ."></input> 
                             <input name='telefono[]' type='hidden' value=". urlencode($clientes[$p]["telefono"]) ."></input> 
-                            <button>Editar</button> 
+                            <button>Editar <ion-icon name='create'></ion-icon></button> 
                         </form>
                     </td>
                 </tr>"; 
    
             }
             ?>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
