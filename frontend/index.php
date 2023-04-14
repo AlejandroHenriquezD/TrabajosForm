@@ -116,7 +116,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -243,11 +243,11 @@ echo "<!DOCTYPE html>
     if (document.getElementById('trabajo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo).checked) {
       document.getElementById(divTrabajos).appendChild(posiciones[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion]);
       document.getElementById(divTrabajos).appendChild(desplegable);
-      validarTra()
     } else {
       document.getElementById(divTrabajos).removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
       document.getElementById(divTrabajos).removeChild(desplegable);
     }
+    validar()
   }
 
   function mostrarLogos(elemento) {
@@ -271,11 +271,11 @@ echo "<!DOCTYPE html>
     if (document.getElementById('posicion-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion).checked) {
       document.getElementById(divPosiciones).appendChild(logos[indexPedido()][indexTipoArticulo][indexTrabajo][indexPosicion][indexLogos]);
       document.getElementById(divPosiciones).appendChild(desplegable);
-      validarPos()
     } else {
       document.getElementById(divPosiciones).removeChild(document.getElementById('logos-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
       document.getElementById(divPosiciones).removeChild(desplegable);
     }
+    validar()
   }
 
   function logoSeleccionado(radios) {
@@ -422,7 +422,7 @@ echo "
     const inputs = document.getElementsByTagName('input');
 
     // Se cogen los diferentes menus de articulos
-    const mtarticulo = document.getElementsByClassName('tipoArticulo');
+    const mtrabajo = document.getElementsByClassName('tipoArticulo');
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
@@ -432,7 +432,7 @@ echo "
     }
 
     // Por cada menu de posiciones...
-    for (let mta of mtarticulo) {
+    for (let mta of mtrabajo) {
       const id = mta.id.split('-');
 
       // Se recogen todos sus checkboxes
@@ -448,13 +448,13 @@ echo "
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
-      
+
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
           var i = 0;
           for (let a of msgArt) {
-            if(a.id.split('-')[2] === inf.id.split('-')[1]) {
+            if (a.id.split('-')[2] === inf.id.split('-')[1]) {
               valido[i] = true;
             }
             i++;
@@ -463,8 +463,7 @@ echo "
       }
 
       // Si el formulario es válido, te lo indico
-      for(var i = 0; i < valido.length; i++) {
-        console.log(valido[i]);
+      for (var i = 0; i < valido.length; i++) {
         if (valido[i]) {
           console.log("El menú con id " + mta.id + " está completo.");
         } else {
@@ -484,13 +483,18 @@ echo "
     const inputs = document.getElementsByTagName('input');
 
     // Se cogen los diferentes menus de articulos
-    const marticulo = document.getElementsByClassName('trabajos');
+    const mtrabajo = document.getElementsByClassName('trabajos');
+
+    // Hay que asignar valor a la constante valido
+    var msgArt = document.querySelectorAll('.msg-art')
+    let valido = [];
+    for (var i = 0; i < msgArt.length; i++) {
+      valido[i] = false;
+    }
 
     // Por cada menu de posiciones...
-    for (let mt of marticulo) {
-      let valido = false;
+    for (let mt of mtrabajo) {
       const id = mt.id.split('-');
-
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
         return input.id.includes('trabajo-' + id[1] + '-' + id[2]);
@@ -498,29 +502,40 @@ echo "
 
       const divPosicion = document.getElementById(mt.id);
 
-      // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('tra')) {
-        divPosicion.querySelector('tra').remove();
+      for (let tra of document.querySelectorAll('.tra')) {
+        tra.remove();
       }
 
       // Se recorre dichos checkboxes
+      var inputsValidos = [];
+
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
-          valido = true;
+          var i = 0;
+          for (let a of msgArt) {
+            if (a.id.split('-')[2] === inf.id.split('-')[1]) {
+              valido[i] = true;
+            }
+            i++;
+          }
         }
       }
 
       // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + mt.id + " está completo.");
-      } else {
-        console.log("El menú con id " + mt.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('tra')) {
-          let msg = document.createElement('tra');
-          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
-          divPosicion.appendChild(msg);
+      console.log(inputsFiltrados);
+      if (inputsFiltrados.length > 0) {
+        for (var i = 0; i < valido.length; i++) {
+          if (valido[i]) {
+            console.log("El menú con id " + mt.id + " está completo.");
+          } else {
+            console.log("El menú con id " + mt.id + " está incompleto.");
+            // Si no hay mensajes de error, añadimos uno
+            if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
+              let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
+              msgArt[i].appendChild(msg);
+            }
+          }
         }
       }
     }
@@ -531,13 +546,19 @@ echo "
     const inputs = document.getElementsByTagName('input');
 
     // Se cogen los diferentes menus de articulos
-    const mposiciones = document.getElementsByClassName('posicion');
+    const mposicion = document.getElementsByClassName('posicion');
+
+    // Hay que asignar valor a la constante valido
+    var msgArt = document.querySelectorAll('.msg-art')
+    let valido = [];
+    for (var i = 0; i < msgArt.length; i++) {
+      valido[i] = false;
+      console.log(valido[i]);
+    }
 
     // Por cada menu de posiciones...
-    for (let mp of mposiciones) {
-      let valido = false;
+    for (let mp of mposicion) {
       const id = mp.id.split('-');
-
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
         return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]);
@@ -545,29 +566,37 @@ echo "
 
       const divPosicion = document.getElementById(mp.id);
 
-      // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('pos')) {
-        divPosicion.querySelector('pos').remove();
+      for (let tra of document.querySelectorAll('.tra')) {
+        tra.remove();
       }
 
       // Se recorre dichos checkboxes
+      var inputsValidos = [];
+
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
-          valido = true;
+          var i = 0;
+          for (let a of msgArt) {
+            if (a.id.split('-')[2] === inf.id.split('-')[1]) {
+              valido[i] = true;
+            }
+            i++;
+          }
         }
       }
 
       // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + mp.id + " está completo.");
-      } else {
-        console.log("El menú con id " + mp.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('pos')) {
-          let msg = document.createElement('pos');
-          msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
-          divPosicion.appendChild(msg);
+      for (var i = 0; i < valido.length; i++) {
+        if (valido[i]) {
+          console.log("El menú con id " + mp.id + " está completo.");
+        } else {
+          console.log("El menú con id " + mp.id + " está incompleto.");
+          // Si no hay mensajes de error, añadimos uno
+          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
+            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
+            msgArt[i].appendChild(msg);
+          }
         }
       }
     }
@@ -581,11 +610,17 @@ echo "
     // Se cogen los diferentes menus de articulos
     const mlogos = document.getElementsByClassName('logos');
 
+    // Hay que asignar valor a la constante valido
+    var msgArt = document.querySelectorAll('.msg-art')
+    let valido = [];
+    for (var i = 0; i < msgArt.length; i++) {
+      valido[i] = false;
+      console.log(valido[i]);
+    }
+
     // Por cada menu de posiciones...
     for (let ml of mlogos) {
-      let valido = false;
       const id = ml.id.split('-');
-
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
         return input.id.includes('logo-' + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4]);
@@ -593,40 +628,48 @@ echo "
 
       const divPosicion = document.getElementById(ml.id);
 
-      // Si hay un mensaje de error, lo borramos
-      if (divPosicion.querySelector('logos')) {
-        divPosicion.querySelector('logos').remove();
+      for (let tra of document.querySelectorAll('.tra')) {
+        tra.remove();
       }
 
       // Se recorre dichos checkboxes
+      var inputsValidos = [];
+
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
-          valido = true;
+          var i = 0;
+          for (let a of msgArt) {
+            if (a.id.split('-')[2] === inf.id.split('-')[1]) {
+              valido[i] = true;
+            }
+            i++;
+          }
         }
       }
 
       // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + ml.id + " está completo.");
-      } else {
-        console.log("El menú con id " + ml.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        if (!divPosicion.querySelector('logos')) {
-          let msg = document.createElement('logos');
-          msg.innerHTML = "<p>Error: Debe seleccionar una opción</p>";
-          divPosicion.appendChild(msg);
+      for (var i = 0; i < valido.length; i++) {
+        if (valido[i]) {
+          console.log("El menú con id " + ml.id + " está completo.");
+        } else {
+          console.log("El menú con id " + ml.id + " está incompleto.");
+          // Si no hay mensajes de error, añadimos uno
+          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
+            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
+            msgArt[i].appendChild(msg);
+          }
         }
       }
     }
   }
 
   function validar() {
+    validarLogos();
     validarAr();
     validarTra();
     validarTar();
     validarPos();
-    validarLogos();
   }
 
   const boton = document.getElementById('validar');

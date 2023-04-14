@@ -314,7 +314,7 @@ p {
   color: red;
 }
 
-msg-art {
+.msg-art {
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 5px;
@@ -324,10 +324,10 @@ msg-art {
   align-items: center;
 }
 
-msg-art img {
+.msg-art img {
   height: 30px;
-  right: 10px;
-  position: absolute;
+  /* right: 10px;
+  position: absolute; */
 }
 
 #msg-art-titulo {
