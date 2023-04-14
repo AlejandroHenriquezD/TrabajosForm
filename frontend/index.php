@@ -1,12 +1,12 @@
 <?php
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
-$posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
+$pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
+$tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
+$tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
+$tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
+$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
 $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
@@ -367,7 +367,6 @@ echo "
     for (let ma of marticulo) {
       let valido = false;
       const id = ma.id.split('-');
-
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
         return input.id.includes('articulo');
@@ -382,7 +381,8 @@ echo "
       }
 
       // Borramos todos los artículos de la lista de checks
-      for (let msgArt of listaCheck.querySelectorAll('msg-art')) {
+
+      for (let msgArt of document.querySelectorAll('.msg-art')) {
         msgArt.remove();
       }
 
@@ -392,9 +392,7 @@ echo "
         if (inf.checked) {
           valido = true;
           // Añadimos los articulos a la lista de checks
-          let msgArt = document.createElement('msg-art');
-          msgArt.innerHTML = "<p id='msg-art-titulo'>" + inf.value + "</p>";
-          msgArt.innerHTML += "<img src='./cancelar.png' alt=''/>";
+          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><p id='msg-art-titulo'>" + inf.value + "</p><img src='./cancelar.png' alt=''/></div>");
           listaCheck.appendChild(msgArt);
         }
       }
@@ -426,42 +424,55 @@ echo "
     // Se cogen los diferentes menus de articulos
     const mtarticulo = document.getElementsByClassName('tipoArticulo');
 
+    // Hay que asignar valor a la constante valido
+    var msgArt = document.querySelectorAll('.msg-art')
+    let valido = [];
+    for (var i = 0; i < msgArt.length; i++) {
+      valido[i] = false;
+    }
+
     // Por cada menu de posiciones...
-
     for (let mta of mtarticulo) {
-      for (let msgArt of document.querySelectorAll('msg-art')) {
-        let valido = false;
-        const id = mta.id.split('-');
+      const id = mta.id.split('-');
 
-        // Se recogen todos sus checkboxes
-        const inputsFiltrados = Array.from(inputs).filter(input => {
-          return input.id.includes('tipoArticulo-' + id[1]);
-        });
+      // Se recogen todos sus checkboxes
+      const inputsFiltrados = Array.from(inputs).filter(input => {
+        return input.id.includes('tipoArticulo-' + id[1]);
+      });
 
-        const divPosicion = document.getElementById(mta.id);
+      const divPosicion = document.getElementById(mta.id);
 
-        if (msgArt.querySelector('#tar-' + id[1])) {
-          msgArt.querySelector('#tar-' + id[1]).remove();
-        }
+      for (let tar of document.querySelectorAll('.tar')) {
+        tar.remove();
+      }
 
-        // Se recorre dichos checkboxes
-        for (let inf of inputsFiltrados) {
-          // Si hay al menos uno seleccionado se da por válido
-          if (inf.checked) {
-            valido = true;
-            console.log(valido + inf.value);
+      // Se recorre dichos checkboxes
+      var inputsValidos = [];
+      
+      for (let inf of inputsFiltrados) {
+        // Si hay al menos uno seleccionado se da por válido
+        if (inf.checked) {
+          var i = 0;
+          for (let a of msgArt) {
+            if(a.id.split('-')[2] === inf.id.split('-')[1]) {
+              valido[i] = true;
+            }
+            i++;
           }
         }
+      }
 
-        // Si el formulario es válido, te lo indico
-        if (valido) {
+      // Si el formulario es válido, te lo indico
+      for(var i = 0; i < valido.length; i++) {
+        console.log(valido[i]);
+        if (valido[i]) {
           console.log("El menú con id " + mta.id + " está completo.");
         } else {
           console.log("El menú con id " + mta.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt.querySelector('#tar-' + id[1])) {
-            let msg = elementFromHtml("<div id='tar-' + id[1] ><p>Seleccione un tipo de artículo</p></div>");
-            msgArt.appendChild(msg);
+          if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2])) {
+            let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
+            msgArt[i].appendChild(msg);
           }
         }
       }
