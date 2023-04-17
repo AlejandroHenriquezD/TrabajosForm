@@ -1,13 +1,26 @@
 <?php
+$host = "localhost";
+$dbname = "centraluniformes";
+$username = "root";
+$password = "";
+
+$conn = mysqli_connect(
+  hostname: $host,
+  username: $username,
+  password: $password,
+  database: $dbname
+);
+
 $pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
 $pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
 $articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$logos = array();
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
-$logos_encoded = json_encode($logos);
+// $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+// $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
 $numeroArticulos = count($articulos);
@@ -16,6 +29,7 @@ $numeroTipoArticulos = count($tiposArticulos);
 $numeroPosicionesArticulos = count($posicionesArticulos);
 $numeroPosiciones = count($tiposPosiciones);
 
+$arrayBocetos = array();
 $arrayArticulos = array();
 $trabajos = array();
 $arrayTipoArticulos = array();
@@ -31,9 +45,38 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
 }
 $divPedidos .= "</select>";
-for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
 
+
+for ($o = 0; $o < $numeroPedidos; $o++) {
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto'>";
+  $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $arrayBocetos[$o] .= "<option id=" . json_encode([$row["id"]][0]) . " value=" . json_encode([$row["id"]][0]) . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+    }
+  }
+  $arrayBocetos[$o] .= "</select></div>";
+
+  // $logos = array();
+  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $l = 0;
+    while ($row = mysqli_fetch_assoc($result)) {
+      $logos[$o][$l] = $row;
+      $l++;
+    }
+    // $logos = mysqli_fetch_all($result);
+    // json_decode(file_get_contents($logos), true);
+    // $logos = json_encode($logos);
+    // echo $logos;
+  } else {
+    $logos[$o] = "No hay logos";
+  };
+  
+
+  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
   for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
     if ($pedidosArticulos[$j]['id_pedido'] == $pedidos[$o]['id']) {
       $relacion[$o][$j] = $pedidosArticulos[$j]['id_articulo'];
@@ -42,7 +85,6 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     }
     for ($i = 0; $i < $numeroArticulos; $i++) {
       if ($relacion[$o][$j] == $articulos[$i]['id']) {
-        echo $relacion[$o][$j];
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
         $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
         $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
@@ -72,11 +114,13 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
               $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
               $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
-              for ($l = 0; $l < count($logos); $l++) {
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$l]['img']}\" alt=\".{$logos[$l]['img']}\"/>";
+              if($logos[$o] != "No hay logos") {
+              for ($l = 0; $l < count($logos[$o]); $l++) {
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
                 $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
+              }
               }
             }
             $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
@@ -94,6 +138,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 }
 $divPedidos .= "</div>";
 
+$arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
 $desplegablesTipoArticulos = json_encode($desplegablesTipoArticulos);
@@ -128,6 +173,7 @@ echo "<!DOCTYPE html>
     return template.content.firstElementChild;
   }
 
+  var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
   var desplegablesTipoArticulos = $desplegablesTipoArticulos;
@@ -138,6 +184,7 @@ echo "<!DOCTYPE html>
   var desplegablesLogos = $desplegablesLogos;
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
+    bocetos[i] = elementFromHtml(bocetos[i]);
     for (var j = 0; j < tipoArticulos[i].length; j++) {
       tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
       desplegablesTipoArticulos[i][j] = elementFromHtml(desplegablesTipoArticulos[i][j]);
@@ -158,6 +205,7 @@ echo "<!DOCTYPE html>
   var elementoActual = null;
   
   function primeraFuncion() {
+    document.getElementById('pedidos').appendChild(bocetos[0]);
     document.getElementById('pedidos').appendChild(articulos[0]);
     var select = document.getElementById('selectPedido');
     elementoActual = select.options[select.selectedIndex].value;
@@ -175,10 +223,16 @@ echo "<!DOCTYPE html>
   }
 
   function mostrarArticulos(elemento) {
+    var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    document.getElementById('pedidos').removeChild(bocetoAntiguo);
+    document.getElementById('pedidos').appendChild(boceto);
+
     var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     document.getElementById('pedidos').removeChild(articuloAntiguo);
     document.getElementById('pedidos').appendChild(articulo);
+
     elementoActual = elemento;
   }
 
@@ -307,21 +361,21 @@ echo "<!DOCTYPE html>
     }
   }
 
-  function updateImage(id, logo) {
-    id = id.split('-')[5];
-    console.log(logo)
-    var img = document.getElementById(logo);
-    var logo = $logos_encoded;
-    for (var i = 0; i < logo.length; i++) {
-        if (logo[i].id == id) {
-            console.log(logo[i].img);
-            console.log(img);
-            img.src = '.' + logo[i].img;
-            img.alt = '.' + logo[i].img;
-            break;
-        }
-    }
-  }
+  // function updateImage(id, logo) {
+  //   id = id.split('-')[5];
+  //   console.log(logo)
+  //   var img = document.getElementById(logo);
+  //   var logo = ;
+  //   for (var i = 0; i < logo.length; i++) {
+  //       if (logo[i].id == id) {
+  //           console.log(logo[i].img);
+  //           console.log(img);
+  //           img.src = '.' + logo[i].img;
+  //           img.alt = '.' + logo[i].img;
+  //           break;
+  //       }
+  //   }
+  // }
 
 </script>
   <div id='pagina'>
@@ -424,7 +478,7 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    
+
     // Borramos todos los artículos de la lista de checks
     for (let tar of document.querySelectorAll('.tar')) {
       tar.remove();
@@ -494,7 +548,7 @@ echo "
     for (let tra of document.querySelectorAll('.tra')) {
       tra.remove();
     }
-    
+
     // Por cada menu de posiciones...
     for (let mt of mtrabajo) {
       let valido = [];
@@ -663,7 +717,7 @@ echo "
           console.log("El menú con id " + ml.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
           if (msgArt[i].id.split('-')[2] === id[1]) {
-            if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3]+ '-' + id[4])) {
+            if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
               let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
               msgArt[i].appendChild(msg);
             }
@@ -675,8 +729,8 @@ echo "
 
   function validarTodo() {
     var msgArt = document.querySelectorAll('.msg-art');
-    for(m of msgArt) {
-      if(m.childNodes.length <= 1) {
+    for (m of msgArt) {
+      if (m.childNodes.length <= 1) {
         m.getElementsByTagName('img')[0].src = './aceptar.png';
         m.classList.add('msg-art-verde');
       } else {
