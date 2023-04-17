@@ -74,7 +74,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   } else {
     $logos[$o] = "No hay logos";
   };
-  
+
 
   $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
   for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
@@ -114,13 +114,13 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
               $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
               $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
-              if($logos[$o] != "No hay logos") {
-              for ($l = 0; $l < count($logos[$o]); $l++) {
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
-              }
+              if ($logos[$o] != "No hay logos") {
+                for ($l = 0; $l < count($logos[$o]); $l++) {
+                  $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
+                  $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+                  $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
+                  $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
+                }
               }
             }
             $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
@@ -384,9 +384,8 @@ echo $divPedidos;
 echo "
       <h1>Observaciones</h1>
       <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
-      <input type='submit'>
+      <input type='submit' id='enviar' disabled>
     </form>
-    <button id='validar'>Validar</button>
   </div>
   <div id='listaCheck'>
   </div>
@@ -740,6 +739,20 @@ echo "
     }
   }
 
+  function boton() {
+    let button = document.querySelector("#enviar");
+
+    let msgArt = document.querySelectorAll('.msg-art');
+    button.disabled = false;
+
+    for (m of msgArt) {
+      if (!m.classList.contains('msg-art-verde')) {
+        button.disabled = true;
+        console.log("hola");
+      }
+    }
+  }
+
   function validar() {
     validarAr();
     validarTar();
@@ -747,12 +760,6 @@ echo "
     validarPos();
     validarLogos();
     validarTodo();
+    boton();
   }
-
-  const boton = document.getElementById('validar');
-
-  boton.addEventListener('click', function(evento) {
-    evento.preventDefault();
-    validar();
-  });
 </script>
