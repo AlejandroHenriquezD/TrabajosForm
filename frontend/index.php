@@ -61,7 +61,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
           $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
           $trabajos[$o][$i][$a] .= "</div>";
-          $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
+          $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
             $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
@@ -116,7 +116,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -191,7 +191,6 @@ echo "<!DOCTYPE html>
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(tipoArticulo);
       document.getElementById(elemento).appendChild(desplegable); 
-       
     } else {
       document.getElementById(elemento).removeChild(tipoArticulo);
       document.getElementById(elemento).removeChild(desplegable);
@@ -219,8 +218,8 @@ echo "<!DOCTYPE html>
           document.getElementById(divTipoArticulos).removeChild(trabajo);
           r.parentNode.classList.remove('ta-seleccionado');
         }
+        validar()
       }
-      validar();
     } 
   }
 
@@ -288,12 +287,12 @@ echo "<!DOCTYPE html>
       var numeroLogo = r.id.split('-')[5];
       if(r.checked) {
         r.parentNode.classList.add('ta-seleccionado');
-        validarLogos();
       } else { 
         if (document.getElementById('logo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion+'-'+numeroLogo)) {
           r.parentNode.classList.remove('ta-seleccionado');
         }  
       }
+      validar()
     } 
   }
 
@@ -363,6 +362,11 @@ echo "
     // Se coge la lista lateral de artículos
     const listaCheck = document.getElementById('listaCheck');
 
+    // Borramos todos los artículos de la lista de checks
+    for (let msgArt of document.querySelectorAll('.msg-art')) {
+      msgArt.remove();
+    }
+
     // Por cada menu de posiciones...
     for (let ma of marticulo) {
       let valido = false;
@@ -380,19 +384,13 @@ echo "
         listaCheck.querySelector('ar').remove();
       }
 
-      // Borramos todos los artículos de la lista de checks
-
-      for (let msgArt of document.querySelectorAll('.msg-art')) {
-        msgArt.remove();
-      }
-
       // Se recorre dichos checkboxes
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
           valido = true;
           // Añadimos los articulos a la lista de checks
-          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><p id='msg-art-titulo'>" + inf.value + "</p><img src='./cancelar.png' alt=''/></div>");
+          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./cancelar.png' alt=''/></div></div>");
           listaCheck.appendChild(msgArt);
         }
       }
@@ -426,13 +424,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
+    
+    // Borramos todos los artículos de la lista de checks
+    for (let tar of document.querySelectorAll('.tar')) {
+      tar.remove();
     }
 
     // Por cada menu de posiciones...
     for (let mta of mtrabajo) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = mta.id.split('-');
 
       // Se recogen todos sus checkboxes
@@ -441,10 +445,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(mta.id);
-
-      for (let tar of document.querySelectorAll('.tar')) {
-        tar.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -469,9 +469,11 @@ echo "
         } else {
           console.log("El menú con id " + mta.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
+              let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
@@ -487,13 +489,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
-    }
 
+    // Borramos todos los artículos de la lista de checks
+    for (let tra of document.querySelectorAll('.tra')) {
+      tra.remove();
+    }
+    
     // Por cada menu de posiciones...
     for (let mt of mtrabajo) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = mt.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -501,10 +509,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(mt.id);
-
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -523,7 +527,6 @@ echo "
       }
 
       // Si el formulario es válido, te lo indico
-      console.log(inputsFiltrados);
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
           if (valido[i]) {
@@ -531,9 +534,11 @@ echo "
           } else {
             console.log("El menú con id " + mt.id + " está incompleto.");
             // Si no hay mensajes de error, añadimos uno
-            if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-              let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
-              msgArt[i].appendChild(msg);
+            if (msgArt[i].id.split('-')[2] === id[1]) {
+              if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
+                let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
+                msgArt[i].appendChild(msg);
+              }
             }
           }
         }
@@ -550,14 +555,18 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
-      console.log(valido[i]);
+
+    // Borramos todos los artículos de la lista de checks
+    for (let pos of document.querySelectorAll('.pos')) {
+      pos.remove();
     }
 
     // Por cada menu de posiciones...
     for (let mp of mposicion) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
       const id = mp.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -566,13 +575,8 @@ echo "
 
       const divPosicion = document.getElementById(mp.id);
 
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
-
       // Se recorre dichos checkboxes
       var inputsValidos = [];
-
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
@@ -593,9 +597,11 @@ echo "
         } else {
           console.log("El menú con id " + mp.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
+              let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
@@ -612,14 +618,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
-      console.log(valido[i]);
+
+    // Borramos todos los artículos de la lista de checks
+    for (let log of document.querySelectorAll('.log')) {
+      log.remove();
     }
 
     // Por cada menu de posiciones...
     for (let ml of mlogos) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = ml.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -627,10 +638,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(ml.id);
-
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -655,21 +662,37 @@ echo "
         } else {
           console.log("El menú con id " + ml.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3]+ '-' + id[4])) {
+              let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
     }
   }
 
+  function validarTodo() {
+    var msgArt = document.querySelectorAll('.msg-art');
+    for(m of msgArt) {
+      if(m.childNodes.length <= 1) {
+        m.getElementsByTagName('img')[0].src = './aceptar.png';
+        m.classList.add('msg-art-verde');
+      } else {
+        m.getElementsByTagName('img')[0].src = './cancelar.png';
+        m.classList.remove('msg-art-verde');
+      }
+    }
+  }
+
   function validar() {
-    validarLogos();
     validarAr();
-    validarTra();
     validarTar();
+    validarTra();
     validarPos();
+    validarLogos();
+    validarTodo();
   }
 
   const boton = document.getElementById('validar');
