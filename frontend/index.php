@@ -1,13 +1,26 @@
 <?php
+$host = "localhost";
+$dbname = "centraluniformes";
+$username = "root";
+$password = "";
+
+$conn = mysqli_connect(
+  hostname: $host,
+  username: $username,
+  password: $password,
+  database: $dbname
+);
+
 $pedidos = json_decode(file_get_contents("http://localhost/API/pedidos"), true);
 $pedidosArticulos = json_decode(file_get_contents("http://localhost/API/pedidos_articulos"), true);
 $articulos = json_decode(file_get_contents("http://localhost/API/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
+$logos = array();
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/API/posiciones_tipo_articulos/"), true);
-$logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
-$logos_encoded = json_encode($logos);
+// $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+// $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
 $numeroPedidosArticulos = count($pedidosArticulos);
 $numeroArticulos = count($articulos);
@@ -16,6 +29,7 @@ $numeroTipoArticulos = count($tiposArticulos);
 $numeroPosicionesArticulos = count($posicionesArticulos);
 $numeroPosiciones = count($tiposPosiciones);
 
+$arrayBocetos = array();
 $arrayArticulos = array();
 $trabajos = array();
 $arrayTipoArticulos = array();
@@ -31,9 +45,38 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
 }
 $divPedidos .= "</select>";
-for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
 
+
+for ($o = 0; $o < $numeroPedidos; $o++) {
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto'>";
+  $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $arrayBocetos[$o] .= "<option id=" . json_encode([$row["id"]][0]) . " value=" . json_encode([$row["id"]][0]) . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+    }
+  }
+  $arrayBocetos[$o] .= "</select></div>";
+
+  // $logos = array();
+  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $l = 0;
+    while ($row = mysqli_fetch_assoc($result)) {
+      $logos[$o][$l] = $row;
+      $l++;
+    }
+    // $logos = mysqli_fetch_all($result);
+    // json_decode(file_get_contents($logos), true);
+    // $logos = json_encode($logos);
+    // echo $logos;
+  } else {
+    $logos[$o] = "No hay logos";
+  };
+  
+
+  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
   for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
     if ($pedidosArticulos[$j]['id_pedido'] == $pedidos[$o]['id']) {
       $relacion[$o][$j] = $pedidosArticulos[$j]['id_articulo'];
@@ -42,7 +85,6 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     }
     for ($i = 0; $i < $numeroArticulos; $i++) {
       if ($relacion[$o][$j] == $articulos[$i]['id']) {
-        echo $relacion[$o][$j];
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
         $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
         $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
@@ -61,7 +103,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
           $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
           $trabajos[$o][$i][$a] .= "</div>";
-          $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
+          $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
             $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
@@ -72,11 +114,13 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
               $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
               $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
-              for ($l = 0; $l < count($logos); $l++) {
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\">";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$l]['img']}\" alt=\".{$logos[$l]['img']}\"/>";
+              if($logos[$o] != "No hay logos") {
+              for ($l = 0; $l < count($logos[$o]); $l++) {
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
                 $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
+              }
               }
             }
             $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
@@ -94,6 +138,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 }
 $divPedidos .= "</div>";
 
+$arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
 $desplegablesTipoArticulos = json_encode($desplegablesTipoArticulos);
@@ -116,7 +161,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -128,6 +173,7 @@ echo "<!DOCTYPE html>
     return template.content.firstElementChild;
   }
 
+  var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
   var desplegablesTipoArticulos = $desplegablesTipoArticulos;
@@ -138,6 +184,7 @@ echo "<!DOCTYPE html>
   var desplegablesLogos = $desplegablesLogos;
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
+    bocetos[i] = elementFromHtml(bocetos[i]);
     for (var j = 0; j < tipoArticulos[i].length; j++) {
       tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
       desplegablesTipoArticulos[i][j] = elementFromHtml(desplegablesTipoArticulos[i][j]);
@@ -158,6 +205,7 @@ echo "<!DOCTYPE html>
   var elementoActual = null;
   
   function primeraFuncion() {
+    document.getElementById('pedidos').appendChild(bocetos[0]);
     document.getElementById('pedidos').appendChild(articulos[0]);
     var select = document.getElementById('selectPedido');
     elementoActual = select.options[select.selectedIndex].value;
@@ -175,10 +223,16 @@ echo "<!DOCTYPE html>
   }
 
   function mostrarArticulos(elemento) {
+    var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    document.getElementById('pedidos').removeChild(bocetoAntiguo);
+    document.getElementById('pedidos').appendChild(boceto);
+
     var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     document.getElementById('pedidos').removeChild(articuloAntiguo);
     document.getElementById('pedidos').appendChild(articulo);
+
     elementoActual = elemento;
   }
 
@@ -191,7 +245,6 @@ echo "<!DOCTYPE html>
     if (document.getElementById('articulo-'+numeroArticulo).checked) {
       document.getElementById(elemento).appendChild(tipoArticulo);
       document.getElementById(elemento).appendChild(desplegable); 
-       
     } else {
       document.getElementById(elemento).removeChild(tipoArticulo);
       document.getElementById(elemento).removeChild(desplegable);
@@ -219,8 +272,8 @@ echo "<!DOCTYPE html>
           document.getElementById(divTipoArticulos).removeChild(trabajo);
           r.parentNode.classList.remove('ta-seleccionado');
         }
+        validar()
       }
-      validar();
     } 
   }
 
@@ -288,12 +341,12 @@ echo "<!DOCTYPE html>
       var numeroLogo = r.id.split('-')[5];
       if(r.checked) {
         r.parentNode.classList.add('ta-seleccionado');
-        validarLogos();
       } else { 
         if (document.getElementById('logo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion+'-'+numeroLogo)) {
           r.parentNode.classList.remove('ta-seleccionado');
         }  
       }
+      validar()
     } 
   }
 
@@ -308,21 +361,21 @@ echo "<!DOCTYPE html>
     }
   }
 
-  function updateImage(id, logo) {
-    id = id.split('-')[5];
-    console.log(logo)
-    var img = document.getElementById(logo);
-    var logo = $logos_encoded;
-    for (var i = 0; i < logo.length; i++) {
-        if (logo[i].id == id) {
-            console.log(logo[i].img);
-            console.log(img);
-            img.src = '.' + logo[i].img;
-            img.alt = '.' + logo[i].img;
-            break;
-        }
-    }
-  }
+  // function updateImage(id, logo) {
+  //   id = id.split('-')[5];
+  //   console.log(logo)
+  //   var img = document.getElementById(logo);
+  //   var logo = ;
+  //   for (var i = 0; i < logo.length; i++) {
+  //       if (logo[i].id == id) {
+  //           console.log(logo[i].img);
+  //           console.log(img);
+  //           img.src = '.' + logo[i].img;
+  //           img.alt = '.' + logo[i].img;
+  //           break;
+  //       }
+  //   }
+  // }
 
 </script>
   <div id='pagina'>
@@ -363,6 +416,11 @@ echo "
     // Se coge la lista lateral de artículos
     const listaCheck = document.getElementById('listaCheck');
 
+    // Borramos todos los artículos de la lista de checks
+    for (let msgArt of document.querySelectorAll('.msg-art')) {
+      msgArt.remove();
+    }
+
     // Por cada menu de posiciones...
     for (let ma of marticulo) {
       let valido = false;
@@ -380,19 +438,13 @@ echo "
         listaCheck.querySelector('ar').remove();
       }
 
-      // Borramos todos los artículos de la lista de checks
-
-      for (let msgArt of document.querySelectorAll('.msg-art')) {
-        msgArt.remove();
-      }
-
       // Se recorre dichos checkboxes
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
           valido = true;
           // Añadimos los articulos a la lista de checks
-          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><p id='msg-art-titulo'>" + inf.value + "</p><img src='./cancelar.png' alt=''/></div>");
+          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./cancelar.png' alt=''/></div></div>");
           listaCheck.appendChild(msgArt);
         }
       }
@@ -426,13 +478,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
+
+    // Borramos todos los artículos de la lista de checks
+    for (let tar of document.querySelectorAll('.tar')) {
+      tar.remove();
     }
 
     // Por cada menu de posiciones...
     for (let mta of mtrabajo) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = mta.id.split('-');
 
       // Se recogen todos sus checkboxes
@@ -441,10 +499,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(mta.id);
-
-      for (let tar of document.querySelectorAll('.tar')) {
-        tar.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -469,9 +523,11 @@ echo "
         } else {
           console.log("El menú con id " + mta.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
+              let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
@@ -487,13 +543,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
+
+    // Borramos todos los artículos de la lista de checks
+    for (let tra of document.querySelectorAll('.tra')) {
+      tra.remove();
     }
 
     // Por cada menu de posiciones...
     for (let mt of mtrabajo) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = mt.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -501,10 +563,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(mt.id);
-
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -523,7 +581,6 @@ echo "
       }
 
       // Si el formulario es válido, te lo indico
-      console.log(inputsFiltrados);
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
           if (valido[i]) {
@@ -531,9 +588,11 @@ echo "
           } else {
             console.log("El menú con id " + mt.id + " está incompleto.");
             // Si no hay mensajes de error, añadimos uno
-            if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-              let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
-              msgArt[i].appendChild(msg);
+            if (msgArt[i].id.split('-')[2] === id[1]) {
+              if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
+                let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
+                msgArt[i].appendChild(msg);
+              }
             }
           }
         }
@@ -550,14 +609,18 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
-      console.log(valido[i]);
+
+    // Borramos todos los artículos de la lista de checks
+    for (let pos of document.querySelectorAll('.pos')) {
+      pos.remove();
     }
 
     // Por cada menu de posiciones...
     for (let mp of mposicion) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
       const id = mp.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -566,13 +629,8 @@ echo "
 
       const divPosicion = document.getElementById(mp.id);
 
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
-
       // Se recorre dichos checkboxes
       var inputsValidos = [];
-
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         if (inf.checked) {
@@ -593,9 +651,11 @@ echo "
         } else {
           console.log("El menú con id " + mp.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
+              let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
@@ -612,14 +672,19 @@ echo "
 
     // Hay que asignar valor a la constante valido
     var msgArt = document.querySelectorAll('.msg-art')
-    let valido = [];
-    for (var i = 0; i < msgArt.length; i++) {
-      valido[i] = false;
-      console.log(valido[i]);
+
+    // Borramos todos los artículos de la lista de checks
+    for (let log of document.querySelectorAll('.log')) {
+      log.remove();
     }
 
     // Por cada menu de posiciones...
     for (let ml of mlogos) {
+      let valido = [];
+      for (var i = 0; i < msgArt.length; i++) {
+        valido[i] = false;
+      }
+
       const id = ml.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
@@ -627,10 +692,6 @@ echo "
       });
 
       const divPosicion = document.getElementById(ml.id);
-
-      for (let tra of document.querySelectorAll('.tra')) {
-        tra.remove();
-      }
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -655,21 +716,37 @@ echo "
         } else {
           console.log("El menú con id " + ml.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
-          if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2])) {
-            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
-            msgArt[i].appendChild(msg);
+          if (msgArt[i].id.split('-')[2] === id[1]) {
+            if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
+              let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
+              msgArt[i].appendChild(msg);
+            }
           }
         }
       }
     }
   }
 
+  function validarTodo() {
+    var msgArt = document.querySelectorAll('.msg-art');
+    for (m of msgArt) {
+      if (m.childNodes.length <= 1) {
+        m.getElementsByTagName('img')[0].src = './aceptar.png';
+        m.classList.add('msg-art-verde');
+      } else {
+        m.getElementsByTagName('img')[0].src = './cancelar.png';
+        m.classList.remove('msg-art-verde');
+      }
+    }
+  }
+
   function validar() {
-    validarLogos();
     validarAr();
-    validarTra();
     validarTar();
+    validarTra();
     validarPos();
+    validarLogos();
+    validarTodo();
   }
 
   const boton = document.getElementById('validar');

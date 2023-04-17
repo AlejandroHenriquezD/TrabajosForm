@@ -310,17 +310,17 @@ textarea {
   background-color: #00871f; /* color del pulgar de la barra de desplazamiento al hacer hover */
 }
 
-p {
-  color: red;
-}
-
 .msg-art {
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
+  color: red;
+}
+
+.msg-div {
   display: grid;
-  grid-template-columns: 5fr 1fr; /* Define el tamaño de las columnas, en este caso, 1fr para la columna 1 y 2fr para la columna 2 */
+  grid-template-columns: 5fr 1fr;
   align-items: center;
 }
 
@@ -332,4 +332,8 @@ p {
 
 #msg-art-titulo {
   font-weight: 600;
+}
+
+.msg-art-verde {
+  color: #00bb2d
 }
