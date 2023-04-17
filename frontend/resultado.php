@@ -1,5 +1,7 @@
 <?php
 $id_pedido = $_POST['selectPedido'][0];
+$id_boceto = $_POST["selectBoceto"][0];
+
 echo "<form action='pdf.php'>
         <button >Ver PDF</button>
       </form>";
@@ -14,6 +16,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   $id_tipo_trabajo = $valor[3];
   $id_logo = $valor[5];
   $id_tipo_articulo = $valor[2];
+  // $id_boceto = $valor[1];
   echo($valor[1]);
 
   $host = "localhost";
@@ -32,7 +35,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     die("Connection error: " . mysqli_connect_errno());
   }
 
-  $sql = "INSERT INTO trabajos (id_posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo, id_tipo_articulo) VALUES (?,?,?,?,?,?)";
+  $sql = "INSERT INTO trabajos (id_posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo, id_tipo_articulo, id_boceto) VALUES (?,?,?,?,?,?,?)";
 
   $stmt = mysqli_stmt_init($conn);
 
@@ -42,13 +45,14 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   mysqli_stmt_bind_param(
     $stmt,
-    "siiiii",
+    "siiiiii",
     $id_posicion,
     $id_articulo,
     $id_tipo_trabajo,
     $id_pedido,
     $id_logo,
-    $id_tipo_articulo
+    $id_tipo_articulo,
+    $id_boceto
   );
 
   mysqli_stmt_execute($stmt);
