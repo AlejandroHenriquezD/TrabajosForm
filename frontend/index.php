@@ -274,9 +274,9 @@ echo "<!DOCTYPE html>
           document.getElementById(divTipoArticulos).removeChild(trabajo);
           r.parentNode.classList.remove('ta-seleccionado');
         }
-        validar()
       }
     } 
+    validar()
   }
 
   function mostrarPosiciones(elemento) {
@@ -347,8 +347,8 @@ echo "<!DOCTYPE html>
           r.parentNode.classList.remove('ta-seleccionado');
         }  
       }
-      validar()
     } 
+    validar()
   }
 
   function desplegable(elemento) {
