@@ -40,11 +40,11 @@ $relacion = array();
 $desplegablesTipoArticulos = array();
 $desplegablesPosiciones = array();
 $desplegablesLogos = array();
-$divPedidos = "<div id='pedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
+$divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
 }
-$divPedidos .= "</select>";
+$divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
@@ -106,16 +106,16 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
             $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+            $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
               // Obtiene la posición del array donde se encuentra el id de la posición
-              $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
               $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
               $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
               $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
             }
-            $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
             // Iba dentro del if de arriba
+            $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
             if ($logos[$o] != "No hay logos") {
               for ($l = 0; $l < count($logos[$o]); $l++) {
                 $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
@@ -162,7 +162,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -362,6 +362,18 @@ echo "<!DOCTYPE html>
     }
   }
 
+  function desplegarMenu() {
+    var menu = document.getElementById('menu-lateral');
+    var flecha = document.getElementById('flecha-lateral');
+    if(menu.classList.contains('menu-lateral-desplegado')) {
+      menu.classList.remove('menu-lateral-desplegado');
+      flecha.classList.remove('flecha-lateral-desplegada');
+    } else {
+      menu.classList.add('menu-lateral-desplegado');
+      flecha.classList.add('flecha-lateral-desplegada');
+    }
+  }
+
   // function updateImage(id, logo) {
   //   id = id.split('-')[5];
   //   var img = document.getElementById(logo);
@@ -386,6 +398,19 @@ echo "
     </form>
   </div>
   <div id='listaCheck'>
+  </div>
+  <div id='menu-lateral'>
+    <div id='desplegable-lateral' onclick='desplegarMenu()'>
+      <div id='flecha-lateral'></div>
+    </div>
+    <div id='enlaces-menu'>
+      <a href='../CRUDS/bocetos/bocetos.php'>Bocetos</a>
+      <a href='../CRUDS/clientes/clientes.php'>Clientes</a>
+      <a href='../CRUDS/logos/logos.php'>Logos</a>
+      <a href='../CRUDS/posicion/posiciones.php'>Posiciones</a>
+      <a href='../CRUDS/tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
+      <a href='../CRUDS/tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
+    </div>
   </div>
   <div id='background'>
     <div class='ball' id='greenball1'/>
