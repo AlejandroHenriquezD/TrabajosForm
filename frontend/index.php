@@ -364,13 +364,10 @@ echo "<!DOCTYPE html>
 
   // function updateImage(id, logo) {
   //   id = id.split('-')[5];
-  //   console.log(logo)
   //   var img = document.getElementById(logo);
   //   var logo = ;
   //   for (var i = 0; i < logo.length; i++) {
   //       if (logo[i].id == id) {
-  //           console.log(logo[i].img);
-  //           console.log(img);
   //           img.src = '.' + logo[i].img;
   //           img.alt = '.' + logo[i].img;
   //           break;
@@ -450,19 +447,10 @@ echo "
       // Si el formulario es válido, te lo indico
       if (valido) {
         console.log("El menú con id " + ma.id + " está completo.");
-      } else {
-        console.log("El menú con id " + ma.id + " está incompleto.");
-        // Si no hay mensajes de error, añadimos uno
-        // if (!divPosicion.querySelector('ar')) {
-        //   let msg = document.createElement('ar');
-        //   msg.innerHTML = "<p>Error: Debe seleccionar al menos una opción</p>";
-        //   divPosicion.appendChild(msg);
-        // }
-        if (!listaCheck.querySelector('ar')) {
-          let msg = document.createElement('ar');
-          msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
-          listaCheck.appendChild(msg);
-        }
+      } else if (!listaCheck.querySelector('ar')) {
+        let msg = document.createElement('ar');
+        msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
+        listaCheck.appendChild(msg);
       }
     }
   }
@@ -519,7 +507,6 @@ echo "
         if (valido[i]) {
           console.log("El menú con id " + mta.id + " está completo.");
         } else {
-          console.log("El menú con id " + mta.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
           if (msgArt[i].id.split('-')[2] === id[1]) {
             if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
@@ -570,6 +557,7 @@ echo "
         if (inf.checked) {
           var i = 0;
           for (let a of msgArt) {
+
             if (a.id.split('-')[2] === inf.id.split('-')[1]) {
               valido[i] = true;
             }
@@ -579,12 +567,12 @@ echo "
       }
 
       // Si el formulario es válido, te lo indico
+
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
           if (valido[i]) {
             console.log("El menú con id " + mt.id + " está completo.");
           } else {
-            console.log("El menú con id " + mt.id + " está incompleto.");
             // Si no hay mensajes de error, añadimos uno
             if (msgArt[i].id.split('-')[2] === id[1]) {
               if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
@@ -647,11 +635,10 @@ echo "
         if (valido[i]) {
           console.log("El menú con id " + mp.id + " está completo.");
         } else {
-          console.log("El menú con id " + mp.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
           if (msgArt[i].id.split('-')[2] === id[1]) {
             if (!msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
-              let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un posición</p></div>");
+              let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
               msgArt[i].appendChild(msg);
             }
           }
@@ -712,7 +699,6 @@ echo "
         if (valido[i]) {
           console.log("El menú con id " + ml.id + " está completo.");
         } else {
-          console.log("El menú con id " + ml.id + " está incompleto.");
           // Si no hay mensajes de error, añadimos uno
           if (msgArt[i].id.split('-')[2] === id[1]) {
             if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
@@ -753,7 +739,6 @@ echo "
 
     if (listaCheck.contains(document.querySelector('ar'))) {
       button.disabled = true;
-      console.log(document.querySelector('ar'))
     }
     for (m of msgArt) {
       if (!m.classList.contains('msg-art-verde')) {
