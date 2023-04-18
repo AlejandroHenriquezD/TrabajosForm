@@ -19,7 +19,7 @@
         <input type="file" id="img_vectorizada" name="img_vectorizada" />
 
         <?php
-        $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
+        $clientes = json_decode(file_get_contents("http://localhost/API/clientes"), true);
         echo"
             <label for='id_cliente'>Clientes</label>
             <select name='id_cliente'>";

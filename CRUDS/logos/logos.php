@@ -14,8 +14,8 @@
 
     <?php
 
-    $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
-    $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
+    $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
+    $clientes = json_decode(file_get_contents("http://localhost/API/clientes"), true);
 
     echo "<form action='formcreatelogo.php'>
             <button >Crear Logo</button>

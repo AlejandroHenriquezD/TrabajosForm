@@ -2,9 +2,9 @@
 
 $id = $_GET["id"][0];
 
-$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/". $id), true);
+$tipo_articulo = json_decode(file_get_contents("http://localhost/API/tipo_articulos/". $id), true);
 
-$posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);;
+$posiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);;
 
 $host = "localhost";
 $dbname = "centraluniformes";

@@ -14,7 +14,7 @@
 
     <?php
 
-    $tipo_trabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+    $tipo_trabajos = json_decode(file_get_contents("http://localhost/API/tipo_trabajos"), true);
 
     echo "<form action='formcreatetipotrabajo.php'>
             <button >Crear Tipo Trabajo</button>

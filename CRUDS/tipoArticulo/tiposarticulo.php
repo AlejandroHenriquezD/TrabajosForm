@@ -14,7 +14,7 @@
 
     <?php
 
-    $tipo_articulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+    $tipo_articulos = json_decode(file_get_contents("http://localhost/API/tipo_articulos"), true);
 
     echo "<form action='formcreatetipoarticulo.php'>
             <button >Crear Tipo Articulo</button>

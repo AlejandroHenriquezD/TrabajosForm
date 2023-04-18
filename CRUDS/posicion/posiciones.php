@@ -14,7 +14,7 @@
 
     <?php
 
-    $posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+    $posiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);
 
     echo "<form action='formcreatepos.php'>
             <button >Crear Posición</button>

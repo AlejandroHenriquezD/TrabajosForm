@@ -14,7 +14,7 @@
 
     <?php
 
-    $bocetos = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
+    $bocetos = json_decode(file_get_contents("http://localhost/API/bocetos"), true);
 
     echo "<form action='formcreateboceto.php'>
             <button >Crear Boceto</button>
@@ -26,24 +26,23 @@
               <th>Nombre</th>
               <th>Acciones</th>
             </tr>";
-            for ($p = 0; $p < count($bocetos); $p++) {
-                echo 
-                "<tr class='fila'>
+    for ($p = 0; $p < count($bocetos); $p++) {
+        echo
+        "<tr class='fila'>
                     <td>" . $bocetos[$p]["id"] . "</td>
                     <td>" . $bocetos[$p]["nombre"] . "</td>
                     <td> 
-                        <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=". $bocetos[$p]["id"] ."></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+                        <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdateboceto.php' method='post'> 
-                            <input name='id[]' type='hidden' value=". $bocetos[$p]["id"] ."></input>
-                            <input name='nombre[]' type='hidden' value=". urlencode($bocetos[$p]["nombre"]) ."></input> 
+                            <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input>
+                            <input name='nombre[]' type='hidden' value=" . urlencode($bocetos[$p]["nombre"]) . "></input> 
                             <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
                     </td>
-                </tr>"; 
-   
-            }
-            ?>
+                </tr>";
+    }
+    ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

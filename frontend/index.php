@@ -234,6 +234,7 @@ echo "<!DOCTYPE html>
     document.getElementById('pedidos').appendChild(articulo);
 
     elementoActual = elemento;
+    validar()
   }
 
   function mostrarTiposArticulos(elemento) {
@@ -440,12 +441,10 @@ echo "
       // Se recorre dichos checkboxes
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
-        if (inf.checked) {
-          valido = true;
-          // Añadimos los articulos a la lista de checks
-          let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./cancelar.png' alt=''/></div></div>");
-          listaCheck.appendChild(msgArt);
-        }
+        valido = true;
+        // Añadimos los articulos a la lista de checks
+        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./cancelar.png' alt=''/></div></div>");
+        listaCheck.appendChild(msgArt);
       }
 
       // Si el formulario es válido, te lo indico
@@ -727,9 +726,14 @@ echo "
   }
 
   function validarTodo() {
+
     var msgArt = document.querySelectorAll('.msg-art');
     for (m of msgArt) {
-      if (m.childNodes.length <= 1) {
+
+      var id = m.id.split('-')[2];
+      var cb = document.getElementById("articulo-" + id)
+
+      if (m.childNodes.length <= 1 && cb.checked) {
         m.getElementsByTagName('img')[0].src = './aceptar.png';
         m.classList.add('msg-art-verde');
       } else {
@@ -748,7 +752,6 @@ echo "
     for (m of msgArt) {
       if (!m.classList.contains('msg-art-verde')) {
         button.disabled = true;
-        console.log("hola");
       }
     }
   }
