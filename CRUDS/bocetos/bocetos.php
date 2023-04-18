@@ -14,7 +14,8 @@
 
     <?php
 
-    $bocetos = json_decode(file_get_contents("http://localhost/API/bocetos"), true);
+    $bocetos = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
+    $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
     echo "<form action='formcreateboceto.php'>
             <button >Crear Boceto</button>
@@ -24,6 +25,8 @@
            <tr>
               <th>Id</th>
               <th>Nombre</th>
+              <th>PDF</th>
+              <th>Cliente</th>
               <th>Acciones</th>
             </tr>";
     for ($p = 0; $p < count($bocetos); $p++) {
@@ -31,6 +34,8 @@
         "<tr class='fila'>
                     <td>" . $bocetos[$p]["id"] . "</td>
                     <td>" . $bocetos[$p]["nombre"] . "</td>
+                    <td>" . $bocetos[$p]["pdf"] . "</td>
+                    <td>" .  $clientes[$bocetos[$p]["id_cliente"]-1]["nombre"] . "</td>
                     <td> 
                         <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
