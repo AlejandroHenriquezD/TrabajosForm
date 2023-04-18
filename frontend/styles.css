@@ -62,7 +62,7 @@ textarea {
 
 #pagina {
   z-index: 2;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 340px);
   position: absolute;
   left: 20px;
   top: 20px;
@@ -73,7 +73,7 @@ textarea {
 
 #listaCheck {
   z-index: 2;
-  width: 240px;
+  width: 280px;
   position: fixed;
   right: 20px;
   top: 20px;
@@ -84,11 +84,20 @@ textarea {
   padding-bottom: 5px;
 }
 
+#div-pdf {
+  position: absolute;
+  width: 280px;
+  height: 400px;
+  top: calc(100% + 20px);
+  border-radius: 5px;
+  background-color: rgba(225, 225, 225, 0.7);
+}
+
 #menu-lateral {
   height: 100%;
-  width: 260px;
+  width: 300px;
   position: fixed;
-  right: -260px;
+  right: -300px;
   top: 0;
   background-color: #0e1c2e;
   z-index: 4;

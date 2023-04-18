@@ -48,12 +48,12 @@ $divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto'>";
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-      $arrayBocetos[$o] .= "<option id=" . json_encode([$row["id"]][0]) . " value=" . json_encode([$row["id"]][0]) . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+      $arrayBocetos[$o] .= "<option id=" . json_encode([$row["id"]][0]) . " value=" . trim(json_encode([$row["pdf"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
     }
   }
   $arrayBocetos[$o] .= "</select></div>";
@@ -210,6 +210,11 @@ echo "<!DOCTYPE html>
     document.getElementById('pedidos').appendChild(articulos[0]);
     var select = document.getElementById('selectPedido');
     elementoActual = select.options[select.selectedIndex].value;
+
+
+    var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
+    document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
+    updatePdf();
     validar();
   }
 
@@ -387,6 +392,12 @@ echo "<!DOCTYPE html>
   //   }
   // }
 
+  function updatePdf() {
+    var urlBoceto = '.' + document.getElementById('selectBoceto').value;
+    var iframe = document.getElementsByTagName('iframe')[0];
+    iframe.src = urlBoceto;
+  }
+
 </script>
   <div id='pagina'>
     <form id='formulario' action='resultado.php' method='post'>";
@@ -398,7 +409,10 @@ echo "
     </form>
   </div>
   <div id='listaCheck'>
+    <div id='div-pdf'>
+    </div>
   </div>
+  
   <div id='menu-lateral'>
     <div id='desplegable-lateral' onclick='desplegarMenu()'>
       <div id='flecha-lateral'></div>
