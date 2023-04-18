@@ -46,17 +46,26 @@ option {
 
 textarea {
   font-family: "Tilt Neon", cursive;
-  width: 100%;
+  width: 99%;
   height: 80px;
   margin-bottom: 13px;
 }
 
+#background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 #pagina {
   z-index: 2;
-  width: 60vw;
+  width: calc(100vw - 300px);
   position: absolute;
-  left: 5vw;
-  top: 5vw;
+  left: 20px;
+  top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -64,10 +73,10 @@ textarea {
 
 #listaCheck {
   z-index: 2;
-  width: 25vw;
+  width: 240px;
   position: fixed;
-  left: 70vw;
-  top: 5vw;
+  right: 20px;
+  top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -75,9 +84,85 @@ textarea {
   padding-bottom: 5px;
 }
 
+#menu-lateral {
+  height: 100%;
+  width: 260px;
+  position: fixed;
+  right: -260px;
+  top: 0;
+  background-color: #0e1c2e;
+  z-index: 4;
+}
+
+.menu-lateral-desplegado {
+  right: 0 !important;
+}
+
+#enlaces-menu {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#menu-lateral a {
+  color:rgb(255, 255, 255);
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+#desplegable-lateral {
+  background-color: #0e1c2e;
+  height: 90px;
+  width: 60px;
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translate(0, -50%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: -1;
+}
+
+#flecha-lateral {
+  position: absolute;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 10px solid #ffffff;
+}
+
+.flecha-lateral-desplegada {
+  border-right: 0 !important;
+  border-left: 10px solid #ffffff;
+}
+
+#divPedidos {
+  width: 50%;
+  position: relative;
+  float: left;
+}
+
+.boceto {
+  width: 50%;
+  position: relative;
+  float: left;
+}
+
 .articulo {
+  width: 100%;
   border-top: 2px solid #0e1c2e;
   border-bottom: 2px solid #0e1c2e;
+  position: relative;
+  float: left;
   /* border: 10px solid rgba(14, 28, 46, 0.9); */
 }
 
@@ -210,15 +295,6 @@ textarea {
   margin-top: 0%;
 }
 
-#background {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
 .ball {
   border-radius: 50%;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -290,7 +366,7 @@ textarea {
 }
 
 #blueball3 {
-  background-color: #0e1c2e;
+  background-color: #f0cb25;
   height: 30vw;
   width: 30vw;
   top: 50vw;
