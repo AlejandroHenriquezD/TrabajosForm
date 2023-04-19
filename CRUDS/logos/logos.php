@@ -14,8 +14,8 @@
 
     <?php
 
-    $logos = json_decode(file_get_contents("http://localhost/API/logos"), true);
-    $clientes = json_decode(file_get_contents("http://localhost/API/clientes"), true);
+    $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+    $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
     echo "<form action='formcreatelogo.php'>
             <button >Crear Logo</button>
@@ -32,12 +32,12 @@
             </tr>";
             for ($p = 0; $p < count($logos); $p++) {
                 echo 
-                "<tr class='fila'>
+                "<tr class='fila'>  
                     <td>" . $logos[$p]["id"] . "</td>
                     <td><img src='../." . $logos[$p]["img"] . "' alt='".$logos[$p]["img"]."' height=150px></td>
                     <td><img src='../." . $logos[$p]["img_vectorizada"] . "' alt='".$logos[$p]["img_vectorizada"]."' height=150px></td>
                     <td>" . $logos[$p]["obsoleto"] . "</td>
-                    <td>" . $clientes[$logos[$p]["id_cliente"]]["nombre"] . "</td>
+                    <td>" . $clientes[$logos[$p]["id_cliente"]-1]["nombre"] . "</td>
                     <td> 
                         <form action='deletelogo.php'> <input name='id[]' type='hidden' value=". $logos[$p]["id"] ."></input> <button>Borrar</button> </form> 
                         

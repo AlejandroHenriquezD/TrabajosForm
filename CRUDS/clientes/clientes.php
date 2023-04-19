@@ -14,7 +14,7 @@
 
     <?php
 
-    $clientes = json_decode(file_get_contents("http://localhost/API/clientes"), true);
+    $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
     echo "<form action='formcreatecliente.php'>
             <button >Crear Cliente</button>
