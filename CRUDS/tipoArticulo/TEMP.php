@@ -62,4 +62,6 @@ echo "<input type='hidden' value='".$id."' name='id_tipoarticulo' id='id_tipoart
       </select>
       <button>Añadir</button>
       </form>";
+?>
+<?php include "./menuTipoArticulo.php" ?>
 

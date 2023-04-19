@@ -38,3 +38,5 @@ echo "Registro Guardado.";
 echo "<form action='posiciones.php'>
         <button >Volver</button>
       </form>";
+?>
+<?php include "./menuPosiciones.php" ?>

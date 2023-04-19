@@ -38,3 +38,5 @@ echo "Cambios Guardados.";
 echo "<form action='bocetos.php'>
         <button >Volver</button>
       </form>";
+?>
+<?php include "./menuBoceto.php" ?>

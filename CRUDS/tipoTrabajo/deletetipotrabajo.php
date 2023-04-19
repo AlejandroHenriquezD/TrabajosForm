@@ -37,3 +37,4 @@ echo "<form action='tipostrabajo.php'>
       </form>";
 
 ?>
+<?php include "./menuTipoTrabajo.php" ?>

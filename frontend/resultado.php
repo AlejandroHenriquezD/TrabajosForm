@@ -1,12 +1,13 @@
 <?php
 $id_pedido = $_POST['selectPedido'][0];
 $id_boceto = $_POST["selectBoceto"][0];
+// echo $id_boceto;
 
-echo "<form action='pdf.php'>
-        <button >Ver PDF</button>
-      </form>";
+// echo "<form action='pdf.php'>
+//         <button >Ver PDF</button>
+//       </form>";
 foreach ($_POST['img-input'] as $grupo => $valor) {
-  echo "El valor seleccionado es $valor del grupo $grupo <br>";
+  // echo "El valor seleccionado es $valor del grupo $grupo <br>";
 
   var_dump($_FILES);
   $valor = explode('-', $valor);
@@ -17,7 +18,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   $id_logo = $valor[5];
   $id_tipo_articulo = $valor[2];
   // $id_boceto = $valor[1];
-  echo($valor[1]);
+  // echo($valor[1]);
 
   $host = "localhost";
   $dbname = "centraluniformes";
@@ -56,9 +57,9 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   );
 
   mysqli_stmt_execute($stmt);
-
-  echo "Registro Guardado.";
-  echo "<br/>";
+  header("location:pdf.php");
+  // echo "Registro Guardado.";
+  // echo "<br/>";
 }
-echo $_POST['observaciones'];
+// echo $_POST['observaciones'];
 ?>

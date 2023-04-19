@@ -34,6 +34,7 @@
 
         <button>Crear</button>
     </form>
+    <?php include "./menuBoceto.php" ?>
 </body>
 
 </html>

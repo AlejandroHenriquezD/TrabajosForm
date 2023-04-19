@@ -39,3 +39,5 @@ echo "Cambios Guardados.";
 echo "<form action='clientes.php'>
         <button >Volver</button>
       </form>";
+?>
+<?php include "./menuCliente.php" ?>

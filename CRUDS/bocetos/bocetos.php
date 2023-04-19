@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bocetos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../styles2.css">
 </head>
 
 <body>
@@ -31,11 +31,11 @@
             </tr>";
     for ($p = 0; $p < count($bocetos); $p++) {
         echo
-        "<tr class='fila'>
+            "<tr class='fila'>
                     <td>" . $bocetos[$p]["id"] . "</td>
                     <td>" . $bocetos[$p]["nombre"] . "</td>
                     <td>" . $bocetos[$p]["pdf"] . "</td>
-                    <td>" .  $clientes[$bocetos[$p]["id_cliente"]-1]["nombre"] . "</td>
+                    <td>" . $clientes[$bocetos[$p]["id_cliente"] - 1]["nombre"] . "</td>
                     <td> 
                         <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
@@ -47,7 +47,9 @@
                     </td>
                 </tr>";
     }
-    ?>
+    echo "</table>"
+        ?>
+    <?php include "./menuBoceto.php" ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

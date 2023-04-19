@@ -30,6 +30,7 @@ $numeroPosicionesArticulos = count($posicionesArticulos);
 $numeroPosiciones = count($tiposPosiciones);
 
 $arrayBocetos = array();
+$bocetosUrl = array();
 $arrayArticulos = array();
 $trabajos = array();
 $arrayTipoArticulos = array();
@@ -53,7 +54,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-      $arrayBocetos[$o] .= "<option id=" . json_encode([$row["id"]][0]) . " value=" . trim(json_encode([$row["pdf"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+      $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+      $bocetosUrl[$o][$row["id"]][0] = trim(json_encode([$row["pdf"]][0]), '"');
     }
   }
   $arrayBocetos[$o] .= "</select></div>";
@@ -139,6 +141,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 }
 $divPedidos .= "</div>";
 
+$bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
@@ -162,7 +165,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -174,6 +177,8 @@ echo "<!DOCTYPE html>
     return template.content.firstElementChild;
   }
 
+  var bocetosUrl = $bocetosUrl;
+  console.log(bocetosUrl);
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
@@ -219,6 +224,7 @@ echo "<!DOCTYPE html>
   }
 
   function obtenerElemento(array, id) {
+    console.log(id);
     var elemento = array.find(a => a.id === id);
     return elemento;
   }
@@ -240,6 +246,7 @@ echo "<!DOCTYPE html>
     document.getElementById('pedidos').appendChild(articulo);
 
     elementoActual = elemento;
+    updatePdf()
     validar()
   }
 
@@ -370,12 +377,17 @@ echo "<!DOCTYPE html>
   function desplegarMenu() {
     var menu = document.getElementById('menu-lateral');
     var flecha = document.getElementById('flecha-lateral');
+    var filtro = document.createElement('div');
+    filtro.id = 'filtro';
+    filtro.onclick = desplegarMenu;
     if(menu.classList.contains('menu-lateral-desplegado')) {
       menu.classList.remove('menu-lateral-desplegado');
       flecha.classList.remove('flecha-lateral-desplegada');
+      document.getElementById('filtro').remove();
     } else {
       menu.classList.add('menu-lateral-desplegado');
       flecha.classList.add('flecha-lateral-desplegada');
+      document.body.appendChild(filtro);
     }
   }
 
@@ -393,7 +405,14 @@ echo "<!DOCTYPE html>
   // }
 
   function updatePdf() {
-    var urlBoceto = '.' + document.getElementById('selectBoceto').value;
+    var option = document.getElementById('selectBoceto').value;
+    var urlBoceto = null;
+    for(var p=0; p < document.getElementById('selectPedido').length; p++) {
+      if(bocetosUrl[p][option]) {
+        var urlBoceto = '.' + bocetosUrl[p][option];
+        break;
+      }
+    }
     var iframe = document.getElementsByTagName('iframe')[0];
     iframe.src = urlBoceto;
   }
@@ -418,6 +437,7 @@ echo "
       <div id='flecha-lateral'></div>
     </div>
     <div id='enlaces-menu'>
+      <p>Trabajos</p>
       <a href='../CRUDS/bocetos/bocetos.php'>Bocetos</a>
       <a href='../CRUDS/clientes/clientes.php'>Clientes</a>
       <a href='../CRUDS/logos/logos.php'>Logos</a>
