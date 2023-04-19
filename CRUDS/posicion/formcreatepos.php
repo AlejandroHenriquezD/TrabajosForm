@@ -19,6 +19,7 @@
 
         <button>Crear</button>
     </form>
+    <?php include "./menuPosiciones.php" ?>
 </body>
 
 </html>

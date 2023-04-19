@@ -35,6 +35,7 @@
 
         
     </form>
+    <?php include "./menuLogos.php" ?>
 </body>
 
 </html>

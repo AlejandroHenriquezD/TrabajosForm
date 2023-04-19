@@ -37,3 +37,4 @@ echo "<form action='logos.php'>
       </form>";
 
 ?>
+<?php include "./menuLogos.php" ?>

@@ -24,6 +24,7 @@
         <button>Editar</button>
     </form>";
     ?>
+    <?php include "./menuBoceto.php" ?>
 
 <!-- "    <form action="updatepos.php" method="post" enctype="multipart/form-data">
         <label for="descripcion">Descripción</label>
