@@ -37,3 +37,4 @@ echo "<form action='clientes.php'>
       </form>";
 
 ?>
+<?php include "./menuCliente.php" ?>

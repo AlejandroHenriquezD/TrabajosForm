@@ -61,7 +61,7 @@ textarea {
 }
 
 #pagina {
-  z-index: 2;
+  z-index: 1;
   width: calc(100vw - 340px);
   position: absolute;
   left: 20px;
@@ -72,7 +72,7 @@ textarea {
 }
 
 #listaCheck {
-  z-index: 2;
+  z-index: 1;
   width: 280px;
   position: fixed;
   right: 20px;
@@ -124,6 +124,17 @@ textarea {
   text-decoration: none;
 }
 
+#menu-lateral a:hover {
+  color:#f0cb25;
+}
+
+#menu-lateral p {
+  color:#00bb2d;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 #desplegable-lateral {
   background-color: #0e1c2e;
   height: 90px;
@@ -153,6 +164,26 @@ textarea {
   border-right: 0 !important;
   border-left: 10px solid #ffffff;
 }
+
+#filtro {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2;
+}
+
+/* #flecha-lateral:hover {
+  border-right: 10px solid #f0cb25;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+.flecha-lateral-desplegada:hover {
+  border-left: 10px solid #f0cb25;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+} */
 
 #divPedidos {
   width: 50%;

@@ -37,3 +37,4 @@ echo "<form action='posiciones.php'>
       </form>";
 
 ?>
+<?php include "./menuPosiciones.php" ?>

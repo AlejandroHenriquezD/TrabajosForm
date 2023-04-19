@@ -22,6 +22,7 @@
 
         <button>Crear</button>
     </form>
+    <?php include "./menuCliente.php" ?>
 </body>
 
 </html>

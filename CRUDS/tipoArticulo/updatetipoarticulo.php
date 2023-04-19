@@ -38,3 +38,5 @@ echo "Cambios Guardados.";
 echo "<form action='tiposarticulo.php'>
         <button >Volver</button>
       </form>";
+?>
+<?php include "./menuTipoArticulo.php" ?>

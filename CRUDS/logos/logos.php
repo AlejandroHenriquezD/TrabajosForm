@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../styles2.css">
 </head>
 
 <body>
@@ -30,28 +30,32 @@
               <th>Cliente</th>
               <th>Acciones</th>
             </tr>";
-            for ($p = 0; $p < count($logos); $p++) {
-                echo 
-                "<tr class='fila'>  
+    for ($p = 0; $p < count($logos); $p++) {
+        echo
+            "<tr class='fila'>
                     <td>" . $logos[$p]["id"] . "</td>
-                    <td><img src='../." . $logos[$p]["img"] . "' alt='".$logos[$p]["img"]."' height=150px></td>
-                    <td><img src='../." . $logos[$p]["img_vectorizada"] . "' alt='".$logos[$p]["img_vectorizada"]."' height=150px></td>
+                    <td><img src='../." . $logos[$p]["img"] . "' alt='" . $logos[$p]["img"] . "' height=150px></td>
+                    <td><img src='../." . $logos[$p]["img_vectorizada"] . "' alt='" . $logos[$p]["img_vectorizada"] . "' height=150px></td>
                     <td>" . $logos[$p]["obsoleto"] . "</td>
-                    <td>" . $clientes[$logos[$p]["id_cliente"]-1]["nombre"] . "</td>
+                    <td>" . $clientes[$logos[$p]["id_cliente"] - 1]["nombre"] . "</td>
                     <td> 
-                        <form action='deletelogo.php'> <input name='id[]' type='hidden' value=". $logos[$p]["id"] ."></input> <button>Borrar</button> </form> 
+                        <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatelogo.php' method='post'> 
-                            <input name='id[]' type='hidden' value=". $logos[$p]["id"] ."></input>
-                            <input name='obsoleto[]' type='hidden' value=". urlencode($logos[$p]["obsoleto"]) ."></input> 
-                            <button>Editar Estado</button> 
+                            <input name='id[]' type='hidden' value=" . $logos[$p]["id"] . "></input>
+                            <input name='obsoleto[]' type='hidden' value=" . urlencode($logos[$p]["obsoleto"]) . "></input> 
+                            <button>Editar Estado<ion-icon name='create'></button> 
                         </form>
 
                     </td>
-                </tr>"; 
-   
-            }
-            ?>
+                </tr>";
+
+    }
+    echo "</table>"
+        ?>
+    <?php include "./menuLogos.php" ?>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
