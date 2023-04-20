@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Articulos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles2.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     $tipo_articulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 
     echo "<form action='formcreatetipoarticulo.php'>
-            <button >Crear Tipo Articulo</button>
+            <button id='boton-crear'>Crear Tipo Articulo</button>
           </form>";
 
     echo "<table>

@@ -1,6 +1,6 @@
 <?php
 echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../menu2.css'>
     <div id='menu-lateral'>
         <div id='desplegable-lateral' onclick='desplegarMenu()'>
             <div id='flecha-lateral'></div>
