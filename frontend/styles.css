@@ -8,6 +8,10 @@ body {
   overflow-x: unset;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 h1 {
   font-size: 20px;
 }
@@ -62,9 +66,10 @@ textarea {
 
 #pagina {
   z-index: 1;
-  width: calc(100vw - 340px);
+  width: calc(100vw - 360px);
   position: absolute;
   left: 20px;
+  right: 320px;
   top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
