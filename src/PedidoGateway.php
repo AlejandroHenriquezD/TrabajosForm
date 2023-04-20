@@ -32,12 +32,14 @@ class PedidoGateway
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO pedidos (id_cliente)
-                VALUES (:id_cliente)";
+        $sql = "INSERT INTO pedidos (id_cliente,serie,numero)
+                VALUES (:id_cliente,:serie,:numero)";
 
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(":id_cliente", $data["id_cliente"], PDO::PARAM_INT);
+        $stmt->bindValue(":serie", $data["serie"], PDO::PARAM_STR);
+        $stmt->bindValue(":numero", $data["numero"], PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -68,7 +70,7 @@ class PedidoGateway
     public function update(array $current, array $new): int
     {
         $sql = "UPDATE pedidos
-        SET id_cliente = :id_cliente
+        SET id_cliente = :id_cliente, serie = :serie, numero = :numero
         WHERE id = :id";
 
         
@@ -76,6 +78,8 @@ class PedidoGateway
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(":id_cliente", $new["id_cliente"] ?? $current["id_cliente"], PDO::PARAM_INT);
+        $stmt->bindValue(":serie", $new["serie"] ?? $current["serie"], PDO::PARAM_STR);
+        $stmt->bindValue(":numero", $new["numero"] ?? $current["numero"], PDO::PARAM_STR);
         $stmt->bindValue(":id", $current["id"], PDO::PARAM_INT);
 
         $stmt->execute();

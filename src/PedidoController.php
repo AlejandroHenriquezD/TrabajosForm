@@ -106,6 +106,12 @@ class PedidoController
         if ($is_new && (empty($data["id_cliente"]))) {
             $errors[] = "Cliente es necesario";
         }
+        if ($is_new && (empty($data["serie"]))) {
+            $errors[] = "Serie es necesaria";
+        }
+        if ($is_new && (empty($data["numero"]))) {
+            $errors[] = "Numero es necesario";
+        }
 
         return $errors;
     }

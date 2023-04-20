@@ -109,6 +109,21 @@ class ClienteController
         if ($is_new && (empty($data["telefono"]))) {
             $errors[] = "Telefono es necesario";
         }
+        if ($is_new && (empty($data["correo"]))) {
+            $errors[] = "Correo es necesario";
+        }
+        if ($is_new && (empty($data["direccion"]))) {
+            $errors[] = "Dirección es necesaria";
+        }
+        if ($is_new && (empty($data["cif_nif"]))) {
+            $errors[] = "Cif / Nif es necesario";
+        }
+        if ($is_new && (empty($data["numero_cliente"]))) {
+            $errors[] = "Numero Cliente es necesario";
+        }
+        if ($is_new && (empty($data["razon_social"]))) {
+            $errors[] = "Razon Social es necesaria";
+        }
 
         return $errors;
     }
