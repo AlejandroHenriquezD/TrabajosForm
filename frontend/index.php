@@ -416,6 +416,7 @@ echo "<!DOCTYPE html>
   }
 
 </script>
+<div id='container'>
   <div id='pagina'>
     <form id='formulario' action='resultado.php' method='post'>";
 echo $divPedidos;
@@ -454,6 +455,7 @@ echo "
     <div class='ball' id='blueball1'/>
     <div class='ball' id='blueball2'/>
     <div class='ball' id='yellowball1'/>
+  </div>
   </div>
 </body>
 </html>";
