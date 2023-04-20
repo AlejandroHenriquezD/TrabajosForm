@@ -30,20 +30,21 @@
               <th>Cliente</th>
               <th>Acciones</th>
             </tr>";
-    for ($p = 0; $p < count($logos); $p++) {
+    foreach ($logos as $logo) {
+        $cliente = json_decode(file_get_contents("http://localhost/trabajosform/clientes/" . $logo["id_cliente"]), true);
         echo
             "<tr class='fila'>
-                    <td>" . $logos[$p]["id"] . "</td>
-                    <td><img src='../." . $logos[$p]["img"] . "' alt='" . $logos[$p]["img"] . "' height=150px></td>
-                    <td><img src='../." . $logos[$p]["img_vectorizada"] . "' alt='" . $logos[$p]["img_vectorizada"] . "' height=150px></td>
-                    <td>" . $logos[$p]["obsoleto"] . "</td>
-                    <td>" . $clientes[$logos[$p]["id_cliente"] - 1]["nombre"] . "</td>
+                    <td>" . $logo["id"] . "</td>
+                    <td><img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px></td>
+                    <td><img src='../." . $logo["img_vectorizada"] . "' alt='" . $logo["img_vectorizada"] . "' height=150px></td>
+                    <td>" . $logo["obsoleto"] . "</td>
+                    <td>" . $cliente["nombre"] . "</td>
                     <td> 
-                        <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+                        <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatelogo.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $logos[$p]["id"] . "></input>
-                            <input name='obsoleto[]' type='hidden' value=" . urlencode($logos[$p]["obsoleto"]) . "></input> 
+                            <input name='id[]' type='hidden' value=" . $logo["id"] . "></input>
+                            <input name='obsoleto[]' type='hidden' value=" . urlencode($logo["obsoleto"]) . "></input> 
                             <button>Editar Estado<ion-icon name='create'></button> 
                         </form>
 
