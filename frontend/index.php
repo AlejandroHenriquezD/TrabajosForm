@@ -453,7 +453,7 @@ echo "
     <div class='ball' id='redball3'/>
     <div class='ball' id='blueball1'/>
     <div class='ball' id='blueball2'/>
-    <div class='ball' id='blueball3'/>
+    <div class='ball' id='yellowball1'/>
   </div>
 </body>
 </html>";

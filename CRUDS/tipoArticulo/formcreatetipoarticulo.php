@@ -4,24 +4,22 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
 
     <h1>Tipo Articulo</h1>
+    <div id='div-form'>
+        <form action="../../createtipoarticulo.php" method="post" enctype="multipart/form-data">
+            <label for="nombre">Nombre</label>
+            <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
 
-    <form action="../../createtipoarticulo.php" method="post" enctype="multipart/form-data">
-        <label for="nombre">Nombre</label>
-        <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
-
-        <label for="image">Image file</label>
-        <input type="file" id="image" name="image">
-
-        </br>
-
-        <button>Crear</button>
-    </form>
+            <label for="image">Image file</label>
+            <input type="file" id="image" name="image">
+            <button>Crear</button>
+        </form>
+    </div>
     <?php include "./menuTipoArticulo.php" ?>
 </body>
 

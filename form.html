@@ -4,7 +4,7 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>

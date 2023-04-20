@@ -4,7 +4,7 @@
   position: fixed;
   right: -300px;
   top: 0;
-  background-color: rgba(225, 225, 225, 1);
+  background-color: #0e1c2e;
   z-index: 4;
 }
 
@@ -22,7 +22,7 @@
 }
 
 #menu-lateral a {
-  color:#0e1c2e;
+  color:#fff;
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -41,7 +41,7 @@
 }
 
 #desplegable-lateral {
-  background-color: rgba(225, 225, 225, 1);
+  background-color: #0e1c2e;
   height: 90px;
   width: 60px;
   position: absolute;
@@ -62,12 +62,12 @@
   height: 0;
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
-  border-right: 10px solid #0e1c2e;
+  border-right: 10px solid #fff;
 }
 
 .flecha-lateral-desplegada {
   border-right: 0 !important;
-  border-left: 10px solid #0e1c2e;
+  border-left: 10px solid #fff;
 }
 
 #filtro {

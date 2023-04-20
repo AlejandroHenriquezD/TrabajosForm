@@ -16,6 +16,7 @@ echo "
         </div>
     </div>";
 ?>
+<?php include "../background.php" ?>
 <script>
 function desplegarMenu() {
   var menu = document.getElementById('menu-lateral');

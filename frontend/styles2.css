@@ -405,7 +405,7 @@ textarea {
   left: 50vw;
 }
 
-#blueball3 {
+#yellowball1 {
   background-color: #f0cb25;
   height: 30vw;
   width: 30vw;
@@ -438,6 +438,7 @@ textarea {
 .msg-div {
   display: grid;
   grid-template-columns: 5fr 1fr;
+  column-gap: 20px;
   align-items: center;
 }
 
