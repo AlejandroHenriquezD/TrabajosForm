@@ -76,4 +76,6 @@
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 2;
+  top: 0;
+  left: 0;
 }

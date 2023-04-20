@@ -6,11 +6,16 @@ body {
   align-items: center;
   font-family: "Tilt Neon", cursive;
   background-color: #0e1c2e;
+  margin: 0;
 }
 
 button {
   font-family: "Tilt Neon", cursive;
   cursor: pointer;
+}
+
+#boton-crear {
+  margin-top: 20px;
 }
 
 tr {
@@ -44,7 +49,6 @@ th, */
 th,
 td {
   padding: 15px;
-  
 }
 
 td form {
@@ -67,4 +71,3 @@ ion-icon {
   height: 20px;
   width: 20px;
 }
-
