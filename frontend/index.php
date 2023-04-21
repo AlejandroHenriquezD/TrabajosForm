@@ -166,7 +166,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles4.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='validar();'>
 <script>
@@ -257,19 +257,22 @@ echo "<!DOCTYPE html>
     var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      document.getElementById('pedidos').removeChild(bocetoAntiguo);
+      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
     }
 
     var serie = document.getElementById('serie').value;
     var numero = document.getElementById('numero').value;
+    var divpdf = document.createElement('div');
+    divpdf.id = 'div-pdf';
     if(serie != null && numero != '') {
       for(pedido of pedidos) {
         if(serie == pedido['serie'] && numero == pedido['numero']) {
           var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
           var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
-          document.getElementById('pedidos').appendChild(boceto);
+          document.getElementById('listaCheck').appendChild(boceto);
           document.getElementById('pedidos').appendChild(articulo);
+          document.getElementsByClassName('boceto')[0].appendChild(divpdf);
 
           elementoActual = pedido['id'];
           document.getElementById('numero_pedido').value = elementoActual;
@@ -498,8 +501,6 @@ echo "<!DOCTYPE html>
     </form>
   </div>
   <div id='listaCheck'>
-    <div id='div-pdf'>
-    </div>
   </div>
   
   <div id='menu-lateral'>
@@ -581,11 +582,11 @@ echo "<!DOCTYPE html>
       }
     }
 
-    if(listaCheck.querySelector('msg-ped')) {
+    if (listaCheck.querySelector('msg-ped')) {
       listaCheck.removeChild(listaCheck.querySelector('msg-ped'));
     }
 
-    if(listaCheck.querySelectorAll('.msg-art').length === 0) {
+    if (listaCheck.querySelectorAll('.msg-art').length === 0) {
       let msg = document.createElement('msg-ped')
       msg.innerHTML = "<p>Seleccione un pedido</p>";
       listaCheck.appendChild(msg);

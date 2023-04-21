@@ -6,7 +6,6 @@ body {
   font-family: "Tilt Neon", cursive;
   margin: 0;
   overflow-x: unset;
-  
 }
 
 body {
@@ -47,14 +46,14 @@ input[type="submit"] {
   width: 60px;
   border-radius: 5px;
   background-color: #0e1c2e;
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   border: 0;
   padding: 5px;
   cursor: pointer;
 }
 
-input[type=submit]:disabled {
-  background-color:rgba(128, 128, 128, 1);
+input[type="submit"]:disabled {
+  background-color: rgba(128, 128, 128, 1);
   cursor: default;
 }
 
@@ -149,7 +148,7 @@ textarea {
 }
 
 #menu-lateral a {
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -157,11 +156,11 @@ textarea {
 }
 
 #menu-lateral a:hover {
-  color:#f0cb25;
+  color: #f0cb25;
 }
 
 #menu-lateral p {
-  color:#00bb2d;
+  color: #00bb2d;
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -489,7 +488,10 @@ textarea {
 }
 
 .msg-art-verde {
-  color: #00bb2d
+  color: #00bb2d;
 }
 
-
+.boceto {
+  position: absolute;
+  top: calc(100% + 20px);
+}
