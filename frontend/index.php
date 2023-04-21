@@ -49,7 +49,7 @@ $divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
@@ -78,7 +78,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   };
 
 
-  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
+  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1><div id='cb-articulos'>";
   for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
     if ($pedidosArticulos[$j]['id_pedido'] == $pedidos[$o]['id']) {
       $relacion[$o][$j] = $pedidosArticulos[$j]['id_articulo'];
@@ -88,8 +88,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     for ($i = 0; $i < $numeroArticulos; $i++) {
       if ($relacion[$o][$j] == $articulos[$i]['id']) {
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
-        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
+        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">";
+        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>" . $articulos[$i]['descripcion'] . "</label>";
         $arrayArticulos[$o] .= "</div>";
       }
       $arrayTipoArticulos[$o][$i] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}\">";
@@ -102,8 +102,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         $trabajos[$o][$i][$a] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
         for ($t = 0; $t < $numeroTrabajos; $t++) {
           $trabajos[$o][$i][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
+          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
           $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
-          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
+          $trabajos[$o][$i][$a] .= $tiposTrabajos[$t]['nombre'] . "</label>";
           $trabajos[$o][$i][$a] .= "</div>";
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
@@ -112,8 +113,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
               // Obtiene la posición del array donde se encuentra el id de la posición
               $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
               $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
+              $posiciones[$o][$i][$a][$t] .= $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
             }
             // Iba dentro del if de arriba
@@ -137,7 +139,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
     }
   }
-  $arrayArticulos[$o] .= "</div>";
+  $arrayArticulos[$o] .= "</div></div>";
 }
 $divPedidos .= "</div>";
 
@@ -487,7 +489,7 @@ echo "<!DOCTYPE html>
     <form id='formulario' action='resultado.php' method='post'>
       <div id='pedidos'>
         <div id='divPedidos'>
-          <h1>Pedido</h1>
+          <h1 class='titulo'>Pedido</h1>
           <label>Serie <input id='serie' type='text' value='' onchange=mostrarArticulos()></label>
           <label>Número <input id='numero' type='text' value='' onchange=mostrarArticulos()></label>
         </div>
