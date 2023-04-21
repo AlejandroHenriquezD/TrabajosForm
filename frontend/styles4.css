@@ -17,6 +17,20 @@ h1 {
   font-size: 20px;
 }
 
+.titulo {
+  margin: 0px;
+}
+
+.articulo,
+.tipoArticulo,
+.trabajos,
+.posicion,
+.logos,
+#observaciones {
+  margin-top: 20px;
+}
+
+
 #numero_pedido {
   height: 0;
   width: 0;
@@ -33,6 +47,7 @@ input[type="checkbox"] {
   height: 20px;
   width: 20px;
   border-radius: 0%;
+  margin-right: 5px;
 }
 
 input[type="radio"] {
@@ -58,6 +73,11 @@ input[type=submit]:disabled {
   cursor: default;
 }
 
+label {
+  display: flex;
+  top: 0;
+}
+
 button {
   font-family: "Tilt Neon", cursive;
 }
@@ -75,6 +95,7 @@ textarea {
   width: 99%;
   height: 80px;
   margin-bottom: 13px;
+  border-radius: 5px;
 }
 
 #background {
@@ -88,14 +109,14 @@ textarea {
 
 #pagina {
   z-index: 1;
-  width: calc(100vw - 360px);
+  width: calc(100vw - 380px);
   position: absolute;
   left: 20px;
-  right: 320px;
   top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
+  padding: 20px;
 }
 
 #formulario {
@@ -123,6 +144,9 @@ textarea {
   top: calc(100% + 20px);
   border-radius: 5px;
   background-color: rgba(225, 225, 225, 0.7);
+  display: flex;
+  justify-content: center;
+  color: red;
 }
 
 #menu-lateral {
@@ -218,9 +242,22 @@ textarea {
 } */
 
 #divPedidos {
+  display: grid;
   width: 50%;
   position: relative;
   float: left;
+  row-gap: 10px;
+}
+
+#divPedidos label {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+#divPedidos input {
+  border-radius: 20px;
+  border: 1px solid #000;
 }
 
 .boceto {
@@ -235,6 +272,10 @@ textarea {
   position: relative;
   float: left;
   /* border: 10px solid rgba(14, 28, 46, 0.9); */
+}
+
+#cb-articulos label {
+  margin-bottom: 5px;
 }
 
 .trabajos {
@@ -461,6 +502,11 @@ textarea {
 /* Estilo de la barra de desplazamiento al hacer hover */
 .slider:hover::-webkit-scrollbar-thumb {
   background-color: #00871f; /* color del pulgar de la barra de desplazamiento al hacer hover */
+}
+
+msg-ped {
+  display: flex;
+  justify-content: center;
 }
 
 .msg-art {
