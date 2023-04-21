@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bocetos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles2.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
     $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
     echo "<form action='formcreateboceto.php'>
-            <button >Crear Boceto</button>
+            <button id='boton-crear'>Crear Boceto</button>
           </form>";
 
     echo "<table>
@@ -29,19 +29,20 @@
               <th>Cliente</th>
               <th>Acciones</th>
             </tr>";
-    for ($p = 0; $p < count($bocetos); $p++) {
+    foreach ($bocetos as $boceto) {
+        $cliente = json_decode(file_get_contents("http://localhost/trabajosform/clientes/" . $boceto["id_cliente"]), true);
         echo
             "<tr class='fila'>
-                    <td>" . $bocetos[$p]["id"] . "</td>
-                    <td>" . $bocetos[$p]["nombre"] . "</td>
-                    <td>" . $bocetos[$p]["pdf"] . "</td>
-                    <td>" . $clientes[$bocetos[$p]["id_cliente"] - 1]["nombre"] . "</td>
+                    <td>" . $boceto["id"] . "</td>
+                    <td>" . $boceto["nombre"] . "</td>
+                    <td>" . $boceto["pdf"] . "</td>
+                    <td>" . $cliente["nombre"] . "</td>
                     <td> 
-                        <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+                        <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdateboceto.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $bocetos[$p]["id"] . "></input>
-                            <input name='nombre[]' type='hidden' value=" . urlencode($bocetos[$p]["nombre"]) . "></input> 
+                            <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input>
+                            <input name='nombre[]' type='hidden' value=" . urlencode($boceto["nombre"]) . "></input> 
                             <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
                     </td>

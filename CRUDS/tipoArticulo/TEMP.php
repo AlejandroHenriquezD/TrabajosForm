@@ -2,9 +2,9 @@
 
 $id = $_GET["id"][0];
 
-$tipo_articulo = json_decode(file_get_contents("http://localhost/API/tipo_articulos/". $id), true);
+$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/". $id), true);
 
-$posiciones = json_decode(file_get_contents("http://localhost/API/posiciones"), true);;
+$posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);;
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -21,7 +21,7 @@ $sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" .$id;
 $result = mysqli_query($conn, $sql);
 
 
-
+echo "<link rel='stylesheet' href='../../styles.css'>";
 echo "<h1>".$tipo_articulo["nombre"] ."</h1>";
 
 echo "<h2>Posiciones Actuales</h2>
@@ -50,18 +50,22 @@ if (mysqli_num_rows($result) > 0) {
 echo "</table>";
 
 echo "<h2>Añadir Posiciones</h2>
-      <form action='createrelacion.php' method='post'>
-      <label for='id'>Posición</label>
-      <select name='id_posicion'>";
-foreach ($posiciones as $posicion) {
-  echo "
-        <option value='".$posicion["id"]."' id='id_posicion' name='id_posicion'>".$posicion["descripcion"]."</option>";
-}
+      <div id='añadir-posiciones'>
+        <form action='createrelacion.php' method='post'>
+          <label for='id'>Posición</label>
+          <div id='select-button'>
+            <select name='id_posicion'>";
+      foreach ($posiciones as $posicion) {
+        echo "
+              <option value='".$posicion["id"]."' id='id_posicion' name='id_posicion'>".$posicion["descripcion"]."</option>";
+      }
 
-echo "<input type='hidden' value='".$id."' name='id_tipoarticulo' id='id_tipoarticulo'/>
-      </select>
-      <button>Añadir</button>
-      </form>";
+        echo "<input type='hidden' value='".$id."' name='id_tipoarticulo' id='id_tipoarticulo'/>
+            </select>
+          <button>Añadir</button>
+          </div>
+        </form>
+      </div>";
 ?>
 <?php include "./menuTipoArticulo.php" ?>
 

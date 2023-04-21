@@ -4,7 +4,7 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -14,15 +14,15 @@
     
     $nombre = str_replace('+',' ',$_POST["nombre"][0]);
     echo "
-    <form action='updatetipotrabajo.php' method='post' enctype='multipart/form-data'>
+    <div id='div-form'>
+        <form action='updatetipotrabajo.php' method='post' enctype='multipart/form-data'>
 
-        <label for='nombre'>Nombre</label>
-        <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
-        <input required value='" . $nombre ."' type='text' id='nombre' name='nombre' placeholder='Nombre' />
-        </br> 
-
-        <button>Editar</button>
-    </form>";
+            <label for='nombre'>Nombre</label>
+            <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
+            <input required value='" . $nombre ."' type='text' id='nombre' name='nombre' placeholder='Nombre' />
+            <button>Editar</button>
+        </form>
+    </div>";
     ?>
     <?php include "./menuTipoTrabajo.php" ?>
 <!-- "    <form action="updatepos.php" method="post" enctype="multipart/form-data">

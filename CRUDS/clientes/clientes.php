@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles2.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
     echo "<form action='formcreatecliente.php'>
-            <button >Crear Cliente</button>
+            <button id='boton-crear'>Crear Cliente</button>
           </form>";
 
     echo "<table>

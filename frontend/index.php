@@ -165,7 +165,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='primeraFuncion();'>
 <script>
@@ -178,7 +178,6 @@ echo "<!DOCTYPE html>
   }
 
   var bocetosUrl = $bocetosUrl;
-  console.log(bocetosUrl);
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
@@ -224,7 +223,6 @@ echo "<!DOCTYPE html>
   }
 
   function obtenerElemento(array, id) {
-    console.log(id);
     var elemento = array.find(a => a.id === id);
     return elemento;
   }
@@ -418,6 +416,7 @@ echo "<!DOCTYPE html>
   }
 
 </script>
+<div id='container'>
   <div id='pagina'>
     <form id='formulario' action='resultado.php' method='post'>";
 echo $divPedidos;
@@ -455,7 +454,8 @@ echo "
     <div class='ball' id='redball3'/>
     <div class='ball' id='blueball1'/>
     <div class='ball' id='blueball2'/>
-    <div class='ball' id='blueball3'/>
+    <div class='ball' id='yellowball1'/>
+  </div>
   </div>
 </body>
 </html>";
@@ -504,9 +504,7 @@ echo "
       }
 
       // Si el formulario es válido, te lo indico
-      if (valido) {
-        console.log("El menú con id " + ma.id + " está completo.");
-      } else if (!listaCheck.querySelector('ar')) {
+      if (!valido && !listaCheck.querySelector('ar')) {
         let msg = document.createElement('ar');
         msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
         listaCheck.appendChild(msg);
@@ -563,16 +561,9 @@ echo "
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (valido[i]) {
-          console.log("El menú con id " + mta.id + " está completo.");
-        } else {
-          // Si no hay mensajes de error, añadimos uno
-          if (msgArt[i].id.split('-')[2] === id[1]) {
-            if (!msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
-              let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
-              msgArt[i].appendChild(msg);
-            }
-          }
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
+          let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
+          msgArt[i].appendChild(msg);
         }
       }
     }
@@ -629,16 +620,9 @@ echo "
 
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
-          if (valido[i]) {
-            console.log("El menú con id " + mt.id + " está completo.");
-          } else {
-            // Si no hay mensajes de error, añadimos uno
-            if (msgArt[i].id.split('-')[2] === id[1]) {
-              if (!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
-                let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
-                msgArt[i].appendChild(msg);
-              }
-            }
+          if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
+            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
+            msgArt[i].appendChild(msg);
           }
         }
       }
@@ -691,16 +675,9 @@ echo "
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (valido[i]) {
-          console.log("El menú con id " + mp.id + " está completo.");
-        } else {
-          // Si no hay mensajes de error, añadimos uno
-          if (msgArt[i].id.split('-')[2] === id[1]) {
-            if (!msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
-              let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
-              msgArt[i].appendChild(msg);
-            }
-          }
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
+          let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
+          msgArt[i].appendChild(msg);
         }
       }
     }
@@ -755,16 +732,9 @@ echo "
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (valido[i]) {
-          console.log("El menú con id " + ml.id + " está completo.");
-        } else {
-          // Si no hay mensajes de error, añadimos uno
-          if (msgArt[i].id.split('-')[2] === id[1]) {
-            if (!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
-              let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
-              msgArt[i].appendChild(msg);
-            }
-          }
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
+          let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
+          msgArt[i].appendChild(msg);
         }
       }
     }

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posiciones</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles2.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     $posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
 
     echo "<form action='formcreatepos.php'>
-            <button >Crear Posición</button>
+            <button id='boton-crear'>Crear Posición</button>
           </form>";
 
     echo "<table>
