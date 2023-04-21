@@ -141,6 +141,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 }
 $divPedidos .= "</div>";
 
+$pedidos = json_encode($pedidos);
 $bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
@@ -165,9 +166,9 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles4.css'>
 </head>
-<body onload='primeraFuncion();'>
+<body onload='validar();'>
 <script>
   function elementFromHtml(html) {
     const template = document.createElement('template');
@@ -177,6 +178,7 @@ echo "<!DOCTYPE html>
     return template.content.firstElementChild;
   }
 
+  var pedidos = $pedidos;
   var bocetosUrl = $bocetosUrl;
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
@@ -210,15 +212,15 @@ echo "<!DOCTYPE html>
   var elementoActual = null;
   
   function primeraFuncion() {
-    document.getElementById('pedidos').appendChild(bocetos[0]);
-    document.getElementById('pedidos').appendChild(articulos[0]);
-    var select = document.getElementById('selectPedido');
-    elementoActual = select.options[select.selectedIndex].value;
+    // document.getElementById('pedidos').appendChild(bocetos[0]);
+    // document.getElementById('pedidos').appendChild(articulos[0]);
+    // var select = document.getElementById('selectPedido');
+    // elementoActual = select.options[select.selectedIndex].value;
 
 
-    var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
-    document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
-    updatePdf();
+    // var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
+    // document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
+    // updatePdf();
     validar();
   }
 
@@ -228,24 +230,60 @@ echo "<!DOCTYPE html>
   }
 
   function indexPedido() {
-    var select = document.getElementById('selectPedido');
-    return select.selectedIndex;
+    // var select = document.getElementById('selectPedido');
+    // return select.selectedIndex;
+    var pedido = obtenerElemento(pedidos, elementoActual);
+    var index = pedidos.indexOf(pedido);
+    return index;
   }
 
-  function mostrarArticulos(elemento) {
-    var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+  // function mostrarArticulos(elemento) {
+  //   var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+  //   var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+  //   document.getElementById('pedidos').removeChild(bocetoAntiguo);
+  //   document.getElementById('pedidos').appendChild(boceto);
+
+  //   var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
+  //   var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
+  //   document.getElementById('pedidos').removeChild(articuloAntiguo);
+  //   document.getElementById('pedidos').appendChild(articulo);
+
+  //   elementoActual = elemento;
+  //   updatePdf()
+  //   validar()
+  // }
+
+  function mostrarArticulos() {
     var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
-    document.getElementById('pedidos').removeChild(bocetoAntiguo);
-    document.getElementById('pedidos').appendChild(boceto);
-
-    var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
-    document.getElementById('pedidos').removeChild(articuloAntiguo);
-    document.getElementById('pedidos').appendChild(articulo);
+    if(elementoActual != null) {
+      document.getElementById('pedidos').removeChild(bocetoAntiguo);
+      document.getElementById('pedidos').removeChild(articuloAntiguo);
+    }
 
-    elementoActual = elemento;
-    updatePdf()
-    validar()
+    var serie = document.getElementById('serie').value;
+    var numero = document.getElementById('numero').value;
+    if(serie != null && numero != '') {
+      for(pedido of pedidos) {
+        if(serie == pedido['serie'] && numero == pedido['numero']) {
+          var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
+          var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
+          document.getElementById('pedidos').appendChild(boceto);
+          document.getElementById('pedidos').appendChild(articulo);
+
+          elementoActual = pedido['id'];
+          document.getElementById('numero_pedido').value = elementoActual;
+          
+          break;
+        } else {
+          elementoActual = null;
+        }
+      }
+    } else {
+      elementoActual = null;
+    }
+    updatePdf();
+    validar();
   }
 
   function mostrarTiposArticulos(elemento) {
@@ -403,27 +441,60 @@ echo "<!DOCTYPE html>
   // }
 
   function updatePdf() {
-    var option = document.getElementById('selectBoceto').value;
-    var urlBoceto = null;
-    for(var p=0; p < document.getElementById('selectPedido').length; p++) {
-      if(bocetosUrl[p][option]) {
-        var urlBoceto = '.' + bocetosUrl[p][option];
-        break;
-      }
+    var divPdf = document.getElementById('div-pdf');
+    var pdf = document.getElementById('pdf');
+    if(pdf != null){
+      divPdf.removeChild(pdf);
     }
-    var iframe = document.getElementsByTagName('iframe')[0];
-    iframe.src = urlBoceto;
+
+    var option = document.getElementById('selectBoceto').value;
+    if(option != null) {
+      var urlBoceto = null;
+      for(var p=0; p < pedidos.length; p++) {
+        if(bocetosUrl[p][option]) {
+          var urlBoceto = '.' + bocetosUrl[p][option];
+          break;
+        }
+      }
+      
+      fetch(urlBoceto)
+      .then(response => {
+        if (response.ok) {
+          pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
+          pdf.src = urlBoceto;
+          divPdf.appendChild(pdf);
+        } else {
+          pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');
+          divPdf.appendChild(pdf);
+          throw new Error('El archivo no se pudo obtener');
+        }
+      })
+      .catch(error => {
+        if (error.message === 'El archivo no se pudo obtener') {
+          console.log(error.message);
+        } else {
+          console.log('Error:', error.message);
+        }
+      });
+    }
   }
 
 </script>
-<div id='container'>
   <div id='pagina'>
-    <form id='formulario' action='resultado.php' method='post'>";
-echo $divPedidos;
-echo "
-      <h1>Observaciones</h1>
-      <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
+    <form id='formulario' action='resultado.php' method='post'>
+      <div id='pedidos'>
+        <div id='divPedidos'>
+          <h1>Pedido</h1>
+          <label>Serie <input id='serie' type='text' value='' onchange=mostrarArticulos()></label>
+          <label>Número <input id='numero' type='text' value='' onchange=mostrarArticulos()></label>
+        </div>
+      </div>
+      <div id='observaciones'>
+        <h1>Observaciones</h1>
+        <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
+      </div>
       <input type='submit' id='enviar' disabled>
+      <input type='text' id='numero_pedido' name='numero_pedido' value=''>
     </form>
   </div>
   <div id='listaCheck'>
@@ -455,7 +526,6 @@ echo "
     <div class='ball' id='blueball1'/>
     <div class='ball' id='blueball2'/>
     <div class='ball' id='yellowball1'/>
-  </div>
   </div>
 </body>
 </html>";
@@ -509,6 +579,16 @@ echo "
         msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
         listaCheck.appendChild(msg);
       }
+    }
+
+    if(listaCheck.querySelector('msg-ped')) {
+      listaCheck.removeChild(listaCheck.querySelector('msg-ped'));
+    }
+
+    if(listaCheck.querySelectorAll('.msg-art').length === 0) {
+      let msg = document.createElement('msg-ped')
+      msg.innerHTML = "<p>Seleccione un pedido</p>";
+      listaCheck.appendChild(msg);
     }
   }
 
@@ -766,7 +846,7 @@ echo "
     let listaCheck = document.querySelector("#listaCheck");
     button.disabled = false;
 
-    if (listaCheck.contains(document.querySelector('ar'))) {
+    if (listaCheck.contains(document.querySelector('ar')) || listaCheck.contains(document.querySelector('msg-ped'))) {
       button.disabled = true;
     }
     for (m of msgArt) {
