@@ -12,6 +12,7 @@ $conn = mysqli_connect(
 );
 
 $pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 $pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
 $articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
@@ -144,6 +145,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 $divPedidos .= "</div>";
 
 $pedidos = json_encode($pedidos);
+$clientes = json_encode($clientes);
 $bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
@@ -168,7 +170,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body onload='validar();'>
 <script>
@@ -181,6 +183,7 @@ echo "<!DOCTYPE html>
   }
 
   var pedidos = $pedidos;
+  var clientes = $clientes;
   var bocetosUrl = $bocetosUrl;
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
@@ -261,18 +264,30 @@ echo "<!DOCTYPE html>
     if(elementoActual != null) {
       document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
+      document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
 
     var serie = document.getElementById('serie').value;
     var numero = document.getElementById('numero').value;
     var divpdf = document.createElement('div');
+    var divcli = document.createElement('div');
+    divcli.id = 'div-cli';
     divpdf.id = 'div-pdf';
     if(serie != null && numero != '') {
       for(pedido of pedidos) {
         if(serie == pedido['serie'] && numero == pedido['numero']) {
+          console.log(clientes);
+          for(cliente of clientes) {
+            if(cliente.id === pedido['id_cliente']){
+              divcli.innerHTML = '<h1 class=\"titulo\">Cliente</h1>';
+              divcli.innerHTML += '<div class=\"datoscli\"><p>Nombre: ' + cliente['nombre'] + '</p><p>Teléfono: ' + cliente['telefono'] + '</p><p>Correo: ' + cliente['correo'] + '</p><p>Dirección: ' + cliente['dirección'] + '</p></div>';
+              divcli.innerHTML += '<div class=\"datoscli\"><p>CIF/NIF: ' + cliente['cif_nif'] + '</p><p>Número de cliente: ' + cliente['numero_cliente'] + '</p><p>Razón social: ' + cliente['razon_social'] + '</p></div>';
+            }
+          }
           var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
           var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
           document.getElementById('listaCheck').appendChild(boceto);
+          document.getElementById('pedidos').appendChild(divcli);
           document.getElementById('pedidos').appendChild(articulo);
           document.getElementsByClassName('boceto')[0].appendChild(divpdf);
 
