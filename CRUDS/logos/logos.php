@@ -45,7 +45,7 @@
                         <form action='formupdatelogo.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $logo["id"] . "></input>
                             <input name='obsoleto[]' type='hidden' value=" . urlencode($logo["obsoleto"]) . "></input> 
-                            <button>Editar Estado<ion-icon name='create'></button> 
+                            <button>Editar<ion-icon name='create'></button> 
                         </form>
 
                 </td>

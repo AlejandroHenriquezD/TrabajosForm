@@ -10,20 +10,18 @@ $filename = $base . "." . $pathinfo["extension"];
 $destination = __DIR__ . "/uploads/" . $filename;
 
 
-$pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
+// $pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
 
-$base1 = $pathinfo1["filename"];
+// $base1 = $pathinfo1["filename"];
 
-$base1 = preg_replace("/[^\w-]/", "_", $base1);
+// $base1 = preg_replace("/[^\w-]/", "_", $base1);
 
-$filename1 = $base1 . "." . $pathinfo1["extension"];
+// $filename1 = $base1 . "." . $pathinfo1["extension"];
 
-$destination1 = __DIR__ . "/uploads/" . $filename1;
+// $destination1 = __DIR__ . "/uploads/" . $filename1;
 
 $img = "./uploads/" . $filename;
-$img_vectorizada = "./uploads/" . $filename1;
-echo $img;
-echo $img_vectorizada;
+$img_vectorizada = "FALTA";
 $id_cliente = $_POST["id_cliente"];
 
 // if ( ! $terms){
@@ -136,15 +134,15 @@ $destination = __DIR__ . "/uploads/" . $filename;
 
 
 
-$pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
+// $pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
 
-$base1 = $pathinfo1["filename"];
+// $base1 = $pathinfo1["filename"];
 
-$base1 = preg_replace("/[^\w-]/", "_", $base1);
+// $base1 = preg_replace("/[^\w-]/", "_", $base1);
 
-$filename1 = $base1 . "." . $pathinfo1["extension"];
+// $filename1 = $base1 . "." . $pathinfo1["extension"];
 
-$destination1 = __DIR__ . "/uploads/" . $filename1;
+// $destination1 = __DIR__ . "/uploads/" . $filename1;
 
 // Add a numeric suffix if the file already exists
 $i = 1;
@@ -164,17 +162,15 @@ if (!move_uploaded_file($_FILES["img"]["tmp_name"], $destination)) {
 
 
 
-while (file_exists($destination1)) {
+// while (file_exists($destination1)) {
 
-    $filename1 = $base1 . "($i)." . $pathinfo1["extension"];
-    $destination1 = __DIR__ . "/uploads/" . $filename1;
+//     $filename1 = $base1 . "($i)." . $pathinfo1["extension"];
+//     $destination1 = __DIR__ . "/uploads/" . $filename1;
 
-    $i++;
-}
+//     $i++;
+// }
 
-if (!move_uploaded_file($_FILES["img_vectorizada"]["tmp_name"], $destination1)) {
+// if (!move_uploaded_file($_FILES["img_vectorizada"]["tmp_name"], $destination1)) {
 
-    exit("Can't move uploaded file");
-}
-
-echo "Registro Guardado.";
+//     exit("Can't move uploaded file");
+// }

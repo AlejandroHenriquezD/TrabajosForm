@@ -15,8 +15,8 @@
             <label for="img">Imagen</label>
             <input required type="file" id="img" name="img" />
             
-            <label for="img_vectorizada">Imagen Vectorizada</label>
-            <input type="file" id="img_vectorizada" name="img_vectorizada" />
+            <!-- <label for="img_vectorizada">Imagen Vectorizada</label>
+            <input type="file" id="img_vectorizada" name="img_vectorizada" /> -->
 
             <?php
             $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
