@@ -49,7 +49,7 @@ $divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
@@ -78,7 +78,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   };
 
 
-  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1>";
+  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1><div id='cb-articulos'>";
   for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
     if ($pedidosArticulos[$j]['id_pedido'] == $pedidos[$o]['id']) {
       $relacion[$o][$j] = $pedidosArticulos[$j]['id_articulo'];
@@ -88,8 +88,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     for ($i = 0; $i < $numeroArticulos; $i++) {
       if ($relacion[$o][$j] == $articulos[$i]['id']) {
         $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>";
-        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">" . $articulos[$i]['descripcion'] . "</label><br>";
+        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">";
+        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>" . $articulos[$i]['descripcion'] . "</label>";
         $arrayArticulos[$o] .= "</div>";
       }
       $arrayTipoArticulos[$o][$i] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}\">";
@@ -102,8 +102,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
         $trabajos[$o][$i][$a] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
         for ($t = 0; $t < $numeroTrabajos; $t++) {
           $trabajos[$o][$i][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
+          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
           $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
-          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">" . $tiposTrabajos[$t]['nombre'] . "</label><br>";
+          $trabajos[$o][$i][$a] .= $tiposTrabajos[$t]['nombre'] . "</label>";
           $trabajos[$o][$i][$a] .= "</div>";
           $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
           for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
@@ -112,8 +113,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
             if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
               // Obtiene la posición del array donde se encuentra el id de la posición
               $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
               $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">" . $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
+              $posiciones[$o][$i][$a][$t] .= $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
               $posiciones[$o][$i][$a][$t] .= "</div>";
             }
             // Iba dentro del if de arriba
@@ -137,7 +139,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
     }
   }
-  $arrayArticulos[$o] .= "</div>";
+  $arrayArticulos[$o] .= "</div></div>";
 }
 $divPedidos .= "</div>";
 
@@ -166,9 +168,9 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles4.css'>
 </head>
-<body onload='primeraFuncion();'>
+<body onload='validar();'>
 <script>
   function elementFromHtml(html) {
     const template = document.createElement('template');
@@ -218,8 +220,8 @@ echo "<!DOCTYPE html>
     // elementoActual = select.options[select.selectedIndex].value;
 
 
-    var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
-    document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
+    // var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
+    // document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
     // updatePdf();
     validar();
   }
@@ -254,42 +256,36 @@ echo "<!DOCTYPE html>
   // }
 
   function mostrarArticulos() {
+    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
+    if(elementoActual != null) {
+      document.getElementById('pedidos').removeChild(bocetoAntiguo);
+      document.getElementById('pedidos').removeChild(articuloAntiguo);
+    }
+
     var serie = document.getElementById('serie').value;
     var numero = document.getElementById('numero').value;
-    if(serie != null && numero != null) {
+    if(serie != null && numero != '') {
       for(pedido of pedidos) {
         if(serie == pedido['serie'] && numero == pedido['numero']) {
           var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
-          var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
-          
           var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
-          var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
-
-          if(bocetoAntiguo != null && articuloAntiguo != null) {
-            document.getElementById('pedidos').removeChild(bocetoAntiguo);
-            document.getElementById('pedidos').removeChild(articuloAntiguo);
-          }
-
           document.getElementById('pedidos').appendChild(boceto);
           document.getElementById('pedidos').appendChild(articulo);
 
           elementoActual = pedido['id'];
+          document.getElementById('numero_pedido').value = elementoActual;
+          
+          break;
+        } else {
+          elementoActual = null;
         }
       }
+    } else {
+      elementoActual = null;
     }
-    // var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
-    // var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
-    // document.getElementById('pedidos').removeChild(bocetoAntiguo);
-    // document.getElementById('pedidos').appendChild(boceto);
-
-    // var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
-    // var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
-    // document.getElementById('pedidos').removeChild(articuloAntiguo);
-    // document.getElementById('pedidos').appendChild(articulo);
-
-    
-    updatePdf()
-    validar()
+    updatePdf();
+    validar();
   }
 
   function mostrarTiposArticulos(elemento) {
@@ -447,32 +443,60 @@ echo "<!DOCTYPE html>
   // }
 
   function updatePdf() {
-    var option = document.getElementById('selectBoceto').value;
-    var urlBoceto = null;
-    for(var p=0; p < pedidos.length; p++) {
-      if(bocetosUrl[p][option]) {
-        var urlBoceto = '.' + bocetosUrl[p][option];
-        break;
-      }
+    var divPdf = document.getElementById('div-pdf');
+    var pdf = document.getElementById('pdf');
+    if(pdf != null){
+      divPdf.removeChild(pdf);
     }
-    var iframe = document.getElementsByTagName('iframe')[0];
-    iframe.src = urlBoceto;
+
+    var option = document.getElementById('selectBoceto').value;
+    if(option != null) {
+      var urlBoceto = null;
+      for(var p=0; p < pedidos.length; p++) {
+        if(bocetosUrl[p][option]) {
+          var urlBoceto = '.' + bocetosUrl[p][option];
+          break;
+        }
+      }
+      
+      fetch(urlBoceto)
+      .then(response => {
+        if (response.ok) {
+          pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
+          pdf.src = urlBoceto;
+          divPdf.appendChild(pdf);
+        } else {
+          pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');
+          divPdf.appendChild(pdf);
+          throw new Error('El archivo no se pudo obtener');
+        }
+      })
+      .catch(error => {
+        if (error.message === 'El archivo no se pudo obtener') {
+          console.log(error.message);
+        } else {
+          console.log('Error:', error.message);
+        }
+      });
+    }
   }
 
 </script>
-<div id='container'>
   <div id='pagina'>
     <form id='formulario' action='resultado.php' method='post'>
       <div id='pedidos'>
         <div id='divPedidos'>
-          <h1>Pedido</h1>
-          <label>Serie <input id='serie' type='text' onchange=mostrarArticulos()></label>
-          <label>Número <input id='numero' type='text' onchange=mostrarArticulos()></label>
+          <h1 class='titulo'>Pedido</h1>
+          <label>Serie <input id='serie' type='text' value='' onchange=mostrarArticulos()></label>
+          <label>Número <input id='numero' type='text' value='' onchange=mostrarArticulos()></label>
         </div>
       </div>
-      <h1>Observaciones</h1>
-      <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
+      <div id='observaciones'>
+        <h1>Observaciones</h1>
+        <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
+      </div>
       <input type='submit' id='enviar' disabled>
+      <input type='text' id='numero_pedido' name='numero_pedido' value=''>
     </form>
   </div>
   <div id='listaCheck'>
@@ -504,7 +528,6 @@ echo "<!DOCTYPE html>
     <div class='ball' id='blueball1'/>
     <div class='ball' id='blueball2'/>
     <div class='ball' id='yellowball1'/>
-  </div>
   </div>
 </body>
 </html>";
@@ -558,6 +581,16 @@ echo "<!DOCTYPE html>
         msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
         listaCheck.appendChild(msg);
       }
+    }
+
+    if(listaCheck.querySelector('msg-ped')) {
+      listaCheck.removeChild(listaCheck.querySelector('msg-ped'));
+    }
+
+    if(listaCheck.querySelectorAll('.msg-art').length === 0) {
+      let msg = document.createElement('msg-ped')
+      msg.innerHTML = "<p>Seleccione un pedido</p>";
+      listaCheck.appendChild(msg);
     }
   }
 
@@ -815,7 +848,7 @@ echo "<!DOCTYPE html>
     let listaCheck = document.querySelector("#listaCheck");
     button.disabled = false;
 
-    if (listaCheck.contains(document.querySelector('ar'))) {
+    if (listaCheck.contains(document.querySelector('ar')) || listaCheck.contains(document.querySelector('msg-ped'))) {
       button.disabled = true;
     }
     for (m of msgArt) {

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+
 #menu-lateral {
   height: 100%;
   width: 300px;
@@ -27,6 +29,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
   text-decoration: none;
+  font-family: "Tilt Neon", cursive;
 }
 
 #menu-lateral a:hover {
@@ -71,7 +74,7 @@
 }
 
 #filtro {
-  position: fixed;
+  position: fixed !important;
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);

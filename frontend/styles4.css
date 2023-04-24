@@ -17,6 +17,26 @@ h1 {
   font-size: 20px;
 }
 
+.titulo {
+  margin: 0px;
+}
+
+.articulo,
+.tipoArticulo,
+.trabajos,
+.posicion,
+.logos,
+#observaciones {
+  margin-top: 20px;
+}
+
+
+#numero_pedido {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
 input {
   margin: 0px;
   /* margin-right: 2px; */
@@ -27,6 +47,7 @@ input[type="checkbox"] {
   height: 20px;
   width: 20px;
   border-radius: 0%;
+  margin-right: 5px;
 }
 
 input[type="radio"] {
@@ -35,6 +56,26 @@ input[type="radio"] {
   width: 100%;
   opacity: 0;
   z-index: 10;
+}
+
+input[type="submit"] {
+  width: 60px;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding: 5px;
+  cursor: pointer;
+}
+
+input[type=submit]:disabled {
+  background-color:rgba(128, 128, 128, 1);
+  cursor: default;
+}
+
+label {
+  display: flex;
+  top: 0;
 }
 
 button {
@@ -54,6 +95,7 @@ textarea {
   width: 99%;
   height: 80px;
   margin-bottom: 13px;
+  border-radius: 5px;
 }
 
 #background {
@@ -67,14 +109,19 @@ textarea {
 
 #pagina {
   z-index: 1;
-  width: calc(100vw - 360px);
+  width: calc(100vw - 380px);
   position: absolute;
   left: 20px;
-  right: 320px;
   top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
+  padding: 20px;
+}
+
+#formulario {
+  display: flex;
+  flex-direction: column;
 }
 
 #listaCheck {
@@ -97,6 +144,9 @@ textarea {
   top: calc(100% + 20px);
   border-radius: 5px;
   background-color: rgba(225, 225, 225, 0.7);
+  display: flex;
+  justify-content: center;
+  color: red;
 }
 
 #menu-lateral {
@@ -192,9 +242,22 @@ textarea {
 } */
 
 #divPedidos {
+  display: grid;
   width: 50%;
   position: relative;
   float: left;
+  row-gap: 10px;
+}
+
+#divPedidos label {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+#divPedidos input {
+  border-radius: 20px;
+  border: 1px solid #000;
 }
 
 .boceto {
@@ -206,10 +269,13 @@ textarea {
 .articulo {
   width: 100%;
   border-top: 2px solid #0e1c2e;
-  border-bottom: 2px solid #0e1c2e;
   position: relative;
   float: left;
   /* border: 10px solid rgba(14, 28, 46, 0.9); */
+}
+
+#cb-articulos label {
+  margin-bottom: 5px;
 }
 
 .trabajos {
@@ -267,6 +333,11 @@ textarea {
   align-items: center; */
   width: 100%;
   height: max-content;
+}
+
+#observaciones {
+  width: 100%;
+  border-top: 2px solid #0e1c2e;
 }
 
 /* .logos img {
@@ -433,6 +504,11 @@ textarea {
   background-color: #00871f; /* color del pulgar de la barra de desplazamiento al hacer hover */
 }
 
+msg-ped {
+  display: flex;
+  justify-content: center;
+}
+
 .msg-art {
   margin-left: 10px;
   margin-right: 10px;
@@ -461,3 +537,5 @@ textarea {
 .msg-art-verde {
   color: #00bb2d
 }
+
+
