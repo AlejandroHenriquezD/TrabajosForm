@@ -88,6 +88,12 @@ td {
   border-top: 1px solid #000;
 }
 
+.td-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* table,
 th, */
 /* td {
@@ -150,6 +156,46 @@ ion-icon {
 /* #añadir-posiciones button {
   width: 40;
 } */
+
+.logo-descargable {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.descargable {
+  position:absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.8);
+  opacity: 0;
+}
+
+.descargable:hover {
+  opacity: 100;
+}
+
+.descargable img {
+  height: 96px;
+  width: 96px;
+}
+
+.descargable p {
+  color: #00bb2d;
+  font-weight: 700;
+  margin: 0;
+}
+
+.descargable a {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
 
 #background {
   position: fixed;
