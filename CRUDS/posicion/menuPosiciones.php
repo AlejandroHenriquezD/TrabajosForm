@@ -13,6 +13,7 @@ echo "
             <a class='seleccionado' href='../posicion/posiciones.php'>Posiciones</a>
             <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
             <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
+            <a href='../../login/login.php'>Iniciar sesión</a>
         </div>
     </div>";
 ?>

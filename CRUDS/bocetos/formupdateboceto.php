@@ -4,7 +4,7 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../styles6.css">
 </head>
 
 <body>
