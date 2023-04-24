@@ -467,8 +467,8 @@ echo "<!DOCTYPE html>
       divPdf.removeChild(pdf);
     }
 
-    var option = document.getElementById('selectBoceto').value;
-    if(option != null) {
+    if(document.getElementById('selectBoceto') != null) {
+      var option = document.getElementById('selectBoceto').value;
       var urlBoceto = null;
       for(var p=0; p < pedidos.length; p++) {
         if(bocetosUrl[p][option]) {
@@ -507,6 +507,9 @@ echo "<!DOCTYPE html>
           <h1 class='titulo'>Pedido</h1>
           <label>Serie <input id='serie' type='text' value='' onchange=mostrarArticulos()></label>
           <label>Número <input id='numero' type='text' value='' onchange=mostrarArticulos()></label>
+          <div class='boton-de-pega'>
+            <p>Buscar</p>
+          </div>
         </div>
       </div>
       <div id='observaciones'>
