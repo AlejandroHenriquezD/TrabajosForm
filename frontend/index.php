@@ -530,6 +530,7 @@ echo "<!DOCTYPE html>
       <a href='../CRUDS/posicion/posiciones.php'>Posiciones</a>
       <a href='../CRUDS/tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
       <a href='../CRUDS/tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
+      <a href='../login/login.php'>Iniciar sesión</a>
     </div>
   </div>
   <div id='background'>

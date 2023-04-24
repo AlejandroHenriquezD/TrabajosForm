@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logos</title>
     <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../styles6.css">
 </head>
 
 <body>
@@ -35,7 +35,16 @@
         echo
             "<tr class='fila'>
                     <td>" . $logo["id"] . "</td>
-                    <td><img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px></td>
+                    <td class='td-img'>
+                        <div class='logo-descargable'>
+                            <img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px>
+                            <div class='descargable'>
+                                <img src='../../descargar.png'>
+                                <p>Descargar imagen</p>
+                                <a href='../." . $logo["img"] . "' download></a>
+                            </div>
+                        </div>
+                    </td>
                     <td><img src='../." . $logo["img_vectorizada"] . "' alt='" . $logo["img_vectorizada"] . "' height=150px></td>
                     <td>" . $logo["obsoleto"] . "</td>
                     <td>" . $cliente["nombre"] . "</td>
