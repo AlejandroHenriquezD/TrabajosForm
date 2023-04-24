@@ -141,6 +141,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 }
 $divPedidos .= "</div>";
 
+$pedidos = json_encode($pedidos);
 $bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
@@ -177,6 +178,7 @@ echo "<!DOCTYPE html>
     return template.content.firstElementChild;
   }
 
+  var pedidos = $pedidos;
   var bocetosUrl = $bocetosUrl;
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
@@ -210,15 +212,15 @@ echo "<!DOCTYPE html>
   var elementoActual = null;
   
   function primeraFuncion() {
-    document.getElementById('pedidos').appendChild(bocetos[0]);
-    document.getElementById('pedidos').appendChild(articulos[0]);
-    var select = document.getElementById('selectPedido');
-    elementoActual = select.options[select.selectedIndex].value;
+    // document.getElementById('pedidos').appendChild(bocetos[0]);
+    // document.getElementById('pedidos').appendChild(articulos[0]);
+    // var select = document.getElementById('selectPedido');
+    // elementoActual = select.options[select.selectedIndex].value;
 
 
     var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
     document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
-    updatePdf();
+    // updatePdf();
     validar();
   }
 
@@ -228,22 +230,64 @@ echo "<!DOCTYPE html>
   }
 
   function indexPedido() {
-    var select = document.getElementById('selectPedido');
-    return select.selectedIndex;
+    // var select = document.getElementById('selectPedido');
+    // return select.selectedIndex;
+    var pedido = obtenerElemento(pedidos, elementoActual);
+    var index = pedidos.indexOf(pedido);
+    return index;
   }
 
-  function mostrarArticulos(elemento) {
-    var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
-    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
-    document.getElementById('pedidos').removeChild(bocetoAntiguo);
-    document.getElementById('pedidos').appendChild(boceto);
+  // function mostrarArticulos(elemento) {
+  //   var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+  //   var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+  //   document.getElementById('pedidos').removeChild(bocetoAntiguo);
+  //   document.getElementById('pedidos').appendChild(boceto);
 
-    var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
-    var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
-    document.getElementById('pedidos').removeChild(articuloAntiguo);
-    document.getElementById('pedidos').appendChild(articulo);
+  //   var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
+  //   var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
+  //   document.getElementById('pedidos').removeChild(articuloAntiguo);
+  //   document.getElementById('pedidos').appendChild(articulo);
 
-    elementoActual = elemento;
+  //   elementoActual = elemento;
+  //   updatePdf()
+  //   validar()
+  // }
+
+  function mostrarArticulos() {
+    var serie = document.getElementById('serie').value;
+    var numero = document.getElementById('numero').value;
+    if(serie != null && numero != null) {
+      for(pedido of pedidos) {
+        if(serie == pedido['serie'] && numero == pedido['numero']) {
+          var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
+          var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+          
+          var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
+          var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
+
+          if(bocetoAntiguo != null && articuloAntiguo != null) {
+            document.getElementById('pedidos').removeChild(bocetoAntiguo);
+            document.getElementById('pedidos').removeChild(articuloAntiguo);
+          }
+
+          document.getElementById('pedidos').appendChild(boceto);
+          document.getElementById('pedidos').appendChild(articulo);
+
+          elementoActual = pedido['id'];
+        }
+      }
+    }
+    // var boceto = obtenerElemento(bocetos, 'boceto-'+elemento);
+    // var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    // document.getElementById('pedidos').removeChild(bocetoAntiguo);
+    // document.getElementById('pedidos').appendChild(boceto);
+
+    // var articulo = obtenerElemento(articulos, 'articulos-'+elemento);
+    // var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
+    // document.getElementById('pedidos').removeChild(articuloAntiguo);
+    // document.getElementById('pedidos').appendChild(articulo);
+
+    
     updatePdf()
     validar()
   }
@@ -405,7 +449,7 @@ echo "<!DOCTYPE html>
   function updatePdf() {
     var option = document.getElementById('selectBoceto').value;
     var urlBoceto = null;
-    for(var p=0; p < document.getElementById('selectPedido').length; p++) {
+    for(var p=0; p < pedidos.length; p++) {
       if(bocetosUrl[p][option]) {
         var urlBoceto = '.' + bocetosUrl[p][option];
         break;
@@ -418,9 +462,14 @@ echo "<!DOCTYPE html>
 </script>
 <div id='container'>
   <div id='pagina'>
-    <form id='formulario' action='resultado.php' method='post'>";
-echo $divPedidos;
-echo "
+    <form id='formulario' action='resultado.php' method='post'>
+      <div id='pedidos'>
+        <div id='divPedidos'>
+          <h1>Pedido</h1>
+          <label>Serie <input id='serie' type='text' onchange=mostrarArticulos()></label>
+          <label>Número <input id='numero' type='text' onchange=mostrarArticulos()></label>
+        </div>
+      </div>
       <h1>Observaciones</h1>
       <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
       <input type='submit' id='enviar' disabled>
