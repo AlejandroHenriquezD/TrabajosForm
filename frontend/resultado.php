@@ -1,6 +1,6 @@
 <?php
-$id_pedido = $_POST["numero_pedido"];;
-$id_boceto = $_POST["selectBoceto"][0];
+$id_pedido = $_POST["numero_pedido"];
+$id_boceto = $_POST["numero_boceto"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
   echo "El valor seleccionado es $valor del grupo $grupo <br>";

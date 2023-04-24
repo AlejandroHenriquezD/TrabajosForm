@@ -65,7 +65,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] .= "</select></div>";
 
   // $logos = array();
-  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'] . " AND obsoleto=0";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     $l = 0;
@@ -173,7 +173,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles3.css'>
 </head>
 <body onload='validar();'>
 <script>
@@ -239,7 +239,7 @@ echo "<!DOCTYPE html>
 
   function indexPedido() {
     var select = document.getElementById('selectPedido');
-    return select.selectedIndex;
+    return select.selectedIndex-1;
     // var pedido = obtenerElemento(pedidos, elementoActual);
     // var index = pedidos.indexOf(pedido);
     // return index;
@@ -311,6 +311,7 @@ echo "<!DOCTYPE html>
 
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
+    console.log(numeroArticulo)
 
     var desplegable = obtenerElemento(desplegablesTipoArticulos[indexPedido()], 'desplegable-'+numeroArticulo);
     var tipoArticulo = obtenerElemento(tipoArticulos[indexPedido()], 'tipoArticulos-'+numeroArticulo);
@@ -464,6 +465,7 @@ echo "<!DOCTYPE html>
   // }
 
   function updatePdf() {
+    document.getElementById('numero_boceto').value = null;
     var divPdf = document.getElementById('div-pdf');
     var pdf = document.getElementById('pdf');
     if(pdf != null){
@@ -472,6 +474,7 @@ echo "<!DOCTYPE html>
 
     if(document.getElementById('selectBoceto') != null) {
       var option = document.getElementById('selectBoceto').value;
+      document.getElementById('numero_boceto').value = option;
       var urlBoceto = null;
       for(var p=0; p < pedidos.length; p++) {
         console.log(bocetosUrl)
@@ -512,7 +515,8 @@ echo "<!DOCTYPE html>
         <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
       </div>
       <input type='submit' id='enviar' disabled>
-      <input type='text' id='numero_pedido' name='numero_pedido' value=''>
+      <input type='text' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
+      <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>
   </div>
   <div id='listaCheck'>

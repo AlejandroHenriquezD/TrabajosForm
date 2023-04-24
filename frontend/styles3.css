@@ -27,7 +27,7 @@ h1 {
 }
 
 
-#numero_pedido {
+.input-hidden {
   height: 0;
   width: 0;
   visibility: hidden;
