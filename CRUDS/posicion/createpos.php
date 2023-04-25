@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <?php
 
 $descripcion = $_POST["descripcion"];

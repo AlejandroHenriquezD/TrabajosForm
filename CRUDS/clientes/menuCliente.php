@@ -1,21 +1,41 @@
 <?php
-echo "
-    <link rel='stylesheet' href='../menu2.css'>
+
+if(isset($_SESSION['usuario'])) {
+  echo "
+    <link rel='stylesheet' href='../menu.css'>
     <div id='menu-lateral'>
-        <div id='desplegable-lateral' onclick='desplegarMenu()'>
-            <div id='flecha-lateral'></div>
-        </div>
-        <div id='enlaces-menu'>
-            <a href='../../frontend/index.php'>Trabajos</a>
-            <a href='../bocetos/bocetos.php'>Bocetos</a>
-            <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>
-            <a href='../logos/logos.php'>Logos</a>
-            <a href='../posicion/posiciones.php'>Posiciones</a>
-            <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
-            <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
-            <a href='../../login/login.php'>Iniciar sesión</a>
-        </div>
-    </div>";
+      <div id='desplegable-lateral' onclick='desplegarMenu()'>
+        <div id='flecha-lateral'></div>
+      </div>
+      <div id='enlaces-menu'>
+        <a href='../../frontend/index.php'>Trabajos</a>
+        <a href='../bocetos/bocetos.php'>Bocetos</a>
+        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>
+        <a href='../logos/logos.php'>Logos</a>
+        <a href='../posicion/posiciones.php'>Posiciones</a>
+        <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
+        <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
+        <a class='sesion' href='../../login/cerrarSesion.php'>Cerrar sesión</a>
+      </div>
+    </div>
+  ";
+} else {
+  echo "
+    <link rel='stylesheet' href='../menu.css'>
+    <div id='menu-lateral'>
+      <div id='desplegable-lateral' onclick='desplegarMenu()'>
+        <div id='flecha-lateral'></div>
+      </div>
+      <div id='enlaces-menu'>
+        <a href='../../frontend/index.php'>Trabajos</a>
+        <a href='../bocetos/bocetos.php'>Bocetos</a>
+        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>
+        <a href='../logos/logos.php'>Logos</a>
+        <a class='sesion' href='../../login/login.php'>Iniciar sesión</a>
+      </div>
+    </div>
+  ";
+}
 ?>
 <?php include "../background.php" ?>
 <script>

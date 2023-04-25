@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <?php
 
 $id_tipo_articulo = $_POST["id_tipoarticulo"];
