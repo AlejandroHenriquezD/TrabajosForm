@@ -12,6 +12,7 @@ $conn = mysqli_connect(
 );
 
 $pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 $pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
 $articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
@@ -41,9 +42,11 @@ $relacion = array();
 $desplegablesTipoArticulos = array();
 $desplegablesPosiciones = array();
 $desplegablesLogos = array();
-$divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos(this.value)>";
+$divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos()>";
+$divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
+
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['id']}</option>";
+  $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['serie']}" . " " . "{$pedidos[$o]['numero']}</option>";
 }
 $divPedidos .= "</select></div>";
 
@@ -53,6 +56,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
+    $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
     while ($row = mysqli_fetch_assoc($result)) {
       $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
       $bocetosUrl[$o][$row["id"]][0] = trim(json_encode([$row["pdf"]][0]), '"');
@@ -61,7 +65,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] .= "</select></div>";
 
   // $logos = array();
-  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'] . " AND obsoleto=0";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     $l = 0;
@@ -144,6 +148,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
 $divPedidos .= "</div>";
 
 $pedidos = json_encode($pedidos);
+$clientes = json_encode($clientes);
 $bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
@@ -168,7 +173,7 @@ echo "<!DOCTYPE html>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Index</title>
   <link rel='shortcut icon' href='favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles3.css'>
 </head>
 <body onload='validar();'>
 <script>
@@ -181,6 +186,7 @@ echo "<!DOCTYPE html>
   }
 
   var pedidos = $pedidos;
+  var clientes = $clientes;
   var bocetosUrl = $bocetosUrl;
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
@@ -214,15 +220,15 @@ echo "<!DOCTYPE html>
   var elementoActual = null;
   
   function primeraFuncion() {
-    // document.getElementById('pedidos').appendChild(bocetos[0]);
-    // document.getElementById('pedidos').appendChild(articulos[0]);
-    // var select = document.getElementById('selectPedido');
-    // elementoActual = select.options[select.selectedIndex].value;
+    document.getElementById('pedidos').appendChild(bocetos[0]);
+    document.getElementById('pedidos').appendChild(articulos[0]);
+    var select = document.getElementById('selectPedido');
+    elementoActual = select.options[select.selectedIndex].value;
 
 
-    // var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
-    // document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
-    // updatePdf();
+    var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
+    document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
+    updatePdf();
     validar();
   }
 
@@ -232,11 +238,11 @@ echo "<!DOCTYPE html>
   }
 
   function indexPedido() {
-    // var select = document.getElementById('selectPedido');
-    // return select.selectedIndex;
-    var pedido = obtenerElemento(pedidos, elementoActual);
-    var index = pedidos.indexOf(pedido);
-    return index;
+    var select = document.getElementById('selectPedido');
+    return select.selectedIndex-1;
+    // var pedido = obtenerElemento(pedidos, elementoActual);
+    // var index = pedidos.indexOf(pedido);
+    // return index;
   }
 
   // function mostrarArticulos(elemento) {
@@ -259,19 +265,34 @@ echo "<!DOCTYPE html>
     var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      document.getElementById('pedidos').removeChild(bocetoAntiguo);
+      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
+      // document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
 
-    var serie = document.getElementById('serie').value;
-    var numero = document.getElementById('numero').value;
-    if(serie != null && numero != '') {
+    var divpdf = document.createElement('div');
+    // var divcli = document.createElement('div');
+    // divcli.id = 'div-cli';
+    divpdf.id = 'div-pdf';
+    if(document.getElementById('selectPedido').value != '') {
       for(pedido of pedidos) {
-        if(serie == pedido['serie'] && numero == pedido['numero']) {
+        if(document.getElementById('selectPedido').value == pedido['id']) {
+          for(cliente of clientes) {
+            if(cliente.id === pedido['id_cliente']){
+              // divcli.innerHTML = '<h1 class=\"titulo\">Cliente</h1>';
+              // divcli.innerHTML += '<div class=\"datoscli\"><p>Nombre: ' + cliente['nombre'] + '</p><p>Teléfono: ' + cliente['telefono'] + '</p><p>Correo: ' + cliente['correo'] + '</p><p>Dirección: ' + cliente['dirección'] + '</p></div>';
+              // divcli.innerHTML += '<div class=\"datoscli\"><p>CIF/NIF: ' + cliente['cif_nif'] + '</p><p>Número de cliente: ' + cliente['numero_cliente'] + '</p><p>Razón social: ' + cliente['razon_social'] + '</p></div>';
+            }
+          }
           var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
           var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
-          document.getElementById('pedidos').appendChild(boceto);
+          document.getElementById('listaCheck').appendChild(boceto);
+          // document.getElementById('pedidos').appendChild(divcli);
           document.getElementById('pedidos').appendChild(articulo);
+
+          if(!document.getElementById('div-pdf')){
+          document.getElementsByClassName('boceto')[0].appendChild(divpdf);
+          }
 
           elementoActual = pedido['id'];
           document.getElementById('numero_pedido').value = elementoActual;
@@ -290,6 +311,7 @@ echo "<!DOCTYPE html>
 
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
+    console.log(numeroArticulo)
 
     var desplegable = obtenerElemento(desplegablesTipoArticulos[indexPedido()], 'desplegable-'+numeroArticulo);
     var tipoArticulo = obtenerElemento(tipoArticulos[indexPedido()], 'tipoArticulos-'+numeroArticulo);
@@ -443,6 +465,7 @@ echo "<!DOCTYPE html>
   // }
 
   function updatePdf() {
+    document.getElementById('numero_boceto').value = null;
     var divPdf = document.getElementById('div-pdf');
     var pdf = document.getElementById('pdf');
     if(pdf != null){
@@ -451,8 +474,10 @@ echo "<!DOCTYPE html>
 
     if(document.getElementById('selectBoceto') != null) {
       var option = document.getElementById('selectBoceto').value;
+      document.getElementById('numero_boceto').value = option;
       var urlBoceto = null;
       for(var p=0; p < pedidos.length; p++) {
+        console.log(bocetosUrl)
         if(bocetosUrl[p][option]) {
           var urlBoceto = '.' + bocetosUrl[p][option];
           break;
@@ -484,27 +509,17 @@ echo "<!DOCTYPE html>
 </script>
   <div id='pagina'>
     <form id='formulario' action='resultado.php' method='post'>
-      <div id='pedidos'>
-        <div id='divPedidos'>
-          <h1 class='titulo'>Pedido</h1>
-          <label>Serie <input id='serie' type='text' value='' onchange=mostrarArticulos()></label>
-          <label>Número <input id='numero' type='text' value='' onchange=mostrarArticulos()></label>
-          <div class='boton-de-pega'>
-            <p>Buscar</p>
-          </div>
-        </div>
-      </div>
+          $divPedidos
       <div id='observaciones'>
         <h1>Observaciones</h1>
         <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
       </div>
       <input type='submit' id='enviar' disabled>
-      <input type='text' id='numero_pedido' name='numero_pedido' value=''>
+      <input type='text' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
+      <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>
   </div>
   <div id='listaCheck'>
-    <div id='div-pdf'>
-    </div>
   </div>
   
   <div id='menu-lateral'>
@@ -587,11 +602,11 @@ echo "<!DOCTYPE html>
       }
     }
 
-    if(listaCheck.querySelector('msg-ped')) {
+    if (listaCheck.querySelector('msg-ped')) {
       listaCheck.removeChild(listaCheck.querySelector('msg-ped'));
     }
 
-    if(listaCheck.querySelectorAll('.msg-art').length === 0) {
+    if (listaCheck.querySelectorAll('.msg-art').length === 0) {
       let msg = document.createElement('msg-ped')
       msg.innerHTML = "<p>Seleccione un pedido</p>";
       listaCheck.appendChild(msg);

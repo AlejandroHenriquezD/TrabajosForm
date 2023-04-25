@@ -27,7 +27,7 @@ h1 {
 }
 
 
-#numero_pedido {
+.input-hidden {
   height: 0;
   width: 0;
   visibility: hidden;
@@ -263,7 +263,7 @@ textarea {
 
 #divPedidos {
   display: grid;
-  width: 50%;
+  width: 33.333333333333333%;
   position: relative;
   float: left;
   row-gap: 10px;
@@ -577,3 +577,20 @@ msg-ped {
 }
 
 
+
+.boceto {
+  position: absolute;
+  top: calc(100% + 20px);
+}
+
+#div-cli {
+  position: relative;
+  width: calc(100% - 33.333333333333333%);
+  float: left;
+}
+
+.datoscli {
+  position: relative;
+  width: 50%;
+  float: left;
+}

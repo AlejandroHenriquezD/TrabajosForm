@@ -22,7 +22,6 @@
 
     echo "<table>
            <tr>
-              <th>Id</th>
               <th>Nombre</th>
               <th>Imagen</th>
               <th>Acciones</th>
@@ -30,7 +29,6 @@
     for ($p = 0; $p < count($tipo_articulos); $p++) {
         echo
             "<tr class='fila'>
-                    <td>" . $tipo_articulos[$p]["id"] . "</td>
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
                     <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
                     <td> 
