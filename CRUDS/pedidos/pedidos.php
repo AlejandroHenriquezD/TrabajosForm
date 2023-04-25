@@ -32,8 +32,7 @@
                     <td>" . $pedidos[$p]["fecha_pedido"] . "</td>
                     <td>" . $cliente["nombre"] . "</td>
                     <td> 
-                        <form action='deletetipotrabajo.php'> <input name='id[]' type='hidden' value=" . $pedidos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
-                        
+    
                         <form action='formupdatepedido.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $pedidos[$p]["id"] . "></input> 
                             <input name='id_cliente[]' type='hidden' value=" . $pedidos[$p]["id_cliente"] . "></input> 
