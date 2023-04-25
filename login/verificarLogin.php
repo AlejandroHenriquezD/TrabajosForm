@@ -16,12 +16,11 @@ $conn = mysqli_connect(
 
 $usuario = $_POST['usuario'];
 $contraseña = $_POST['contraseña'];
-// $contraseña = password_hash($contraseña, PASSWORD_BCRYPT);
-echo $usuario;
 
-$sql = mysqli_query($conn, "SELECT * FROM `usuarios` WHERE usuario ='$usuario' AND contraseña ='$contraseña'");
+$sql = mysqli_query($conn, "SELECT * FROM `usuarios` WHERE usuario ='$usuario'");
 
-if(mysqli_num_rows($sql) > 0) {
+$sqlContraseña = $sql->fetch_array(MYSQLI_BOTH)['contraseña'];
+if(mysqli_num_rows($sql) > 0 && password_verify($contraseña, $sqlContraseña)) {
     $_SESSION['usuario'] = $usuario;
     header("location:../frontend/index.php");
     exit;
