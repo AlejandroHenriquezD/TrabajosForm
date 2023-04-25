@@ -10,9 +10,9 @@ $filename = $base . "." . $pathinfo["extension"];
 $destination = __DIR__ . "/uploads/" . $filename;
 
 $id = $_POST["id"];
-$obsoleto = $_POST["obsoleto"];
+
 $img_vectorizada = "./uploads/" . $filename;
-echo $img_vectorizada;
+
 
 // if ( ! $terms){
 //     die("Terms must be accepted");
@@ -32,7 +32,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "UPDATE `logos` SET `obsoleto`='". $obsoleto ."', `img_vectorizada`='". $img_vectorizada ."'   WHERE id =" . $id[0] ;
+$sql = "UPDATE `logos` SET  `img_vectorizada`='". $img_vectorizada ."'   WHERE id =" . $id[0] ;
 
 $stmt = mysqli_stmt_init($conn);
 
