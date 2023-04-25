@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,6 +45,7 @@
     }
     echo "</table>"
         ?>
+    <?php include "./menuPedidos.php" ?>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

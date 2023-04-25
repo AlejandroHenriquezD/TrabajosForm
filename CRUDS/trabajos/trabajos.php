@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,6 +49,7 @@
         echo "</table>";
     
     ?>
+    <?php include "./menuTrabajos.php" ?>
 
 </body>
 
