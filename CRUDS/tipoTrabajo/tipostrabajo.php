@@ -23,14 +23,12 @@
 
     echo "<table>
            <tr>
-              <th>Id</th>
               <th>Nombre</th>
               <th>Acciones</th>
             </tr>";
     for ($p = 0; $p < count($tipo_trabajos); $p++) {
         echo
             "<tr class='fila'>
-                    <td>" . $tipo_trabajos[$p]["id"] . "</td>
                     <td>" . $tipo_trabajos[$p]["nombre"] . "</td>
                     <td> 
                         <form action='deletetipotrabajo.php'> <input name='id[]' type='hidden' value=" . $tipo_trabajos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 

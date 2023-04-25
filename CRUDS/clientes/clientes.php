@@ -23,17 +23,25 @@
 
     echo "<table>
            <tr>
-              <th>Id</th>
               <th>Nombre</th>
               <th>Telefono</th>
+              <th>Correo</th>
+              <th>Dirección</th>
+              <th>CIF/NIF</th>
+              <th>Número de cliente</th>
+              <th>Razón social</th>
               <th>Acciones</th>
             </tr>";
     for ($p = 0; $p < count($clientes); $p++) {
         echo
-            "<tr class='fila'>
-                    <td>" . $clientes[$p]["id"] . "</td>
+        "<tr class='fila'>
                     <td>" . $clientes[$p]["nombre"] . "</td>
                     <td>" . $clientes[$p]["telefono"] . "</td>
+                    <td>" . $clientes[$p]["correo"] . "</td>
+                    <td>" . $clientes[$p]["dirección"] . "</td>
+                    <td>" . $clientes[$p]["cif_nif"] . "</td>
+                    <td>" . $clientes[$p]["numero_cliente"] . "</td>
+                    <td>" . $clientes[$p]["razon_social"] . "</td>
                     <td> 
                         <form action='deletecliente.php'> <input name='id[]' type='hidden' value=" . $clientes[$p]["id"] . "></input><button>Borrar <ion-icon name='trash'></ion-icon>
                         </button> </form> 
@@ -46,10 +54,9 @@
                         </form>
                     </td>
                 </tr>";
-
     }
     echo "</table>"
-        ?>
+    ?>
     <?php include "./menuCliente.php" ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

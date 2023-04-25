@@ -24,7 +24,6 @@
 
     echo "<table>
            <tr>
-              <th>Id</th>
               <th>Nombre</th>
               <th>PDF</th>
               <th>Cliente</th>
@@ -34,7 +33,6 @@
         $cliente = json_decode(file_get_contents("http://localhost/trabajosform/clientes/" . $boceto["id_cliente"]), true);
         echo
             "<tr class='fila'>
-                    <td>" . $boceto["id"] . "</td>
                     <td>" . $boceto["nombre"] . "</td>
                     <td>" . $boceto["pdf"] . "</td>
                     <td>" . $cliente["nombre"] . "</td>
