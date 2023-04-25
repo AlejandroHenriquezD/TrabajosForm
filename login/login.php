@@ -17,10 +17,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar sesión</title>
   <link rel="shortcut icon" href="../frontend/favicon.png">
-  <link rel="stylesheet" href="./login.css">
+  <link rel="stylesheet" href="./login2.css">
 </head>
 
 <body>
+  <script>
+
+    function entrarSinSesion() {
+      window.location = "../frontend/index.php";
+    }
+
+  </script>
+
   <div id='pagina'>
     <img src='./cu.png' alt=''/>
     <form action='./verificarLogin.php' method="post">
@@ -32,6 +40,9 @@
       </label>
       <div class='button'>
         <input type='submit' value='Iniciar sesión'>
+        <div class='div-button' onclick='entrarSinSesion()'>
+          <p>Entrar sin sesión</p>
+        </div>
       </div>
     </form>
   </div>

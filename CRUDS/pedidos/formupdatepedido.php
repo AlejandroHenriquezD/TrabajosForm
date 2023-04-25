@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <!DOCTYPE html>
 <html>
 
@@ -53,6 +54,7 @@
                     <button>Crear</button>"
         ?>
     </form>
+    <?php include "./menuPedidos.php" ?>
 
 </body>
 

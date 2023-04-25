@@ -35,6 +35,7 @@ input[type="password"] {
 }
 
 input[type="submit"] {
+  justify-self: center;
   width: min-content;
   border-radius: 5px;
   background-color: #0e1c2e;
@@ -69,8 +70,8 @@ input[type="submit"] {
 
 .button {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 #background {
@@ -80,6 +81,25 @@ input[type="submit"] {
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+.div-button {
+  justify-self: center;
+  width: max-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.div-button p {
+  margin: 0;
+  font-size: 14px;
 }
 
 .ball {
