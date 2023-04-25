@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php
 
 $nombre = $_POST["nombre"];

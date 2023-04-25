@@ -1,3 +1,13 @@
+<?php
+
+  session_start();
+
+  if(isset($_SESSION['usuario'])){
+    header("location: ../frontend/index.php");
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,12 +23,12 @@
 <body>
   <div id='pagina'>
     <img src='./cu.png' alt=''/>
-    <form action='../frontend/index.php'>
+    <form action='./verificarLogin.php' method="post">
       <label>Nombre de usuario
-        <input type='text'>
+        <input type='text' id='usuario' name='usuario' value=''>
       </label>
       <label>Contraseña
-        <input type='password'>
+        <input type='password' id='contraseña' name='contraseña' value=''>
       </label>
       <div class='button'>
         <input type='submit' value='Iniciar sesión'>

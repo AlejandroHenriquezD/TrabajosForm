@@ -1,9 +1,10 @@
-<?php session_start(); ?>
 <?php
-// echo json_encode($_GET["id"][0]);
-$id = $_GET["id"][0];
 
-// echo $id;
+
+$id = $_POST["id"];
+$obsoleto = $_POST["obsoleto"];
+
+
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -19,7 +20,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "DELETE FROM `bocetos` WHERE id =" . $id ;
+$sql = "UPDATE `logos` SET `obsoleto`='". $obsoleto ."'   WHERE id =" . $id[0] ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -27,15 +28,11 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
-// mysqli_stmt_bind_param($stmt, "i",
-//                        $id);
-
 mysqli_stmt_execute($stmt);
 
-echo "Registro Borrado."; 
-echo "<form action='bocetos.php'>
+echo "Cambios Guardados."; 
+
+echo "<form action='logos.php'>
         <button >Volver</button>
       </form>";
-
 ?>
-<?php include "./menuBoceto.php" ?>

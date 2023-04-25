@@ -1,9 +1,6 @@
-<?php session_start(); ?>
 <?php
-// echo json_encode($_GET["id"][0]);
-$id = $_GET["id"][0];
-
-// echo $id;
+$id_boceto = $_POST["id_boceto"];
+$id_pedido = $_POST["id_pedido"];
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -18,8 +15,7 @@ $conn = mysqli_connect(hostname: $host,
 if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
-
-$sql = "DELETE FROM `bocetos` WHERE id =" . $id ;
+$sql = "UPDATE `trabajos` SET `id_boceto`=". $id_boceto ."   WHERE id_pedido =" . $id_pedido ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -27,15 +23,11 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
-// mysqli_stmt_bind_param($stmt, "i",
-//                        $id);
-
 mysqli_stmt_execute($stmt);
 
-echo "Registro Borrado."; 
-echo "<form action='bocetos.php'>
+echo "Cambios Guardados."; 
+
+echo "<form action='CRUDS/pedidos/pedidos.php'>
         <button >Volver</button>
       </form>";
-
 ?>
-<?php include "./menuBoceto.php" ?>

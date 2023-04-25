@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $host = "localhost";
 $dbname = "centraluniformes";
 $username = "root";
@@ -521,22 +523,11 @@ echo "<!DOCTYPE html>
   </div>
   <div id='listaCheck'>
   </div>
+";
   
-  <div id='menu-lateral'>
-    <div id='desplegable-lateral' onclick='desplegarMenu()'>
-      <div id='flecha-lateral'></div>
-    </div>
-    <div id='enlaces-menu'>
-      <p>Trabajos</p>
-      <a href='../CRUDS/bocetos/bocetos.php'>Bocetos</a>
-      <a href='../CRUDS/clientes/clientes.php'>Clientes</a>
-      <a href='../CRUDS/logos/logos.php'>Logos</a>
-      <a href='../CRUDS/posicion/posiciones.php'>Posiciones</a>
-      <a href='../CRUDS/tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
-      <a href='../CRUDS/tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
-      <a href='../login/login.php'>Iniciar sesión</a>
-    </div>
-  </div>
+include "menu.php";
+
+echo "
   <div id='background'>
     <div class='ball' id='greenball1'/>
     <div class='ball' id='greenball2'/>

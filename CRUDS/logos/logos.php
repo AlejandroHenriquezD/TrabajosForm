@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,10 +66,14 @@
                         <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatelogo.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $logo["id"] . "></input>
-                            <input name='obsoleto[]' type='hidden' value=" . urlencode($logo["obsoleto"]) . "></input> 
-                            <button>Editar<ion-icon name='create'></button> 
+                            <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
+                            <button>Editar Estado<ion-icon name='create'></button> 
                         </form>
+
+                    <form action='formañadirimagen.php' method='post'> 
+                        <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
+                        <button>Añadir Imagen Vectorizada<ion-icon name='create'></button> 
+                    </form>
 
                 </td>
             </tr>";

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -12,10 +13,9 @@
     <h1>Logo</h1>
     <?php
     
-    $obsoleto = str_replace('+',' ',$_POST["obsoleto"][0]);
     echo "
     <div id='div-form'>
-        <form action='../../updatelogo.php' method='post' enctype='multipart/form-data'>
+        <form action='updatelogo.php' method='post' enctype='multipart/form-data'>
 
             <label for='obsoleto'>Obsoleto</label>
             
@@ -25,8 +25,7 @@
                 <option value='0' id='obsoleto' name='obsoleto'>No Obsoleto</option>
             </select>
 
-            <label for='img_vectorizada'>Imagen Vectorizada</label>
-            <input type='file' id='img_vectorizada' name='img_vectorizada'/>
+
 
             <button>Editar</button>
 
