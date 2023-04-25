@@ -25,7 +25,7 @@
            <tr>
               <th>Imagen</th>
               <th>Imagen Vectorizada</th>
-              <th>Obsoleto</th>
+              <th>Estado</th>
               <th>Cliente</th>
               <th>Acciones</th>
             </tr>";
@@ -35,9 +35,9 @@
         $vectorizada = "";
 
         if ($logo['obsoleto'] == 1) {
-            $obsoleto = "SÍ";
+            $obsoleto = "Obsoleto";
         } else {
-            $obsoleto = "NO";
+            $obsoleto = "Activo";
         }
 
         if ($logo['img_vectorizada'] == "FALTA") {
