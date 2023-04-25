@@ -23,7 +23,6 @@
 
     echo "<table>
            <tr>
-              <th>Id</th>
               <th>Imagen</th>
               <th>Imagen Vectorizada</th>
               <th>Obsoleto</th>
@@ -32,9 +31,23 @@
             </tr>";
     foreach ($logos as $logo) {
         $cliente = json_decode(file_get_contents("http://localhost/trabajosform/clientes/" . $logo["id_cliente"]), true);
+        $obsoleto = "";
+        $vectorizada = "";
+
+        if ($logo['obsoleto'] == 1) {
+            $obsoleto = "SÍ";
+        } else {
+            $obsoleto = "NO";
+        }
+
+        if ($logo['img_vectorizada'] == "FALTA") {
+            $vectorizada = "Falta por añadir";
+        } else {
+            $vectorizada = "<img src='../." . $logo["img_vectorizada"] . "' alt='" . $logo["img_vectorizada"] . "' height=150px>";
+        }
+
         echo
-            "<tr class='fila'>
-                    <td>" . $logo["id"] . "</td>
+        "<tr class='fila'>
                     <td class='td-img'>
                         <div class='logo-descargable'>
                             <img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px>
@@ -45,8 +58,8 @@
                             </div>
                         </div>
                     </td>
-                    <td><img src='../." . $logo["img_vectorizada"] . "' alt='" . $logo["img_vectorizada"] . "' height=150px></td>
-                    <td>" . $logo["obsoleto"] . "</td>
+                    <td>" . $vectorizada . "</td>
+                    <td>" . $obsoleto . "</td>
                     <td>" . $cliente["nombre"] . "</td>
                     <td> 
                         <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
@@ -59,10 +72,9 @@
 
                 </td>
             </tr>";
-
     }
     echo "</table>"
-        ?>
+    ?>
     <?php include "./menuLogos.php" ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
