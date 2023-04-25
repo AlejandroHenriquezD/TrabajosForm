@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php
 // echo json_encode($_GET["id"][0]);
 $id = $_GET["id"][0];

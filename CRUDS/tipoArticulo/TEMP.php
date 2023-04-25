@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <?php
 
 $id = $_GET["id"][0];

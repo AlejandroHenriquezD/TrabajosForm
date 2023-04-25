@@ -33,7 +33,7 @@
 }
 
 #menu-lateral a:hover {
-  color:#f0cb25;
+  color:#f0cb25 !important;
 }
 
 .seleccionado {
@@ -41,6 +41,10 @@
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.sesion {
+  color:#e1251a !important;
 }
 
 #desplegable-lateral {

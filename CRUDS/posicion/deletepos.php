@@ -1,3 +1,4 @@
+<?php include "../sesion.php" ?>
 <?php
 // echo json_encode($_GET["id"][0]);
 $id = $_GET["id"][0];
