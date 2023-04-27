@@ -57,7 +57,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['EjercicioPedido']}-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['CodigoCliente'];
   $result = mysqli_query($conn, $sql);
-  if (mysqli_num_rows($result) > 0) {
+  if (mysqli_num_rows($result) >= 0) {
     $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
     while ($row = mysqli_fetch_assoc($result)) {
       $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
@@ -315,7 +315,6 @@ echo "<!DOCTYPE html>
 
   function mostrarTiposArticulos(elemento) {
     var numeroArticulo = elemento.split('-')[2];
-    console.log(numeroArticulo)
 
     var desplegable = obtenerElemento(desplegablesTipoArticulos[indexPedido()], 'desplegable-'+numeroArticulo);
     var tipoArticulo = obtenerElemento(tipoArticulos[indexPedido()], 'tipoArticulos-'+numeroArticulo);
@@ -478,35 +477,44 @@ echo "<!DOCTYPE html>
 
     if(document.getElementById('selectBoceto') != null) {
       var option = document.getElementById('selectBoceto').value;
-      document.getElementById('numero_boceto').value = option;
-      var urlBoceto = null;
-      for(var p=0; p < pedidos.length; p++) {
-        console.log(bocetosUrl)
-        if(bocetosUrl[p][option]) {
-          var urlBoceto = '.' + bocetosUrl[p][option];
-          break;
-        }
-      }
       
-      fetch(urlBoceto)
-      .then(response => {
-        if (response.ok) {
-          pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
-          pdf.src = urlBoceto;
-          divPdf.appendChild(pdf);
+      if(document.getElementById('selectBoceto').value == 'bocetoDefault') {
+        if(document.getElementById('selectBoceto').lastChild.id == 'bocetoDefault') {
+          pdf = elementFromHtml('<p id=\"pdf\">No existen bocetos para este pedido<p>');
         } else {
-          pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');
-          divPdf.appendChild(pdf);
-          throw new Error('El archivo no se pudo obtener');
+          pdf = elementFromHtml('<p id=\"pdf\">Seleccione un boceto<p>');
         }
-      })
-      .catch(error => {
-        if (error.message === 'El archivo no se pudo obtener') {
-          console.log(error.message);
-        } else {
-          console.log('Error:', error.message);
+        divPdf.appendChild(pdf);
+      } else {
+        document.getElementById('numero_boceto').value = option;
+        var urlBoceto = null;
+        for(var p=0; p < pedidos.length; p++) {
+          if(bocetosUrl[p][option]) {
+            var urlBoceto = '.' + bocetosUrl[p][option];
+            break;
+          }
         }
-      });
+        
+        fetch(urlBoceto)
+        .then(response => {
+          if (response.ok) {
+            pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
+            pdf.src = urlBoceto;
+            divPdf.appendChild(pdf);
+          } else {
+            pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');
+            divPdf.appendChild(pdf);
+            throw new Error('El archivo no se pudo obtener');
+          }
+        })
+        .catch(error => {
+          if (error.message === 'El archivo no se pudo obtener') {
+            console.log(error.message);
+          } else {
+            console.log('Error:', error.message);
+          }
+        });
+      }
     }
   }
 
@@ -526,7 +534,7 @@ echo "<!DOCTYPE html>
   <div id='listaCheck'>
   </div>
 ";
-  
+
 include "menu.php";
 
 echo "
