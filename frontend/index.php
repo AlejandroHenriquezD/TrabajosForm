@@ -13,10 +13,10 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
-$pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
-$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos"), true);
+// $pedidosArticulos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos_articulos"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
@@ -25,7 +25,7 @@ $posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosf
 // $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 // $logos_encoded = json_encode($logos);
 $numeroPedidos = count($pedidos);
-$numeroPedidosArticulos = count($pedidosArticulos);
+// $numeroPedidosArticulos = count($pedidosArticulos);
 $numeroArticulos = count($articulos);
 $numeroTrabajos = count($tiposTrabajos);
 $numeroTipoArticulos = count($tiposArticulos);
@@ -48,14 +48,14 @@ $divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select nam
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $divPedidos .= "<option id={$pedidos[$o]['id']} value={$pedidos[$o]['id']}>{$pedidos[$o]['serie']}" . " " . "{$pedidos[$o]['numero']}</option>";
+  $divPedidos .= "<option id='{$pedidos[$o]['EjercicioPedido']}-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['EjercicioPedido']}-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "-" . "{$pedidos[$o]['SeriePedido']}" . "-" . "{$pedidos[$o]['NumeroPedido']}</option>";
 }
 $divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['id']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
-  $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'];
+  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['EjercicioPedido']}-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
+  $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['CodigoCliente'];
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
@@ -67,7 +67,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] .= "</select></div>";
 
   // $logos = array();
-  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['id_cliente'] . " AND obsoleto=0";
+  $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $pedidos[$o]['CodigoCliente'] . " AND obsoleto=0";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     $l = 0;
@@ -84,69 +84,68 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   };
 
 
-  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['id']}'><h1>Articulos </h1><div id='cb-articulos'>";
-  for ($j = 0; $j < $numeroPedidosArticulos; $j++) {
-    if ($pedidosArticulos[$j]['id_pedido'] == $pedidos[$o]['id']) {
-      $relacion[$o][$j] = $pedidosArticulos[$j]['id_articulo'];
-    } else {
-      $relacion[$o][$j] = null;
+  $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['EjercicioPedido']}-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1>Articulos </h1><div id='cb-articulos'>";
+  for ($i = 0; $i < $numeroArticulos; $i++) {
+    if (
+      $articulos[$i]['EjercicioPedido'] == $pedidos[$o]['EjercicioPedido'] && 
+      $articulos[$i]['SeriePedido'] == $pedidos[$o]['SeriePedido'] && 
+      $articulos[$i]['NumeroPedido'] == $pedidos[$o]['NumeroPedido']) 
+    {
+      $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['CodigoArticulo']}\">";
+      $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['CodigoArticulo']}\">";
+      $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}\")'>" . $articulos[$i]['DescripcionArticulo'] . "</label>";
+      $arrayArticulos[$o] .= "</div>";
     }
-    for ($i = 0; $i < $numeroArticulos; $i++) {
-      if ($relacion[$o][$j] == $articulos[$i]['id']) {
-        $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['id']}\">";
-        $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['id']}\">";
-        $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['id']}\" name='articulo[]' value=\"{$articulos[$i]['descripcion']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['id']}\")'>" . $articulos[$i]['descripcion'] . "</label>";
-        $arrayArticulos[$o] .= "</div>";
-      }
-      $arrayTipoArticulos[$o][$i] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}\">";
-      $arrayTipoArticulos[$o][$i] .= "<h1>Tipo de articulo</h1><div class='slider'><div class='coleccion'>";
-      for ($a = 0; $a < $numeroTipoArticulos; $a++) {
-        $arrayTipoArticulos[$o][$i] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\">";
-        $arrayTipoArticulos[$o][$i] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}\" value=\"{$tiposArticulos[$a]['nombre']}\" onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\")'>";
-        $arrayTipoArticulos[$o][$i] .= "<img src=\".{$tiposArticulos[$a]['img']}\" alt=\".{$tiposArticulos[$a]['img']}\"/>";
-        $arrayTipoArticulos[$o][$i] .= "<br></div>";
-        $trabajos[$o][$i][$a] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
-        for ($t = 0; $t < $numeroTrabajos; $t++) {
-          $trabajos[$o][$i][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
-          $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
-          $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
-          $trabajos[$o][$i][$a] .= $tiposTrabajos[$t]['nombre'] . "</label>";
-          $trabajos[$o][$i][$a] .= "</div>";
-          $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
-          for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
-            $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
-            $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
-            if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
-              // Obtiene la posición del array donde se encuentra el id de la posición
-              $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
-              $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
-              $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-              $posiciones[$o][$i][$a][$t] .= $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
-              $posiciones[$o][$i][$a][$t] .= "</div>";
-            }
-            // Iba dentro del if de arriba
-            $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
-            if ($logos[$o] != "No hay logos") {
-              for ($l = 0; $l < count($logos[$o]); $l++) {
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
-                $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
-              }
-            }
-            $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
-          }
-          $posiciones[$o][$i][$a][$t] .= "</div></div>";
-          $desplegablesPosiciones[$o][$i][$a][$t] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" onclick='desplegable(\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"></div></div>";
-        }
-        $trabajos[$o][$i][$a] .= "</div>";
-      }
-      $arrayTipoArticulos[$o][$i] .= "</div></div></div>";
-      $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
+  //     $arrayTipoArticulos[$o][$i] = "<div class='tipoArticulo' id=\"tipoArticulos-{$articulos[$i]['id']}\">";
+  //     $arrayTipoArticulos[$o][$i] .= "<h1>Tipo de articulo</h1><div class='slider'><div class='coleccion'>";
+  //     for ($a = 0; $a < $numeroTipoArticulos; $a++) {
+  //       $arrayTipoArticulos[$o][$i] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\">";
+  //       $arrayTipoArticulos[$o][$i] .= "<input type='radio' class=\"articuloRadio-{$articulos[$i]['id']}\" id=\"tipoArticulo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\" name=\"articuloRadio-{$articulos[$i]['id']}\" value=\"{$tiposArticulos[$a]['nombre']}\" onclick='mostrarTrabajos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\")'>";
+  //       $arrayTipoArticulos[$o][$i] .= "<img src=\".{$tiposArticulos[$a]['img']}\" alt=\".{$tiposArticulos[$a]['img']}\"/>";
+  //       $arrayTipoArticulos[$o][$i] .= "<br></div>";
+  //       $trabajos[$o][$i][$a] = "<div class='trabajos' id=\"trabajos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}\"><h1>Trabajos</h1><div class='coleccionHorizontal'>";
+  //       for ($t = 0; $t < $numeroTrabajos; $t++) {
+  //         $trabajos[$o][$i][$a] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
+  //         $trabajos[$o][$i][$a] .= "<label for=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\">";
+  //         $trabajos[$o][$i][$a] .= "<input type='checkbox' id=\"trabajo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" name={{$tiposTrabajos[$t]['nombre']}} value={{$tiposTrabajos[$t]['nombre']}} onclick='mostrarPosiciones(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'>";
+  //         $trabajos[$o][$i][$a] .= $tiposTrabajos[$t]['nombre'] . "</label>";
+  //         $trabajos[$o][$i][$a] .= "</div>";
+  //         $posiciones[$o][$i][$a][$t] = "<div class='posicion' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"><div class='seleccionado'><h1>{$tiposTrabajos[$t]['nombre']}</h1></div><h1>Posiciones: </h1><div class='coleccionHorizontal'>";
+  //         for ($p = 0; $p < $numeroPosicionesArticulos; $p++) {
+  //           $arrayLogos[$o][$i][$a][$t][$p] = "<div class='logos' id=\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+  //           $posIndex = array_search($posicionesArticulos[$p]['id_posicion'], array_column($tiposPosiciones, 'id'));
+  //           if ($posicionesArticulos[$p]['id_tipo_articulo'] == $tiposArticulos[$a]['id']) {
+  //             // Obtiene la posición del array donde se encuentra el id de la posición
+  //             $posiciones[$o][$i][$a][$t] .= "<div id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+  //             $posiciones[$o][$i][$a][$t] .= "<label for=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\">";
+  //             $posiciones[$o][$i][$a][$t] .= "<input type='checkbox' id=\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" class='posicion-checkbox' name='posicion-checkbox[]' value=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='mostrarLogos(\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+  //             $posiciones[$o][$i][$a][$t] .= $tiposPosiciones[$posIndex]['descripcion'] . "</label><br>";
+  //             $posiciones[$o][$i][$a][$t] .= "</div>";
+  //           }
+  //           // Iba dentro del if de arriba
+  //           $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='seleccionado'><h1>{$tiposPosiciones[$posIndex]['descripcion']}</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
+  //           if ($logos[$o] != "No hay logos") {
+  //             for ($l = 0; $l < count($logos[$o]); $l++) {
+  //               $arrayLogos[$o][$i][$a][$t][$p] .= "<div class='ta' id=\"form-control-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\">";
+  //               $arrayLogos[$o][$i][$a][$t][$p] .= "<input type='radio' class=\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" id=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" name=\"img-input[grupo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}]\" value=\"logo-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}-{$logos[$o][$l]['id']}\" onclick='logoSeleccionado(\"logoRadio-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'>";
+  //               $arrayLogos[$o][$i][$a][$t][$p] .= "<img src=\".{$logos[$o][$l]['img']}\" alt=\".{$logos[$o][$l]['img']}\"/>";
+  //               $arrayLogos[$o][$i][$a][$t][$p] .= "</div>";
+  //             }
+  //           }
+  //           $desplegablesLogos[$o][$i][$a][$t][$p] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\" onclick='desplegable(\"logos-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}-{$posicionesArticulos[$p]['id_posicion']}\"></div></div>";
+  //         }
+  //         $posiciones[$o][$i][$a][$t] .= "</div></div>";
+  //         $desplegablesPosiciones[$o][$i][$a][$t] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\" onclick='desplegable(\"posicion-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}-{$tiposArticulos[$a]['id']}-{$tiposTrabajos[$t]['id']}\"></div></div>";
+  //       }
+  //       $trabajos[$o][$i][$a] .= "</div>";
+  //     }
+  //     $arrayTipoArticulos[$o][$i] .= "</div></div></div>";
+  //     $desplegablesTipoArticulos[$o][$i] = "<div class='desplegable' id=\"desplegable-{$articulos[$i]['id']}\" onclick='desplegable(\"tipoArticulos-{$articulos[$i]['id']}\")'><div class='flecha' id=\"flecha-{$articulos[$i]['id']}\"></div></div>";
     }
+    $arrayArticulos[$o] .= "</div></div>";
   }
-  $arrayArticulos[$o] .= "</div></div>";
-}
+  
+
 $divPedidos .= "</div>";
 
 $pedidos = json_encode($pedidos);
@@ -199,25 +198,27 @@ echo "<!DOCTYPE html>
   var desplegablesPosiciones = $desplegablesPosiciones;
   var logos = $arrayLogos;
   var desplegablesLogos = $desplegablesLogos;
+  console.log(articulos);
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
-    bocetos[i] = elementFromHtml(bocetos[i]);
-    for (var j = 0; j < tipoArticulos[i].length; j++) {
-      tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
-      desplegablesTipoArticulos[i][j] = elementFromHtml(desplegablesTipoArticulos[i][j]);
-      for (var k = 0; k < trabajos[i][j].length; k++) {
-        trabajos[i][j][k] = elementFromHtml(trabajos[i][j][k]);
-        for (var l = 0; l < posiciones[i][j][k].length; l++) {
-          posiciones[i][j][k][l] = elementFromHtml(posiciones[i][j][k][l]);
-          desplegablesPosiciones[i][j][k][l] = elementFromHtml(desplegablesPosiciones[i][j][k][l]);
-          for (var m = 0; m < logos[i][j][k][l].length; m++) {
-            logos[i][j][k][l][m] = elementFromHtml(logos[i][j][k][l][m]);
-            desplegablesLogos[i][j][k][l][m] = elementFromHtml(desplegablesLogos[i][j][k][l][m]);
-          }
-        }
-      }
-    }
+    // bocetos[i] = elementFromHtml(bocetos[i]);
+    // for (var j = 0; j < tipoArticulos[i].length; j++) {
+    //   tipoArticulos[i][j] = elementFromHtml(tipoArticulos[i][j]);
+    //   desplegablesTipoArticulos[i][j] = elementFromHtml(desplegablesTipoArticulos[i][j]);
+    //   for (var k = 0; k < trabajos[i][j].length; k++) {
+    //     trabajos[i][j][k] = elementFromHtml(trabajos[i][j][k]);
+    //     for (var l = 0; l < posiciones[i][j][k].length; l++) {
+    //       posiciones[i][j][k][l] = elementFromHtml(posiciones[i][j][k][l]);
+    //       desplegablesPosiciones[i][j][k][l] = elementFromHtml(desplegablesPosiciones[i][j][k][l]);
+    //       for (var m = 0; m < logos[i][j][k][l].length; m++) {
+    //         logos[i][j][k][l][m] = elementFromHtml(logos[i][j][k][l][m]);
+    //         desplegablesLogos[i][j][k][l][m] = elementFromHtml(desplegablesLogos[i][j][k][l][m]);
+    //       }
+    //     }
+    //   }
+    // }
   }
+  
 
   var elementoActual = null;
   
@@ -226,7 +227,6 @@ echo "<!DOCTYPE html>
     document.getElementById('pedidos').appendChild(articulos[0]);
     var select = document.getElementById('selectPedido');
     elementoActual = select.options[select.selectedIndex].value;
-
 
     var pdf = '<iframe src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>'
     document.getElementById('div-pdf').appendChild(elementFromHtml(pdf));
@@ -264,10 +264,10 @@ echo "<!DOCTYPE html>
   // }
 
   function mostrarArticulos() {
-    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    // var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
+      // document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
       // document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
@@ -276,9 +276,10 @@ echo "<!DOCTYPE html>
     // var divcli = document.createElement('div');
     // divcli.id = 'div-cli';
     divpdf.id = 'div-pdf';
+    console.log(document.getElementById('selectPedido').value);
     if(document.getElementById('selectPedido').value != '') {
       for(pedido of pedidos) {
-        if(document.getElementById('selectPedido').value == pedido['id']) {
+        // if(document.getElementById('selectPedido').value == pedido['id']) {
           for(cliente of clientes) {
             if(cliente.id === pedido['id_cliente']){
               // divcli.innerHTML = '<h1 class=\"titulo\">Cliente</h1>';
@@ -286,23 +287,24 @@ echo "<!DOCTYPE html>
               // divcli.innerHTML += '<div class=\"datoscli\"><p>CIF/NIF: ' + cliente['cif_nif'] + '</p><p>Número de cliente: ' + cliente['numero_cliente'] + '</p><p>Razón social: ' + cliente['razon_social'] + '</p></div>';
             }
           }
-          var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
-          var articulo = obtenerElemento(articulos, 'articulos-'+pedido['id']);
-          document.getElementById('listaCheck').appendChild(boceto);
+          // var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
+          var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
+          // document.getElementById('listaCheck').appendChild(boceto);
           // document.getElementById('pedidos').appendChild(divcli);
           document.getElementById('pedidos').appendChild(articulo);
 
-          if(!document.getElementById('div-pdf')){
-          document.getElementsByClassName('boceto')[0].appendChild(divpdf);
-          }
+          // if(!document.getElementById('div-pdf')){
+          // document.getElementsByClassName('boceto')[0].appendChild(divpdf);
+          // }
 
-          elementoActual = pedido['id'];
+          // elementoActual = pedido['id'];
+          elementoActual = document.getElementById('selectPedido').value;
           document.getElementById('numero_pedido').value = elementoActual;
           
           break;
-        } else {
-          elementoActual = null;
-        }
+        // } else {
+        //   elementoActual = null;
+        // }
       }
     } else {
       elementoActual = null;
