@@ -23,8 +23,10 @@ $sql = "SELECT DISTINCT
         WHERE    EjercicioPedido = 2023
         AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
         AND TipoArticulo = 'M'
+        AND SeriePedido = 'I'
+        AND NumeroPedido = '148'
         
-        AND CodigoAlmacen = '". $tienda."'
+        -- AND CodigoAlmacen = '". $tienda."'
         ";
 
 $getResults = sqlsrv_query($conn, $sql);
