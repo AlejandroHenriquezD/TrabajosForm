@@ -24,7 +24,7 @@ $sql = "SELECT DISTINCT
         AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
         AND TipoArticulo = 'M'
         
-        AND CodigoAlmacen = '". $tienda."'
+        AND CodigoAlmacen = '06'
         ";
 
 $getResults = sqlsrv_query($conn, $sql);
