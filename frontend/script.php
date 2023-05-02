@@ -80,8 +80,9 @@ echo "
           var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
           // document.getElementById('listaCheck').appendChild(boceto);
           // document.getElementById('pedidos').appendChild(divcli);
+          if(document.getElementById('selectPedido').value != 'pedidoDefault'){
           document.getElementById('pedidos').appendChild(articulo);
-
+          }
           // if(!document.getElementById('div-pdf')){
           // document.getElementsByClassName('boceto')[0].appendChild(divpdf);
           // }
@@ -100,6 +101,7 @@ echo "
     }
     updatePdf();
     validar();
+    disablePedidos();
   }
 
   function mostrarTiposArticulos(elemento) {

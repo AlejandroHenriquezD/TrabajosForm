@@ -23,11 +23,8 @@
         return input.id.includes('articulo');
       });
 
-      const divPosicion = document.getElementById(ma.id);
-
       // Si hay un mensaje de error, lo borramos
       if (listaCheck.querySelector('ar')) {
-        // divPosicion.querySelector('ar').remove();
         listaCheck.querySelector('ar').remove();
       }
 
@@ -36,14 +33,14 @@
         // Si hay al menos uno seleccionado se da por válido
         valido = true;
         // Añadimos los articulos a la lista de checks
-        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
+        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "-" + inf.id.split('-')[2] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
         listaCheck.appendChild(msgArt);
       }
 
       // Si el formulario es válido, te lo indico
       if (!valido && !listaCheck.querySelector('ar')) {
         let msg = document.createElement('ar');
-        msg.innerHTML = "<p>Seleccione al menos un articulo</p>";
+        msg.innerHTML = "<p>Este pedido no tiene artículos asociados</p>";
         listaCheck.appendChild(msg);
       }
     }
@@ -52,7 +49,7 @@
       listaCheck.removeChild(listaCheck.querySelector('msg-ped'));
     }
 
-    if (listaCheck.querySelectorAll('.msg-art').length === 0) {
+    if (listaCheck.querySelectorAll('.msg-art').length === 0 && document.getElementById('selectPedido').value == "pedidoDefault") {
       let msg = document.createElement('msg-ped')
       msg.innerHTML = "<p>Seleccione un pedido</p>";
       listaCheck.appendChild(msg);
@@ -85,10 +82,8 @@
 
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('tipoArticulo-' + id[1]);
+        return input.id.includes('tipoArticulo-' + id[1] + "-" + id[2]);
       });
-
-      const divPosicion = document.getElementById(mta.id);
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -108,7 +103,7 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1])) {
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1] + "-" + id[2])) {
           let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
           msgArt[i].appendChild(msg);
         }
@@ -144,8 +139,6 @@
         return input.id.includes('trabajo-' + id[1] + '-' + id[2]);
       });
 
-      const divPosicion = document.getElementById(mt.id);
-
       // Se recorre dichos checkboxes
       var inputsValidos = [];
 
@@ -167,7 +160,13 @@
 
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
+          // console.log(msgArt[i].id.split('-')[2])
+          // console.log(id[1])
+          // console.log(msgArt[i].id.split('-')[2] === id[1])
+
+          console.log(!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]))
           if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
+            console.log('hola')
             let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
             msgArt[i].appendChild(msg);
           }
@@ -202,8 +201,6 @@
       const inputsFiltrados = Array.from(inputs).filter(input => {
         return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]);
       });
-
-      const divPosicion = document.getElementById(mp.id);
 
       // Se recorre dichos checkboxes
       var inputsValidos = [];
@@ -259,8 +256,6 @@
         return input.id.includes('logo-' + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4]);
       });
 
-      const divPosicion = document.getElementById(ml.id);
-
       // Se recorre dichos checkboxes
       var inputsValidos = [];
 
@@ -293,7 +288,11 @@
     for (m of msgArt) {
 
       var id = m.id.split('-')[2];
-      var cb = document.getElementById("articulo-" + id)
+      var elemento = document.getElementById(m.id)
+      var elementoHijo = elemento.children[0];
+      var elementoNieto = elementoHijo.children[0];
+      var nombreAr = elementoNieto.textContent;
+      var cb = document.getElementById("articulo-" + id + "-" + nombreAr)
 
       if (m.childNodes.length <= 1 && cb.checked) {
         m.getElementsByTagName('img')[0].src = './img/aceptar.png';
@@ -320,6 +319,14 @@
       if (!m.classList.contains('msg-art-verde')) {
         button.disabled = true;
       }
+    }
+  }
+
+  function disablePedidos() {
+    var miSelect = document.getElementById('selectPedido'); // Obtener el elemento <select>
+    var opcion = miSelect.querySelector('#pedidoDefault'); // Obtener la segunda opción
+    if (opcion != null) {
+      opcion.remove(); // Deshabilitar la opción
     }
   }
 

@@ -75,7 +75,6 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\")'>" . $articulos[$i]['DescripcionArticulo'] . "</label>";
       $arrayArticulos[$o] .= "</div>";
     }
-    
   }
   $arrayArticulos[$o] .= "</div></div>";
 }
