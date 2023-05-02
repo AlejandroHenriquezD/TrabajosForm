@@ -26,7 +26,7 @@ $sql = "SELECT DISTINCT
         AND SeriePedido = 'I'
         AND NumeroPedido = '148'
         
-        -- AND CodigoAlmacen = '". $tienda."'
+        AND CodigoAlmacen = '06'
         ";
 
 $getResults = sqlsrv_query($conn, $sql);
