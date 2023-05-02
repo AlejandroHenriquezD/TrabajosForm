@@ -160,14 +160,8 @@
 
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
-          // console.log(msgArt[i].id.split('-')[2])
-          // console.log(id[1])
-          // console.log(msgArt[i].id.split('-')[2] === id[1])
-
-          console.log(!msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]))
-          if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2])) {
-            console.log('hola')
-            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un trabajo</p></div>");
+          if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2] + "-" + id[3])) {
+            let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3] + "'><p>Seleccione un trabajo</p></div>");
             msgArt[i].appendChild(msg);
           }
         }
@@ -219,7 +213,7 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + '-' + id[2] + '-' + id[3])) {
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4])) {
           let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
           msgArt[i].appendChild(msg);
         }
@@ -274,7 +268,18 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4])) {
+        console.log('1')
+        console.log(!valido[i])
+        console.log('2')
+        console.log(msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3])
+        console.log(id[3] + "-" + id[4])
+        console.log(msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3] === id[3] + "-" + id[4])
+        console.log('3')
+        console.log(!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]))
+        console.log('4')
+        console.log(document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7]) != null)
+        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])) {
+          console.log('hola')
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
         }
