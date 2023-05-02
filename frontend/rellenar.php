@@ -159,13 +159,15 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   }
 }
 
+$desplegables = "<div class='desplegable' id='desplegable-codigos' onclick='desplegable(\"tipo-codigos\")'><div class='flecha' id='flecha-codigos'></div></div>";
+
 $pedidos = json_encode($pedidos);
 $clientes = json_encode($clientes);
 $bocetosUrl = json_encode($bocetosUrl);
 $arrayBocetos = json_encode($arrayBocetos);
 $arrayArticulos = json_encode($arrayArticulos);
 $arrayTipoArticulos = json_encode($arrayTipoArticulos);
-$desplegablesTipoArticulos = json_encode($desplegablesTipoArticulos);
+$desplegables = json_encode($desplegables);
 $arrayTrabajos = json_encode($trabajos);
 $arrayPosiciones = json_encode($posiciones);
 $desplegablesPosiciones = json_encode($desplegablesPosiciones);

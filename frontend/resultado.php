@@ -1,6 +1,9 @@
 <?php
-echo $_POST["numero_boceto"];
-$id_pedido = $_POST["numero_pedido"];
+echo $_POST["numero_pedido"];
+$pedido = explode('-', $_POST["numero_pedido"]);
+$ejercicio_pedido = $pedido[0];
+$serie_pedido = $pedido[1];
+$numero_pedido = $pedido[2];
 $id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
@@ -9,11 +12,13 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   var_dump($_FILES);
   $valor = explode('-', $valor);
 
-  $id_posicion = $valor[4];
-  $id_articulo = $valor[1];
-  $id_tipo_trabajo = $valor[3];
-  $id_logo = $valor[5];
-  $id_tipo_articulo = $valor[2];
+  $codigo_articulo = $valor[1];
+  $descripcion_articulo = $valor[2];
+  $id_tipo_articulo = $valor[3];
+  $id_tipo_trabajo = $valor[4];
+  $id_posicion = $valor[5];
+  $id_logo = $valor[6];
+  
 
   $host = "localhost";
   $dbname = "centraluniformes";
@@ -31,7 +36,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     die("Connection error: " . mysqli_connect_errno());
   }
 
-  $sql = "INSERT INTO trabajos (id_posicion, id_articulo, id_tipo_trabajo, id_pedido, id_logo, id_tipo_articulo, id_boceto) VALUES (?,?,?,?,?,?,?)";
+  $sql = "INSERT INTO trabajos (ejercicio_pedido, serie_pedido, numero_pedido, codigo_articulo, descripcion_articulo, id_tipo_articulo, id_tipo_trabajo, id_posicion, id_logo, id_boceto) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
   $stmt = mysqli_stmt_init($conn);
 
@@ -41,13 +46,16 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   mysqli_stmt_bind_param(
     $stmt,
-    "siiiiii",
-    $id_posicion,
-    $id_articulo,
-    $id_tipo_trabajo,
-    $id_pedido,
-    $id_logo,
+    "isiisiiiii",
+    $ejercicio_pedido,
+    $serie_pedido,
+    $numero_pedido,
+    $codigo_articulo,
+    $descripcion_articulo,
     $id_tipo_articulo,
+    $id_tipo_trabajo,
+    $id_posicion,
+    $id_logo,
     $id_boceto
   );
 
@@ -55,4 +63,3 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   header("location:pdf.php");
 }
 // echo $_POST['observaciones'];
-?>
