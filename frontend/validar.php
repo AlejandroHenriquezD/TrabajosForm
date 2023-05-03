@@ -268,18 +268,7 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        console.log('1')
-        console.log(!valido[i])
-        console.log('2')
-        console.log(msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3])
-        console.log(id[3] + "-" + id[4])
-        console.log(msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3] === id[3] + "-" + id[4])
-        console.log('3')
-        console.log(!msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]))
-        console.log('4')
-        console.log(document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7]) != null)
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])) {
-          console.log('hola')
+        if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") === id[3] + "-" + id[4] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])) {
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
         }

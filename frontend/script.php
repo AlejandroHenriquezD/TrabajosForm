@@ -132,14 +132,22 @@ echo "
     var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+descripcion);
     for (let r of radios) {
       var numeroTipoArticulo = r.id.split('-')[3];
+      var codigos = numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo;
+      codigos = CSS.escape(codigos);
       if(r.checked) {
         var trabajo = trabajos.replaceAll('codigoArticulo-tiposArticulos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
         trabajo = elementFromHtml(trabajo);
-        document.getElementById(divTipoArticulos).appendChild(trabajo);
+        console.log(document.getElementById(divTipoArticulos))
+        console.log('#trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)
+        
+        if(!document.getElementById(divTipoArticulos).querySelector('#trabajos-'+codigos)) {
+          console.log('funciona')
+          document.getElementById(divTipoArticulos).appendChild(trabajo);
+        }
         r.parentNode.classList.add('ta-seleccionado');
       } else {
-        if (document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) { 
-          document.getElementById(divTipoArticulos).removeChild(document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo));
+        if (document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) {
+          document.getElementById(divTipoArticulos).removeChild(document.querySelector('#trabajos-'+codigos));
           r.parentNode.classList.remove('ta-seleccionado');
         }
       }
@@ -181,7 +189,7 @@ echo "
         divTrabajos.appendChild(desplegable);
       } else {
         divTrabajos.removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
-        divTrabajos.removeChild(divTrabajos.querySelector('.desplegable'));
+        divTrabajos.removeChild(document.getElementById('desplegable-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
       }
     }
     validar()
@@ -224,7 +232,7 @@ echo "
         divPosiciones.appendChild(desplegable);
       } else {
         divPosiciones.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
-        divPosiciones.removeChild(divPosiciones.querySelector('.desplegable'));
+        divPosiciones.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
       }
     }
     validar()
