@@ -12,10 +12,10 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
-$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
@@ -38,9 +38,6 @@ $arrayLogos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
-$desplegablesTipoArticulos = array();
-$desplegablesPosiciones = array();
-$desplegablesLogos = array();
 $divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos()>";
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
@@ -52,13 +49,26 @@ $divPedidos .= "</select></div>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
-  $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $pedidos[$o]['CodigoCliente'];
-  $result = mysqli_query($conn, $sql);
-  if (mysqli_num_rows($result) >= 0) {
-    $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
-    while ($row = mysqli_fetch_assoc($result)) {
-      $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
-      $bocetosUrl[$o][$row["id"]][0] = trim(json_encode([$row["pdf"]][0]), '"');
+  // Hay que buscar el boceto por el id en la tabla cliente, por tanto debemos obtenerlo antes comparando valores con la tabla pedidos
+  foreach($clientes as $cliente) {
+    if (
+      $cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
+      $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
+      $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
+      $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
+      $cliente['dirección'] == $pedidos[$o]['Domicilio'] &&
+      $cliente['correo'] == $pedidos[$o]['Email1'] &&
+      $cliente['telefono'] == $pedidos[$o]['Telefono']
+    ) {
+      $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'];
+      $result = mysqli_query($conn, $sql);
+      if (mysqli_num_rows($result) >= 0) {
+        $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
+        while ($row = mysqli_fetch_assoc($result)) {
+          $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
+          $bocetosUrl[$o][$row["id"]][0] = trim(json_encode([$row["pdf"]][0]), '"');
+        }
+      }
     }
   }
   $arrayBocetos[$o] .= "</select></div>";
@@ -170,9 +180,7 @@ $arrayTipoArticulos = json_encode($arrayTipoArticulos);
 $desplegables = json_encode($desplegables);
 $arrayTrabajos = json_encode($trabajos);
 $arrayPosiciones = json_encode($posiciones);
-$desplegablesPosiciones = json_encode($desplegablesPosiciones);
 $arrayLogos = json_encode($arrayLogos);
-$desplegablesLogos = json_encode($desplegablesLogos);
 $art = json_encode($articulos);
 $tra = json_encode($tiposTrabajos);
 $tart = json_encode($tiposArticulos);

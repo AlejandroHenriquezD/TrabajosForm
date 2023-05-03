@@ -21,13 +21,13 @@ echo "
   var desplegables = $desplegables;
   var trabajos = $arrayTrabajos;
   var posiciones = $arrayPosiciones;
-  var desplegablesPosiciones = $desplegablesPosiciones;
   var logos = $arrayLogos;
-  var desplegablesLogos = $desplegablesLogos;
   
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
+    bocetos[i] = elementFromHtml(bocetos[i]);
   }
+  
   
   var elementoActual = null;
   
@@ -54,10 +54,10 @@ echo "
   }
 
   function mostrarArticulos() {
-    // var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      // document.getElementById('listaCheck').removeChild(bocetoAntiguo);
+      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
       // document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
@@ -67,37 +67,28 @@ echo "
     // divcli.id = 'div-cli';
     divpdf.id = 'div-pdf';
     if(document.getElementById('selectPedido').value != '') {
-      for(pedido of pedidos) {
-        // if(document.getElementById('selectPedido').value == pedido['id']) {
-          for(cliente of clientes) {
-            if(cliente.id === pedido['id_cliente']){
-              // divcli.innerHTML = '<h1 class=\"titulo\">Cliente</h1>';
-              // divcli.innerHTML += '<div class=\"datoscli\"><p>Nombre: ' + cliente['nombre'] + '</p><p>Teléfono: ' + cliente['telefono'] + '</p><p>Correo: ' + cliente['correo'] + '</p><p>Dirección: ' + cliente['dirección'] + '</p></div>';
-              // divcli.innerHTML += '<div class=\"datoscli\"><p>CIF/NIF: ' + cliente['cif_nif'] + '</p><p>Número de cliente: ' + cliente['numero_cliente'] + '</p><p>Razón social: ' + cliente['razon_social'] + '</p></div>';
-            }
-          }
-          // var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
-          var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
-          // document.getElementById('listaCheck').appendChild(boceto);
-          // document.getElementById('pedidos').appendChild(divcli);
-          if(document.getElementById('selectPedido').value != 'pedidoDefault'){
-          document.getElementById('pedidos').appendChild(articulo);
-          }
-          // if(!document.getElementById('div-pdf')){
-          // document.getElementsByClassName('boceto')[0].appendChild(divpdf);
-          // }
+      elementoActual = document.getElementById('selectPedido').value;
 
-          // elementoActual = pedido['id'];
-          elementoActual = document.getElementById('selectPedido').value;
-          var combo = document.getElementById('selectPedido');
-          var ejercicio = combo.options[combo.selectedIndex].text.split('-')[0];
-          document.getElementById('numero_pedido').value = ejercicio +'-'+ elementoActual;
-          
-          break;
-        // } else {
-        //   elementoActual = null;
-        // }
+      var seriePedido = elementoActual.split('-')[0];
+      var numeroPedido = elementoActual.split('-')[1];
+
+      var boceto = obtenerElemento(bocetos, 'boceto-'+seriePedido+'-'+numeroPedido);
+      var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
+      document.getElementById('listaCheck').appendChild(boceto);
+      // document.getElementById('pedidos').appendChild(divcli);
+      if(document.getElementById('selectPedido').value != 'pedidoDefault'){
+      document.getElementById('pedidos').appendChild(articulo);
       }
+      if(!document.getElementById('div-pdf')){
+      document.getElementsByClassName('boceto')[0].appendChild(divpdf);
+      }
+
+      // elementoActual = pedido['id'];
+      
+      var combo = document.getElementById('selectPedido');
+      var ejercicio = combo.options[combo.selectedIndex].text.split('-')[0];
+      document.getElementById('numero_pedido').value = ejercicio +'-'+ elementoActual;
+          
     } else {
       elementoActual = null;
     }
@@ -320,9 +311,11 @@ echo "
         document.getElementById('numero_boceto').value = option;
         var urlBoceto = null;
         for(var p=0; p < pedidos.length; p++) {
-          if(bocetosUrl[p][option]) {
-            var urlBoceto = '.' + bocetosUrl[p][option];
-            break;
+          if(pedidos[p]['SeriePedido']+'-'+pedidos[p]['NumeroPedido'] == elementoActual) {
+            if(bocetosUrl[p][option]) {
+              var urlBoceto = '.' + bocetosUrl[p][option];
+              break;
+            }
           }
         }
         
