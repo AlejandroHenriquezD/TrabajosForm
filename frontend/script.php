@@ -18,16 +18,16 @@ echo "
   var bocetos = $arrayBocetos;
   var articulos = $arrayArticulos;
   var tipoArticulos = $arrayTipoArticulos;
-  var desplegablesTipoArticulos = $desplegablesTipoArticulos;
+  var desplegables = $desplegables;
   var trabajos = $arrayTrabajos;
   var posiciones = $arrayPosiciones;
-  var desplegablesPosiciones = $desplegablesPosiciones;
   var logos = $arrayLogos;
-  var desplegablesLogos = $desplegablesLogos;
   
   for (var i = 0; i < articulos.length; i++) {
     articulos[i] = elementFromHtml(articulos[i]);
+    bocetos[i] = elementFromHtml(bocetos[i]);
   }
+  
   
   var elementoActual = null;
   
@@ -54,10 +54,10 @@ echo "
   }
 
   function mostrarArticulos() {
-    // var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
+    var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      // document.getElementById('listaCheck').removeChild(bocetoAntiguo);
+      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
       // document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
@@ -67,39 +67,34 @@ echo "
     // divcli.id = 'div-cli';
     divpdf.id = 'div-pdf';
     if(document.getElementById('selectPedido').value != '') {
-      for(pedido of pedidos) {
-        // if(document.getElementById('selectPedido').value == pedido['id']) {
-          for(cliente of clientes) {
-            if(cliente.id === pedido['id_cliente']){
-              // divcli.innerHTML = '<h1 class=\"titulo\">Cliente</h1>';
-              // divcli.innerHTML += '<div class=\"datoscli\"><p>Nombre: ' + cliente['nombre'] + '</p><p>Teléfono: ' + cliente['telefono'] + '</p><p>Correo: ' + cliente['correo'] + '</p><p>Dirección: ' + cliente['dirección'] + '</p></div>';
-              // divcli.innerHTML += '<div class=\"datoscli\"><p>CIF/NIF: ' + cliente['cif_nif'] + '</p><p>Número de cliente: ' + cliente['numero_cliente'] + '</p><p>Razón social: ' + cliente['razon_social'] + '</p></div>';
-            }
-          }
-          // var boceto = obtenerElemento(bocetos, 'boceto-'+pedido['id']);
-          var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
-          // document.getElementById('listaCheck').appendChild(boceto);
-          // document.getElementById('pedidos').appendChild(divcli);
-          document.getElementById('pedidos').appendChild(articulo);
+      elementoActual = document.getElementById('selectPedido').value;
 
-          // if(!document.getElementById('div-pdf')){
-          // document.getElementsByClassName('boceto')[0].appendChild(divpdf);
-          // }
+      var seriePedido = elementoActual.split('-')[0];
+      var numeroPedido = elementoActual.split('-')[1];
 
-          // elementoActual = pedido['id'];
-          elementoActual = document.getElementById('selectPedido').value;
-          document.getElementById('numero_pedido').value = elementoActual;
-          
-          break;
-        // } else {
-        //   elementoActual = null;
-        // }
+      var boceto = obtenerElemento(bocetos, 'boceto-'+seriePedido+'-'+numeroPedido);
+      var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
+      document.getElementById('listaCheck').appendChild(boceto);
+      // document.getElementById('pedidos').appendChild(divcli);
+      if(document.getElementById('selectPedido').value != 'pedidoDefault'){
+      document.getElementById('pedidos').appendChild(articulo);
       }
+      if(!document.getElementById('div-pdf')){
+      document.getElementsByClassName('boceto')[0].appendChild(divpdf);
+      }
+
+      // elementoActual = pedido['id'];
+      
+      var combo = document.getElementById('selectPedido');
+      var ejercicio = combo.options[combo.selectedIndex].text.split('-')[0];
+      document.getElementById('numero_pedido').value = ejercicio +'-'+ elementoActual;
+          
     } else {
       elementoActual = null;
     }
     updatePdf();
     validar();
+    disablePedidos();
   }
 
   function mostrarTiposArticulos(elemento) {
@@ -109,17 +104,19 @@ echo "
     var descripcion = elemento.split('-')[3];
     descripcion = descripcion.replaceAll(' ', '')
 
-    // var desplegable = obtenerElemento(desplegablesTipoArticulos[indexPedido()], 'desplegable-'+numeroArticulo);
     var tipoArticulo = tipoArticulos.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
-
     tipoArticulo = elementFromHtml(tipoArticulo);
+
+    var desplegable = desplegables.replaceAll('tipo', 'tipoArticulos');
+    desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion);
+    desplegable = elementFromHtml(desplegable);
 
     if (divElemento.querySelector(':first-child').querySelector(':first-child').checked) {
       divElemento.appendChild(tipoArticulo);
-      // divElemento.appendChild(desplegable); 
+      divElemento.appendChild(desplegable); 
     } else {
       divElemento.removeChild(divElemento.querySelector('div'));
-      // divElemento.removeChild(desplegable);
+      divElemento.removeChild(divElemento.querySelector('.desplegable'));
     }
     validar();
   }
@@ -135,14 +132,22 @@ echo "
     var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+descripcion);
     for (let r of radios) {
       var numeroTipoArticulo = r.id.split('-')[3];
+      var codigos = numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo;
+      codigos = CSS.escape(codigos);
       if(r.checked) {
         var trabajo = trabajos.replaceAll('codigoArticulo-tiposArticulos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
         trabajo = elementFromHtml(trabajo);
-        document.getElementById(divTipoArticulos).appendChild(trabajo);
+        console.log(document.getElementById(divTipoArticulos))
+        console.log('#trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)
+        
+        if(!document.getElementById(divTipoArticulos).querySelector('#trabajos-'+codigos)) {
+          console.log('funciona')
+          document.getElementById(divTipoArticulos).appendChild(trabajo);
+        }
         r.parentNode.classList.add('ta-seleccionado');
       } else {
-        if (document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) { 
-          document.getElementById(divTipoArticulos).removeChild(document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo));
+        if (document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) {
+          document.getElementById(divTipoArticulos).removeChild(document.querySelector('#trabajos-'+codigos));
           r.parentNode.classList.remove('ta-seleccionado');
         }
       }
@@ -172,23 +177,26 @@ echo "
       posicion = posicion.replaceAll('idTiposTrabajos', numeroTrabajo);
       posicion = posicion.replaceAll('nombreTiposTrabajos', cb.name);
       posicion = elementFromHtml(posicion);
-      var divTrabajos = document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
 
-      // var desplegable = obtenerElemento(desplegablesPosiciones[indexPedido()][indexTipoArticulo][indexTrabajo], 'desplegable-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
+      var desplegable = desplegables.replaceAll('tipo', 'posicion');
+      desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
+      desplegable = elementFromHtml(desplegable);
+
+      var divTrabajos = document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
 
       if (cb.checked) {
         divTrabajos.appendChild(posicion);
-        // divTrabajos.appendChild(desplegable);
+        divTrabajos.appendChild(desplegable);
       } else {
         divTrabajos.removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
-        // document.getElementById(divTrabajos).removeChild(desplegable);
+        divTrabajos.removeChild(document.getElementById('desplegable-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
       }
     }
     validar()
   }
 
   function mostrarLogos(elemento) {
-
+    
     var numeroArticulo = elemento.split('-')[2];
     var descripcion = elemento.split('-')[3];
     var numeroTipoArticulo = elemento.split('-')[4];
@@ -212,14 +220,19 @@ echo "
       logo = logo.replaceAll('idPosicion', numeroPosicion);
       logo = logo.replaceAll('nombrePosicion', cb.parentNode.textContent);
       logo = elementFromHtml(logo);
+
+      var desplegable = desplegables.replaceAll('tipo', 'logos');
+      desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion);
+      desplegable = elementFromHtml(desplegable);
+
       var divPosiciones = document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
 
       if (cb.checked) {
         divPosiciones.appendChild(logo);
-        // divPosiciones.appendChild(desplegable);
+        divPosiciones.appendChild(desplegable);
       } else {
         divPosiciones.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
-        // divPosiciones.removeChild(desplegable);
+        divPosiciones.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
       }
     }
     validar()
@@ -245,13 +258,25 @@ echo "
   }
 
   function desplegable(elemento) {
+    
+    var divElemento = document.getElementById(elemento);
+    var hijos = divElemento.children;
     var indices = elemento.substring(elemento.indexOf('-'));
-    if(document.getElementById(elemento).classList.contains('div-oculto')) {
-      document.getElementById(elemento).classList.remove('div-oculto');
+    
+    if(divElemento.classList.contains('div-oculto')) {
+      divElemento.classList.remove('div-oculto');
       document.getElementById('flecha'+indices).classList.remove('flecha-invertida');
+
+      for(hijo of hijos){
+        hijo.classList.remove('div-oculto');
+      }
     } else {
-      document.getElementById(elemento).classList.add('div-oculto');
+      divElemento.classList.add('div-oculto');
       document.getElementById('flecha'+indices).classList.add('flecha-invertida');
+
+      for(hijo of hijos){
+        hijo.classList.add('div-oculto');
+      }
     }
   }
 
@@ -294,9 +319,11 @@ echo "
         document.getElementById('numero_boceto').value = option;
         var urlBoceto = null;
         for(var p=0; p < pedidos.length; p++) {
-          if(bocetosUrl[p][option]) {
-            var urlBoceto = '.' + bocetosUrl[p][option];
-            break;
+          if(pedidos[p]['SeriePedido']+'-'+pedidos[p]['NumeroPedido'] == elementoActual) {
+            if(bocetosUrl[p][option]) {
+              var urlBoceto = '.' + bocetosUrl[p][option];
+              break;
+            }
           }
         }
         
