@@ -14,14 +14,14 @@ class PDF extends FPDF
 	{
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
-			$this->Cell(40, 7, $col, 'B', 0, 'L');
+			$this->Cell(30, 7, $col, 'B', 0, 'L');
 		$this->Ln();
 
 		$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajo['id_tipo_articulo']), true);
 
 		$this->SetXY($x, $y + 7);
-		$this->Cell(40, 19, '', 0, 0, 'C');
-		$this->Image('.' . $tipo_articulo['img'], 22, $y + 8, 20);
+		$this->Cell(30, 19, '', 0, 0, 'C');
+		$this->Image('.' . $tipo_articulo['img'], 16, $y + 8, 20);
 	}
 
 	function TablaTrabajo($header, $trabajos, $x, $y)
@@ -29,7 +29,7 @@ class PDF extends FPDF
 
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
-			$this->Cell(40, 7, $col, 'B', 0, 'C');
+			$this->Cell(30, 7, $col, 'B', 0, 'C');
 		$this->Ln();
 		$tipo_trabajosFiltrados = array();
 		$ysum = 0;
@@ -51,16 +51,16 @@ class PDF extends FPDF
 				}
 			}
 			$this->SetXY($x, $y + 7 + $ysum);
-			$this->Cell(40, 14 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
-			$sum = 14;
+			$this->Cell(30, 10 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
+			$sum = 10;
 			foreach ($posicionesFiltradas as $posicion) {
-				$this->SetX(100);
-				$this->Cell(40, 14, $posicion['descripcion'], 1, 0, 'C');
+				$this->SetX(80);
+				$this->Cell(30, 10, $posicion['descripcion'], 1, 0, 'C');
 				// $this->Cell(40, 14, '', 0, 0, 'C');
 				$this->Ln();
-				$sum .= 14;
+				$sum .= 10;
 			}
-			$ysum .= 14;
+			$ysum .= 10;
 		}
 	}
 }
@@ -70,7 +70,7 @@ $pdf = new PDF('P', 'mm', 'A4');
 
 // Carga de datos
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
-$pdf->SetFont('Times', '', 9);
+$pdf->SetFont('Times', '', 8);
 $pdf->AddPage();
 $pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
 $pdf->Ln();
@@ -130,18 +130,18 @@ while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
 	$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
 	$header = array('Tipos de trabajo', 'Posiciones');
-	$pdf->TablaTrabajo($header, $trabajosFiltrados, 60, $y);
-	$y += 14 * count($trabajosFiltrados) + 28;
+	$pdf->TablaTrabajo($header, $trabajosFiltrados, 50, $y);
+	$y += 10 * count($trabajosFiltrados) + 30;
 }
 sqlsrv_free_stmt($getResults);
 
 $pdf->SetXY(10, $y);
 $pdf->Cell(80, 7, 'OBSERVACIONES', 'B', 0, 'L');
 $pdf->SetXY(10, $y+7);
-$pdf->Cell(80, 28, $_SESSION["observaciones"], 1, 0, 'L');
+$pdf->Cell(80, 20, $_SESSION["observaciones"], 1, 0, 'L');
 $pdf->SetXY(90, $y);
 $pdf->Cell(80, 7, 'FIRMA', 'B', 0, 'L');
 $pdf->SetXY(90, $y+7);
-$pdf->Cell(80, 28, '', 1, 0, 'L');
+$pdf->Cell(80, 20, '', 1, 0, 'L');
 
 $pdf->Output();
