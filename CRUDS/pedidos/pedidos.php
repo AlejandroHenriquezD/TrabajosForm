@@ -14,30 +14,66 @@
 <body>
 
     <?php
+        $serverName = "192.168.0.23\SQLEXIT,1433";
+        $connectionOptions = array(
+            "Database" => "ExitERP0415",
+            "Uid" => "programacion",
+            "PWD" => "CU_2023",
+            "CharacterSet" => "UTF-8",
+            "TrustServerCertificate" =>true
+        );
+        $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
-    echo "<h1>PEDIDOS</h1>";
+        $sql = "SELECT    
+                    EjercicioPedido,
+                    SeriePedido,
+                    NumeroPedido,
+                    FechaPedido,
+                    IdDelegacion,
+                    CodigoCliente,
+                    CifDni,
+                    RazonSocial,
+                    Nombre,
+                    Domicilio,
+                    CodigoPostal,
+                    Municipio,
+                    Email1,
+                    Telefono,
+                    StatusPedido,
+                    EX_Serigrafiado
+                FROM PedidoVentaCabecera
+                WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '06'";
+
+        $getResults = sqlsrv_query($conn, $sql);
+
+
+
+
+    echo "<h1>PEDIDOS PENDIENTES</h1>";
     echo "<table>
            <tr>
-              <th>Id</th>
-              <th>Fecha Pedido</th>
-              <th>Cliente</th>
+              <th>Ejercicio</th>
+              <th>Serie</th>
+              <th>Numero</th>
+              <th>Codigo Cliente</th>
+              <th>Razon Social</th>
               <th>Acciones</th>
             </tr>";
-    for ($p = 0; $p < count($pedidos); $p++) {
-        $cliente = json_decode(file_get_contents("http://localhost/trabajosform/clientes/" . $pedidos[$p]['id_cliente']), true);
+        while($top = sqlsrv_fetch_array($getResults)){
  
         echo
             "<tr class='fila'>
-                    <td>" . $pedidos[$p]["id"] . "</td>
-                    <td>" . $pedidos[$p]["fecha_pedido"] . "</td>
-                    <td>" . $cliente["nombre"] . "</td>
+                    <td>" . $top["EjercicioPedido"] . "</td>
+                    <td>" . $top["SeriePedido"] . "</td>
+                    <td>" . $top["NumeroPedido"] . "</td>
+                    <td>" . $top["CodigoCliente"] . "</td>
+                    <td>" . $top["RazonSocial"] . "</td>
                     <td> 
     
                         <form action='formupdatepedido.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $pedidos[$p]["id"] . "></input> 
-                            <input name='id_cliente[]' type='hidden' value=" . $pedidos[$p]["id_cliente"] . "></input> 
-                            <button>Editar<ion-icon name='create'></button> 
+                            <input name='id[]' type='hidden' value=" . $top["EjercicioPedido"] .'/'. $top["SeriePedido"] .'/'. $top["NumeroPedido"] . "></input> 
+                            <input name='id_cliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
+                            <button>Añadir Boceto<ion-icon name='create'></button> 
                         </form>
                     </td>
                 </tr>";

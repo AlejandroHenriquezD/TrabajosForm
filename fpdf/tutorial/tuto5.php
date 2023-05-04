@@ -8,69 +8,101 @@ $pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"
 class PDF extends FPDF
 {
 
-	function BasicTable($header, $trabajos, $id_pedido)
+	function TablaArticulo($header, $trabajo, $id_pedido, $y)
 	{
-		// $host = "localhost";
-		// $dbname = "centraluniformes";
-		// $username = "root";
-		// $password = "";
-
-		// $conn = mysqli_connect(
-		// 	hostname: $host,
-		// 	username: $username,
-		// 	password: $password,
-		// 	database: $dbname
-		// );
-		// $sql = "SELECT * FROM `trabajos` WHERE id_pedido =" . $id_pedido;
-
-		// $result = mysqli_query($conn, $sql);
-
-		// if (mysqli_num_rows($result) > 0) {
-		// 	while($row = mysqli_fetch_assoc($result)) {
-		// 	  echo json_encode($trabajos[$row["id"]-12]["id_posicion"]);
-		// 	}
-		// }
-
-
-		$this->Cell(38, 19, '');
+		$this->Cell(5, 12, '');
 		foreach ($header as $col)
-			$this->Cell(40, 7, $col, 1, 0, 'C');
+			$this->Cell(40, 7, $col, 'B', 0, 'L');
 		$this->Ln();
 		$h = 26;
 		$ha = 22;
-		for ($p = 0; $p < count($trabajos); $p++) {
-			$posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
-			$articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
-			$tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-			$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajos[$p]['id_tipo_articulo']), true);
-			$logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
 
-			$this->Cell(38, 19, '');
-			$this->Cell(40, 19, $posicion['descripcion'], 1, 0, 'C');
-			$this->Cell(40, 19, $articulo['descripcion'], 1, 0, 'C');
-			$this->Cell(40, 19, $tipo_trabajo['nombre'], 1, 0, 'C');
+		$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajo['id_tipo_articulo']), true);
 
-			$this->Cell(40, 19, '', 1, 0, 'C');
-			$this->Image('../.' . $tipo_articulo['img'], 183, $ha, 10);
+		$this->Cell(5, 12, '');
 
-			$this->Cell(40, 19, '', 1, 0, 'C');
-			$this->Image('../.' . $logo['img'], 222, $h, 10);
-			$h += 19;
-			$ha += 19;
-			$this->Ln();
+		$this->Cell(40, 19, '', 0, 0, 'C');
+		$this->Image('../.' . $tipo_articulo['img'], 22, $y, 20);
+
+		$this->Cell(5, 12, '');
+
+		$h += 19;
+		$ha += 19;
+	}
+
+	function TablaTrabajo($header, $trabajos, $id_pedido)
+	{
+
+		$this->Cell(5, 7, '');
+		foreach ($header as $col)
+			$this->Cell(40, 7, $col, 'B', 0, 'C');
+		$this->Ln();
+		$h = 26;
+		$ha = 22;
+		$tipo_trabajosFiltrados = array(); foreach ($trabajos as $trabajo) {
+			$tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajo['id_tipo_trabajo']), true);
+			// $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajo['id_logo']), true);
+
+			if (!in_array($tipo_trabajo, $tipo_trabajosFiltrados)) {
+				array_push($tipo_trabajosFiltrados, $tipo_trabajo);
+			}
+
+		}
+		foreach ($tipo_trabajosFiltrados as $tipo_trabajo) {
+
+			$this->Cell(15, 12, '');
+
+			$this->Cell(40, 14, '', 0, 0, 'C');
+
+
+			$posicionesFiltradas = array();
+			foreach ($trabajos as $trabajo) {
+				if ($tipo_trabajo['id'] == $trabajo['id_tipo_trabajo']) {
+					$posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajo['id_posicion']), true);
+					array_push($posicionesFiltradas, $posicion);
+
+				}
+			}
+			$this->Cell(40, 14 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
+			foreach ($posicionesFiltradas as $posicion) {
+				$this->SetX(105);
+				$this->Cell(40, 14, $posicion['descripcion'], 1, 0, 'C');
+				$this->Cell(40, 14, '', 0, 0, 'C');
+				$h += 14;
+				$ha += 14;
+				$this->Ln();
+			}
+
 		}
 	}
+
 }
 
-$pdf = new PDF('L', 'mm', 'A4');
+$pdf = new PDF('P', 'mm', 'A4');
 // T�tulos de las columnas
-$header = array('Posicion', 'Articulo', 'TipoTrabajo', 'TipoArticulo', 'Logo');
+
 // Carga de datos
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
-$pdf->SetFont('Times', '', 11);
+$pdf->SetFont('Times', '', 9);
 $pdf->AddPage();
 $pdf->Cell(0, 1, 'Numero Pedido: ' . $id_pedido . '                                Fecha Pedido: ' . $pedidos[$id_pedido]["fecha_pedido"], 0, 1, 'C');
 $pdf->Ln();
 $pdf->Ln();
-$pdf->BasicTable($header, $trabajos, $id_pedido);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosform/articulos/"), true);
+$y = 22;
+foreach ($articulos as $articulo) {
+	$header = array($articulo['descripcion']);
+	$trabajosFiltrados = array();
+	foreach ($trabajos as $trabajo) {
+		if ($trabajo['id_articulo'] == $articulo['id']) {
+			array_push($trabajosFiltrados, $trabajo);
+		}
+	}
+	echo json_encode($trabajosFiltrados);
+	$pdf->TablaArticulo($header, $trabajosFiltrados[0], $id_pedido, $y);
+	$header = array('Tipos de trabajo', 'Posiciones');
+	$pdf->TablaTrabajo($header, $trabajosFiltrados, $id_pedido);
+	$y += 14 * count($trabajosFiltrados) + 14;
+}
+
 $pdf->Output();
