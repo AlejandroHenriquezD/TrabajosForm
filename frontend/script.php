@@ -137,11 +137,8 @@ echo "
       if(r.checked) {
         var trabajo = trabajos.replaceAll('codigoArticulo-tiposArticulos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
         trabajo = elementFromHtml(trabajo);
-        console.log(document.getElementById(divTipoArticulos))
-        console.log('#trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)
         
         if(!document.getElementById(divTipoArticulos).querySelector('#trabajos-'+codigos)) {
-          console.log('funciona')
           document.getElementById(divTipoArticulos).appendChild(trabajo);
         }
         r.parentNode.classList.add('ta-seleccionado');
@@ -151,7 +148,7 @@ echo "
           r.parentNode.classList.remove('ta-seleccionado');
         }
       }
-    } 
+    }
     validar()
   }
 
@@ -226,7 +223,6 @@ echo "
       desplegable = elementFromHtml(desplegable);
 
       var divPosiciones = document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
-
       if (cb.checked) {
         divPosiciones.appendChild(logo);
         divPosiciones.appendChild(desplegable);
@@ -239,21 +235,20 @@ echo "
   }
 
   function logoSeleccionado(radios) {
-    var numeroArticulo = radios.split('-')[1];
-    var numeroTipoArticulo = radios.split('-')[2];
-    var numeroTrabajo = radios.split('-')[3];
-    var numeroPosicion = radios.split('-')[4];
+    var numeroPedido = radios.split('-')[1];
+    var numeroArticulo = radios.split('-')[2];
+    var numeroTipoArticulo = radios.split('-')[3];
+    var numeroTrabajo = radios.split('-')[4];
+    var numeroPosicion = radios.split('-')[5];
     radios = document.getElementsByClassName(radios);
     for (let r of radios) {
-      var numeroLogo = r.id.split('-')[5];
+      var numeroLogo = r.id.split('-')[6];
       if(r.checked) {
         r.parentNode.classList.add('ta-seleccionado');
-      } else { 
-        if (document.getElementById('logo-'+numeroArticulo+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion+'-'+numeroLogo)) {
-          r.parentNode.classList.remove('ta-seleccionado');
-        }  
+      } else {
+        r.parentNode.classList.remove('ta-seleccionado');
       }
-    } 
+    }
     validar()
   }
 
@@ -331,7 +326,7 @@ echo "
         .then(response => {
           if (response.ok) {
             pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
-            pdf.src = urlBoceto;
+            // pdf.src = urlBoceto;
             divPdf.appendChild(pdf);
           } else {
             pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');

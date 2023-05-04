@@ -33,7 +33,7 @@
         // Si hay al menos uno seleccionado se da por válido
         valido = true;
         // Añadimos los articulos a la lista de checks
-        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "-" + inf.id.split('-')[2] + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
+        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "-" + inf.id.split('-')[2].replaceAll(" ", "") + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
         listaCheck.appendChild(msgArt);
       }
 
@@ -67,9 +67,9 @@
     var msgArt = document.querySelectorAll('.msg-art')
 
     // Borramos todos los artículos de la lista de checks
-    for (let tar of document.querySelectorAll('.tar')) {
-      tar.remove();
-    }
+    // for (let tar of document.querySelectorAll('.tar')) {
+    //   tar.remove();
+    // }
 
     // Por cada menu de posiciones...
     for (let mta of mtrabajo) {
@@ -103,8 +103,8 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1] + "-" + id[2])) {
-          let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un tipo de artículo</p></div>");
+        if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1] + "-" + id[2])) {
+          let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + msgArt[i].id.split('-')[3] + "'><p>Seleccione un tipo de artículo</p></div>");
           msgArt[i].appendChild(msg);
         }
       }
@@ -160,7 +160,7 @@
 
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
-          if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2] + "-" + id[3])) {
+          if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2] + "-" + id[3])) {
             let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3] + "'><p>Seleccione un trabajo</p></div>");
             msgArt[i].appendChild(msg);
           }
@@ -213,7 +213,7 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && msgArt[i].id.split('-')[2] === id[1] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4])) {
+        if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4])) {
           let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
           msgArt[i].appendChild(msg);
         }
@@ -258,7 +258,9 @@
         if (inf.checked) {
           var i = 0;
           for (let a of msgArt) {
+            //Esta verga no coincide pero ahora no tengo tiempo de cambiarlo o si,no sé hermano paso ya
             if (a.id.split('-')[2] === inf.id.split('-')[1]) {
+              console.log('si')
               valido[i] = true;
             }
             i++;
@@ -268,7 +270,14 @@
 
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") === id[3] + "-" + id[4] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])) {
+        // !valido[i] si no es valido
+        // (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") != id[3] + "-" + id[4] si el id del error es igual al id del boton
+        // !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) No sé 
+        // document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])No sé
+
+        console.log(("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7]))
+
+        if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4]) {
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
         }
@@ -280,7 +289,6 @@
 
     var msgArt = document.querySelectorAll('.msg-art');
     for (m of msgArt) {
-
       var id = m.id.split('-')[2];
       var elemento = document.getElementById(m.id)
       var elementoHijo = elemento.children[0];

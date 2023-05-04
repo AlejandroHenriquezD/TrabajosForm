@@ -69,7 +69,7 @@
                     </td>
                     <td>" . $vectorizada . "</td>
                     <td>" . $obsoleto . "</td>
-                    <td>" . $cliente["nombre"] . "</td>
+                    <td>" . $cliente["razon_social"] . "</td>
                     <td> 
                         <form action='deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         

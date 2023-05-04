@@ -12,10 +12,10 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
-$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
@@ -50,7 +50,7 @@ $divPedidos .= "</select></div>";
 for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   // Hay que buscar el boceto por el id en la tabla cliente, por tanto debemos obtenerlo antes comparando valores con la tabla pedidos
-  foreach($clientes as $cliente) {
+  foreach ($clientes as $cliente) {
     if (
       $cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&

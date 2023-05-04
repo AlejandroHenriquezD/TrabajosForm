@@ -25,7 +25,7 @@
                 <label for='id_cliente'>Clientes</label>
                 <select name='id_cliente'>";
             foreach ($clientes as $cliente) {
-                echo "<option value='".$cliente["id"]."' id='id_cliente' name='id_cliente'>".$cliente["nombre"]."</option>";
+                echo "<option value='".$cliente["id"]."' id='id_cliente' name='id_cliente'>".$cliente["razon_social"]."</option>";
             }
             
             echo "  </select>
