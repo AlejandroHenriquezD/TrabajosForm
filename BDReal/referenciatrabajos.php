@@ -20,10 +20,11 @@ $sql = "SELECT
             Unidades
 
         FROM PedidoVentaLineas
-        WHERE    EjercicioPedido = 2023
-        AND (CodigoArticulo LIKE ('6000%') OR CodigoArticulo LIKE ('6001%') OR CodigoArticulo LIKE ('6002%') OR CodigoArticulo LIKE ('6003%'))
+        WHERE 
+        (CodigoArticulo LIKE ('6000%') OR CodigoArticulo LIKE ('6001%') OR CodigoArticulo LIKE ('6002%') OR CodigoArticulo LIKE ('6003%'))
         AND LEN(CodigoArticulo) = 7
         AND SeriePedido = 'I'
+        AND NumeroPedido = '484'
         ";
 
 $getResults = sqlsrv_query($conn, $sql);

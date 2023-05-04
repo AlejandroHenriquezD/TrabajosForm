@@ -28,16 +28,12 @@
             database: $dbname
         );
 
-        $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $_POST["id_cliente"][0];
+        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_POST["id_cliente"][0];
 
         $result = mysqli_query($conn, $sql);
 
 
-        // echo "Cliente".$_POST["id_cliente"][0];
-        // echo "id";
-        
-        $bocetos = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
-        // echo $bocetos[4]["id"];
+
         echo "
                 <label for='id_boceto'>Añadir Boceto al pedido</label>
                 <input name='id_pedido' type='hidden' value='".$_POST["id"][0] ."'/>

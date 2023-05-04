@@ -1,10 +1,12 @@
 <?php
+session_start();
 echo $_POST["numero_pedido"];
 $pedido = explode('-', $_POST["numero_pedido"]);
 $ejercicio_pedido = $pedido[0];
 $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
 $id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
+$_SESSION["observaciones"] = $_POST["observaciones"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
   echo "El valor seleccionado es $valor del grupo $grupo <br>";
@@ -59,7 +61,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     $id_boceto
   );
 
-  mysqli_stmt_execute($stmt);
-  header("location:pdf.php");
+  mysqli_stmt_execute($stmt); 
 }
+header("location:pdf.php?ejercicio_pedido=".urlencode($ejercicio_pedido)."&serie_pedido=".urlencode($serie_pedido)."&numero_pedido=".urlencode($numero_pedido));
 // echo $_POST['observaciones'];

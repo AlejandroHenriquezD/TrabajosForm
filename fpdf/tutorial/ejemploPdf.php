@@ -98,7 +98,6 @@ foreach ($articulos as $articulo) {
 			array_push($trabajosFiltrados, $trabajo);
 		}
 	}
-	echo json_encode($trabajosFiltrados);
 	$pdf->TablaArticulo($header, $trabajosFiltrados[0], $id_pedido, $y);
 	$header = array('Tipos de trabajo', 'Posiciones');
 	$pdf->TablaTrabajo($header, $trabajosFiltrados, $id_pedido);

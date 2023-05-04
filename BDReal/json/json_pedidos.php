@@ -56,11 +56,6 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
     // Obtendo los datos de la consulta
     $numero_cliente = $row["CodigoCliente"];
     $cif_nif = $row["CifDni"];
-    $razon_social = $row["RazonSocial"];
-    $nombre = $row["Nombre"];
-    $dirección = $row["Domicilio"];
-    $correo = $row["Email1"];
-    $telefono = $row["Telefono"];
 
     // Compruebo si los datos están en la otra base de datos
     $condicion = mysqli_query($conn2, "
@@ -68,12 +63,7 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
             1
         FROM clientes WHERE 
             numero_cliente = '".$numero_cliente."' AND
-            cif_nif = '".$cif_nif."' AND
-            razon_social = '".$razon_social."' AND
-            nombre = '".$nombre."' AND
-            dirección = '".$dirección."' AND
-            correo = '".$correo."' AND
-            telefono = '".$telefono."'
+            cif_nif = '".$cif_nif."'
     ");
 
     // Si no están los introduzco
