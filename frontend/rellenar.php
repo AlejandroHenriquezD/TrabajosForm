@@ -42,7 +42,7 @@ $divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select nam
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "-" . "{$pedidos[$o]['SeriePedido']}" . "-" . "{$pedidos[$o]['NumeroPedido']}</option>";
+  $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
 }
 $divPedidos .= "</select></div>";
 

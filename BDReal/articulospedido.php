@@ -20,11 +20,11 @@ $sql = "SELECT DISTINCT
 
 
         FROM PedidoVentaLineas
-        WHERE    EjercicioPedido = 2023
-        AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+        WHERE    
+        (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
         AND TipoArticulo = 'M'
         AND SeriePedido = 'I'
-        AND NumeroPedido = '148'
+        AND NumeroPedido = '2053'
         
         AND CodigoAlmacen = '06'
         ";

@@ -9,8 +9,7 @@ $tsql = "SELECT DISTINCT
 						NumeroPedido,
 						DescripcionArticulo
 		FROM PedidoVentaLineas
-		WHERE EjercicioPedido = 2023
-		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		WHERE (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
 		AND TipoArticulo = 'M'
 		AND CodigoAlmacen = '06'
 		";
