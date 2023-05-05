@@ -14,25 +14,29 @@ class PDF extends FPDF
 	{
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
-			$this->Cell(30, 7, $col, 'B', 0, 'L');
+			
+			$this->Rect($x, $y, 25, 7, "");
+			$this->Cell(25, 7, $col, 'B', 0, 'L');
+			// $this->ClipOut();
 		$this->Ln();
 
 		$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajo['id_tipo_articulo']), true);
 
 		$this->SetXY($x, $y + 7);
-		$this->Cell(30, 19, '', 0, 0, 'C');
-		$this->Image('.' . $tipo_articulo['img'], 16, $y + 8, 20);
+		$this->Cell(25, 19, '', 0, 0, 'C');
+		$this->Image('.' . $tipo_articulo['img'], 13, $y + 8, 20);
 	}
 
 	function TablaTrabajo($header, $trabajos, $x, $y)
 	{
-
+		
+		$possum = 0;
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
-			$this->Cell(30, 7, $col, 'B', 0, 'C');
+			$this->Cell(25, 7, $col, 'B', 0, 'C');
 		$this->Ln();
 		$tipo_trabajosFiltrados = array();
-		$ysum = 0;
+		
 		foreach ($trabajos as $trabajo) {
 			$tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajo['id_tipo_trabajo']), true);
 			// $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajo['id_logo']), true);
@@ -42,7 +46,7 @@ class PDF extends FPDF
 			}
 		}
 		foreach ($tipo_trabajosFiltrados as $tipo_trabajo) {
-
+			
 			$posicionesFiltradas = array();
 			foreach ($trabajos as $trabajo) {
 				if ($tipo_trabajo['id'] == $trabajo['id_tipo_trabajo']) {
@@ -50,18 +54,18 @@ class PDF extends FPDF
 					array_push($posicionesFiltradas, $posicion);
 				}
 			}
-			$this->SetXY($x, $y + 7 + $ysum);
-			$this->Cell(30, 10 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
-			$sum = 10;
+			$this->SetXY($x, $y + 7 + $possum);
+			$this->Cell(25, 10 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
 			foreach ($posicionesFiltradas as $posicion) {
-				$this->SetX(80);
-				$this->Cell(30, 10, $posicion['descripcion'], 1, 0, 'C');
+				$this->SetX(70);
+				$this->Cell(25, 10, $posicion['descripcion'], 1, 0, 'C');
 				// $this->Cell(40, 14, '', 0, 0, 'C');
 				$this->Ln();
-				$sum .= 10;
+				$possum += 10;
 			}
-			$ysum .= 10;
+			
 		}
+		$possum = 0;
 	}
 }
 
@@ -130,7 +134,7 @@ while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
 	$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
 	$header = array('Tipos de trabajo', 'Posiciones');
-	$pdf->TablaTrabajo($header, $trabajosFiltrados, 50, $y);
+	$pdf->TablaTrabajo($header, $trabajosFiltrados, 45, $y);
 	$y += 10 * count($trabajosFiltrados) + 30;
 }
 sqlsrv_free_stmt($getResults);
@@ -138,7 +142,7 @@ sqlsrv_free_stmt($getResults);
 $pdf->SetXY(10, $y);
 $pdf->Cell(80, 7, 'OBSERVACIONES', 'B', 0, 'L');
 $pdf->SetXY(10, $y+7);
-$pdf->Cell(80, 20, $_SESSION["observaciones"], 1, 0, 'L');
+$pdf->MultiCell(80, 5, $_SESSION["observaciones"], 'LRTB', 'L', false);
 $pdf->SetXY(90, $y);
 $pdf->Cell(80, 7, 'FIRMA', 'B', 0, 'L');
 $pdf->SetXY(90, $y+7);

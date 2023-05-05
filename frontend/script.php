@@ -86,9 +86,9 @@ echo "
       // elementoActual = pedido['id'];
       
       var combo = document.getElementById('selectPedido');
-      var ejercicio = combo.options[combo.selectedIndex].text.split('-')[0];
-      document.getElementById('numero_pedido').value = ejercicio +'-'+ elementoActual;
-          
+      var ejercicio = combo.options[combo.selectedIndex].text;
+      
+      document.getElementById('numero_pedido').value = ejercicio;
     } else {
       elementoActual = null;
     }
@@ -326,7 +326,7 @@ echo "
         .then(response => {
           if (response.ok) {
             pdf = elementFromHtml('<iframe id=\"pdf\" src=\"\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>');
-            // pdf.src = urlBoceto;
+            pdf.src = urlBoceto;
             divPdf.appendChild(pdf);
           } else {
             pdf = elementFromHtml('<p id=\"pdf\">No existe boceto asociado<p>');

@@ -136,7 +136,7 @@
       const id = mt.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('trabajo-' + id[1] + '-' + id[2]);
+        return input.id.includes('trabajo-' + id[1] + '-' + id[2]+ '-' + id[3]);
       });
 
       // Se recorre dichos checkboxes
@@ -193,7 +193,7 @@
       const id = mp.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]);
+        return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]+ '-' + id[4]);
       });
 
       // Se recorre dichos checkboxes
@@ -212,12 +212,15 @@
       }
 
       // Si el formulario es válido, te lo indico
-      for (var i = 0; i < valido.length; i++) {
+      for (var i = 0; i < valido.length; i++) { // Se está recorriendo todos los mensajes de articulos
+        var codigos = msgArt[i].id.split('-')[2]
+        var codigos = CSS.escape(codigos)
         if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#pos-' + msgArt[i].id.split('-')[2]) && document.getElementById("posicion-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4])) {
           let msg = elementFromHtml("<div class='pos' id='pos-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione una posición</p></div>");
           msgArt[i].appendChild(msg);
         }
       }
+
     }
   }
 
@@ -243,11 +246,11 @@
       for (var i = 0; i < msgArt.length; i++) {
         valido[i] = false;
       }
-
       const id = ml.id.split('-');
+
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('logo-' + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4]);
+        return input.id.includes('logo-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7]);
       });
 
       // Se recorre dichos checkboxes
@@ -260,7 +263,6 @@
           for (let a of msgArt) {
             //Esta verga no coincide pero ahora no tengo tiempo de cambiarlo o si,no sé hermano paso ya
             if (a.id.split('-')[2] === inf.id.split('-')[1]) {
-              console.log('si')
               valido[i] = true;
             }
             i++;
@@ -274,8 +276,6 @@
         // (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") != id[3] + "-" + id[4] si el id del error es igual al id del boton
         // !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) No sé 
         // document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])No sé
-
-        console.log(("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7]))
 
         if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4]) {
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
