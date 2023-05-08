@@ -10,6 +10,7 @@ $tsql = "SELECT DISTINCT
 						DescripcionArticulo
 		FROM PedidoVentaLineas
 		WHERE (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
 		AND CodigoAlmacen = '06'
 		";
