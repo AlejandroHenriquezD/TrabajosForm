@@ -77,6 +77,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   for ($i = 0; $i < $numeroArticulos; $i++) {
 
     if (
+      $articulos[$i]['EjercicioPedido'] == $pedidos[$o]['EjercicioPedido'] &&
       $articulos[$i]['SeriePedido'] == $pedidos[$o]['SeriePedido'] &&
       $articulos[$i]['NumeroPedido'] == $pedidos[$o]['NumeroPedido']
     ) {

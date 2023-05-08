@@ -5,6 +5,7 @@ include_once "../conexion_exit.php";
 $tsql = "SELECT DISTINCT
 						CodigoAlmacen,
 						CodigoArticulo,
+						EjercicioPedido,
 						SeriePedido,
 						NumeroPedido,
 						DescripcionArticulo
