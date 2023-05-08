@@ -136,7 +136,7 @@
       const id = mt.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('trabajo-' + id[1] + '-' + id[2]+ '-' + id[3]);
+        return input.id.includes('trabajo-' + id[1] + '-' + id[2] + '-' + id[3]);
       });
 
       // Se recorre dichos checkboxes
@@ -193,7 +193,7 @@
       const id = mp.id.split('-');
       // Se recogen todos sus checkboxes
       const inputsFiltrados = Array.from(inputs).filter(input => {
-        return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3]+ '-' + id[4]);
+        return input.id.includes('posicion-' + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4]);
       });
 
       // Se recorre dichos checkboxes
@@ -261,7 +261,6 @@
         if (inf.checked) {
           var i = 0;
           for (let a of msgArt) {
-            //Esta verga no coincide pero ahora no tengo tiempo de cambiarlo o si,no sé hermano paso ya
             if (a.id.split('-')[2] === inf.id.split('-')[1]) {
               valido[i] = true;
             }
@@ -269,15 +268,9 @@
           }
         }
       }
-
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        // !valido[i] si no es valido
-        // (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") != id[3] + "-" + id[4] si el id del error es igual al id del boton
-        // !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) No sé 
-        // document.getElementById("logos-" + id[1] + '-' + id[2] + '-' + id[3] + '-' + id[4] + '-' + id[5] + '-' + id[6] + '-' + id[7])No sé
-
-        if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4]) {
+        if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("msg-art-" + id[3] + '-' + id[4]).childElementCount === 1) {
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
         }
