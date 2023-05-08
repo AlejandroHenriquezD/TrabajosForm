@@ -18,7 +18,7 @@
             <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
 
             <label for="pdf">PDF file</label>
-            <input type="file" id="pdf" name="pdf">
+            <input require type="file" id="pdf" name="pdf">
 
             <?php
             $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
@@ -26,7 +26,7 @@
             <label for='id_cliente'>Clientes</label>
             <select name='id_cliente'>";
             foreach ($clientes as $cliente) {
-                echo "<option value='" . $cliente["id"] . "' id='id_cliente' name='id_cliente'>" . $cliente["nombre"] . "</option>";
+                echo "<option value='" . $cliente["id"] . "' id='id_cliente' name='id_cliente'>" . $cliente["razon_social"] . "</option>";
             }
 
             echo "  </select>"
