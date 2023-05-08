@@ -17,11 +17,10 @@
 
     $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
-    echo "<form action='formcreatecliente.php'>
-            <button id='boton-crear'>Crear Cliente</button>
-          </form>";
 
-    echo "<table>
+
+    echo "<h1>CLIENTES</h1>
+        <table>
            <tr>
               <th>Nombre</th>
               <th>Telefono</th>
@@ -30,7 +29,7 @@
               <th>CIF/NIF</th>
               <th>Número de cliente</th>
               <th>Razón social</th>
-              <th>Acciones</th>
+
             </tr>";
     for ($p = 0; $p < count($clientes); $p++) {
         echo
@@ -42,17 +41,7 @@
                     <td>" . $clientes[$p]["cif_nif"] . "</td>
                     <td>" . $clientes[$p]["numero_cliente"] . "</td>
                     <td>" . $clientes[$p]["razon_social"] . "</td>
-                    <td> 
-                        <form action='deletecliente.php'> <input name='id[]' type='hidden' value=" . $clientes[$p]["id"] . "></input><button>Borrar <ion-icon name='trash'></ion-icon>
-                        </button> </form> 
-                        
-                        <form action='formupdatecliente.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $clientes[$p]["id"] . "></input>
-                            <input name='nombre[]' type='hidden' value=" . urlencode($clientes[$p]["nombre"]) . "></input> 
-                            <input name='telefono[]' type='hidden' value=" . urlencode($clientes[$p]["telefono"]) . "></input> 
-                            <button>Editar <ion-icon name='create'></ion-icon></button> 
-                        </form>
-                    </td>
+                    
                 </tr>";
     }
     echo "</table>"

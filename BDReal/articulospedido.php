@@ -11,7 +11,7 @@ $connectionOptions = array(
 );
 $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-$sql = "SELECT DISTINCT
+$sql = "SELECT 
             CodigoAlmacen,
             CodigoArticulo,
             EjercicioPedido,
@@ -23,6 +23,7 @@ $sql = "SELECT DISTINCT
         FROM PedidoVentaLineas
         WHERE    
         (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+        AND EX_Serigrafiado = -1
         AND TipoArticulo = 'M'
         AND SeriePedido = 'I'
         AND NumeroPedido = '285'
