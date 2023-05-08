@@ -16,7 +16,7 @@ class PDF extends FPDF
 		foreach ($header as $col)
 
 			// $this->Rect($x, $y, 25, 7, "");
-		$this->MultiCell(80, 7, $col, 'B', 'L', false);
+		$this->MultiCell(85, 7, $col, 'B', 'L', false);
 		// $this->ClipOut();
 		$this->Ln();
 
@@ -110,7 +110,7 @@ $pdf->AddPage();
 $pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
