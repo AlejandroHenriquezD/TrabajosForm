@@ -178,7 +178,7 @@ foreach ($data as $articulo) {
 
 			if (
 				$trabajo['codigo_articulo'] == $codigo_articulo &&
-				$trabajo['descripcion_articulo'] == $descripcion_articulo
+				stripslashes($trabajo['descripcion_articulo']) == $descripcion_articulo
 			) {
 
 				$trabajosFiltrados[$index] = $trabajo;
@@ -216,7 +216,7 @@ if ($pos == "derecha") {
 $tsql = "SELECT
 				CodigoArticulo,
 				CodigoColor_,
-   	 			CodigoTalla,
+   	 		CodigoTalla,
 				Unidades
 		FROM PedidoVentaLineas
 		WHERE EjercicioPedido = $ejercicio_pedido

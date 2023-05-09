@@ -31,6 +31,8 @@
           <a href='../CRUDS/bocetos/bocetos.php'>Bocetos</a>
           <a href='../CRUDS/clientes/clientes.php'>Clientes</a>
           <a href='../CRUDS/logos/logos.php'>Logos</a>
+          <a href='../CRUDS/pedidos/pedidos.php'>Pedidos</a>
+          <a href='../CRUDS/trabajos/trabajos.php'>Trabajos</a>
           <a class='sesion' href='../login/login.php'>Iniciar sesión</a>
         </div>
       </div>
