@@ -154,7 +154,7 @@ echo "
           r.parentNode.classList.add('ta-seleccionado');
         } else {
           if (document.getElementById('posiciones-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) {
-            document.getElementById(divTipoArticulos).removeChild(document.querySelector('#posiciones-'+codigos));
+            document.getElementById(divTipoArticulos).removeChild(document.getElementById('posiciones-'+codigos+'-'+numeroTipoArticulo));
             r.parentNode.classList.remove('ta-seleccionado');
           }
         }
