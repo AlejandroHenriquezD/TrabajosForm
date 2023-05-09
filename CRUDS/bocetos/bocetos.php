@@ -34,8 +34,13 @@
         echo
             "<tr class='fila'>
                     <td>" . $boceto["nombre"] . "</td>
-                    <td>" . $boceto["pdf"] . "</td>
-                    <td>" . $cliente["nombre"] . "</td>
+                    
+                    <td>";
+                        echo "<form action='../.".$boceto['pdf']."'>
+                                <button>Ver Boceto</button>
+                              </form>";
+                    echo"</td>
+                    <td>" . $boceto["id_cliente"] . "</td>
                     <td> 
                         <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         

@@ -18,33 +18,58 @@
         echo "<h1>TRABAJOS</h1>";
         echo "<table>
            <tr>
-              <th>ID PEDIDO</th>
+              <th>Tienda</th>
+              <th>Num Pedido Venta</th>
               <th>Posición</th>
-              <th>Artículo</th>
+              <th>Cod Artículo</th>
               <th>Tipo de trabajo</th>
               <th>Fecha de pedido</th>
               <th>Logo</th>
               <th>Boceto</th>
+              <th>Orden de Trabajo</th>
            </tr>";
         for ($p = 0; $p < count($trabajos); $p++) {
             $posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
-            $articulo = json_decode(file_get_contents("http://localhost/trabajosform/articulos/" . $trabajos[$p]['id_articulo']), true);
             $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-            $pedido = json_decode(file_get_contents("http://localhost/trabajosform/pedidos/" . $trabajos[$p]['id_pedido']), true);
             $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
             $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
-            $nombre = isset($boceto["nombre"]) ? $boceto["nombre"] : "No Existe Boceto";
+            
+            
             echo
             "<tr class='fila'>
-           <td>" . $pedido['id']  . "</td> 
+           <td>" . $trabajos[$p]['num_tienda']. "</td> 
+           <td>" . $trabajos[$p]['ejercicio_pedido'].'/'. $trabajos[$p]['serie_pedido'].'/'. $trabajos[$p]['numero_pedido']  . "</td> 
            <td>" . $posicion['descripcion'] . "</td> 
-           <td>" . $articulo['descripcion'] . "</td>
+           <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
            <td>" . $tipo_trabajo['nombre'] . "</td>
-           <td>" . $pedido['fecha_pedido'] . "</td>
+           <td>" . $trabajos[$p]['FechaPedido'] . "</td>
            <td><img src='../." . $logo['img'] . "' alt='hola' height=150px></td>
-           <td>" . $nombre . "</td>
-        </tr>";
+           <td>";
+
+            if ($trabajos[$p]['id_boceto'] != null){
+                echo "<form action='../.".$boceto['pdf']."'>
+                        <button>Ver Boceto </button>
+                      </form>";
+            }else {
+                echo "No Existe Boceto";
+            }
+           echo "
+            </td>
+            
+           <td>";
+
+           if ($trabajos[$p]['pdf'] != null){
+            echo "<form action='../.".$trabajos[$p]['pdf']."'>
+                    <button>Ver Orden Trabajo</button>
+                  </form>";
+            }else {
+                echo "Falta Orden Trabajo";
+            }
+            echo "
+            </td>
+
+            </tr>";
         }
         echo "</table>";
     

@@ -71,10 +71,22 @@
                     <td> 
     
                         <form action='formupdatepedido.php' method='post'> 
-                            <input name='id[]' type='hidden' value=" . $top["EjercicioPedido"] .'/'. $top["SeriePedido"] .'/'. $top["NumeroPedido"] . "></input> 
-                            <input name='id_cliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
+                            <input name='ejercicio_pedido[]' type='hidden' value=" . $top["EjercicioPedido"] ."></input> 
+                            <input name='serie_pedido[]' type='hidden' value=" . $top["SeriePedido"] ."></input> 
+                            <input name='numero_pedido[]' type='hidden' value=" . $top["NumeroPedido"] . "></input> 
+
+                            <input name='CodigoCliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
                             <button>Añadir Boceto<ion-icon name='create'></button> 
                         </form>
+
+                        <form action='formañadirpdf.php' method='post'> 
+                            <input name='ejercicio_pedido[]' type='hidden' value=" . $top["EjercicioPedido"] ."></input> 
+                            <input name='serie_pedido[]' type='hidden' value=" . $top["SeriePedido"] ."></input> 
+                            <input name='numero_pedido[]' type='hidden' value=" . $top["NumeroPedido"] . "></input> 
+
+                            <input name='CodigoCliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
+                        <button>Añadir Orden Trabajo<ion-icon name='create'></button> 
+                    </form>
                     </td>
                 </tr>";
 
