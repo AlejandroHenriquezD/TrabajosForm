@@ -107,7 +107,7 @@ $pdf = new PDF('P', 'mm', 'A4');
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 $pdf->SetFont('Arial', '', 8);
 $pdf->AddPage();
-$pdf->Image('../login/cu.png', 10, 10, 40);
+$pdf->Image('../login/cu.png', 10, 10, 45);
 $pdf->SetXY(80, 11);
 $pdf->Cell(0, 1, 'Numero pedido de venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido, 0, 1, 'L');
 foreach ($pedidos as $pedido) {
@@ -127,7 +127,7 @@ $articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BD
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
 
-$y = 31;
+$y = 36;
 
 include_once "../BDReal/numTienda.php";
 include_once "../BDReal/conexion_exit.php";

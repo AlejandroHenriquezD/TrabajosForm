@@ -47,6 +47,8 @@
   if(!isset($_SESSION['usuario'])) {
     include "../../BDReal/numTienda.php";
     $sql .= "AND IdDelegacion = '$tienda'";
+  } else {
+    $sql .= "ORDER BY IdDelegacion";
   }
 
   $getResults = sqlsrv_query($conn, $sql);
@@ -55,6 +57,7 @@
   echo "<h1>PEDIDOS PENDIENTES</h1>";
   echo "<table>
           <tr>
+            <th>Tienda</th>
             <th>Ejercicio</th>
             <th>Serie</th>
             <th>Numero</th>
@@ -66,6 +69,7 @@
 
     echo "
       <tr class='fila'>
+        <td>" . $top["IdDelegacion"] . "</td>
         <td>" . $top["EjercicioPedido"] . "</td>
         <td>" . $top["SeriePedido"] . "</td>
         <td>" . $top["NumeroPedido"] . "</td>
