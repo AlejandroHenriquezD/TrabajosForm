@@ -6,6 +6,24 @@ $ejercicio_pedido = $pedido[0];
 $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
 $id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
+
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+$FechaPedido = null;
+foreach ($pedidos as $ped) {
+	if (
+		$ped['EjercicioPedido'] == $ejercicio_pedido &&
+		$ped['SeriePedido'] == $serie_pedido &&
+		$ped['NumeroPedido'] == $numero_pedido
+	) {
+		$FechaPedido = $ped['FechaPedido'];
+	}
+}
+
+include "../BDReal/numTienda.php";
+$num_tienda = $tienda;
+
+$pdf = "/pdf.php?ejercicio_pedido=". $ejercicio_pedido ."&serie_pedido=". $serie_pedido ."&numero_pedido=". $numero_pedido;
+
 $_SESSION["observaciones"] = $_POST["observaciones"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
@@ -21,7 +39,6 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   $id_posicion = $valor[4];
   $id_tipo_trabajo = $valor[5];
   $id_logo = $valor[6];
-  
 
   $host = "localhost";
   $dbname = "centraluniformes";
@@ -39,7 +56,21 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     die("Connection error: " . mysqli_connect_errno());
   }
 
-  $sql = "INSERT INTO trabajos (ejercicio_pedido, serie_pedido, numero_pedido, codigo_articulo, descripcion_articulo, id_tipo_articulo, id_tipo_trabajo, id_posicion, id_logo, id_boceto) VALUES (?,?,?,?,?,?,?,?,?,?)";
+  $sql = "INSERT INTO trabajos (
+      ejercicio_pedido, 
+      serie_pedido, 
+      numero_pedido, 
+      FechaPedido, 
+      num_tienda, 
+      codigo_articulo, 
+      descripcion_articulo, 
+      id_tipo_articulo, 
+      id_tipo_trabajo, 
+      id_posicion, 
+      id_logo, 
+      id_boceto,
+      pdf
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
   $stmt = mysqli_stmt_init($conn);
 
@@ -49,17 +80,20 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   mysqli_stmt_bind_param(
     $stmt,
-    "isiisiiiii",
+    "isiiiisiiiiis",
     $ejercicio_pedido,
     $serie_pedido,
     $numero_pedido,
+    $FechaPedido,
+    $num_tienda,
     $codigo_articulo,
     $descripcion_articulo,
     $id_tipo_articulo,
     $id_tipo_trabajo,
     $id_posicion,
     $id_logo,
-    $id_boceto
+    $id_boceto,
+    $pdf
   );
 
   mysqli_stmt_execute($stmt); 
