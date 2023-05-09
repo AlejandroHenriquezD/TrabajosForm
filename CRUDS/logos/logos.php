@@ -25,7 +25,7 @@
     echo "<table>
            <tr>
               <th>Imagen</th>
-              <th>Imagen Vectorizada</th>
+              <th>Imagen Vectorizada/Texto</th>
               <th>Estado</th>
               <th>Cliente</th>
               <th>Acciones</th>
@@ -43,6 +43,8 @@
 
         if ($logo['img_vectorizada'] == "FALTA") {
             $vectorizada = "Falta por añadir";
+        } else if (substr($logo['img_vectorizada'], 0, 2) != "./") {
+            $vectorizada = $logo['img_vectorizada'];
         } else {
             $vectorizada = "
             <div class='logo-descargable'>
@@ -55,18 +57,24 @@
             </div>";
         }
 
+        if (substr($logo['img'], 0, 2) != "./") {
+            $logotipo = $logo['img'];
+        } else {
+            $logotipo = "<div class='logo-descargable'>
+            <img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px>
+            <div class='descargable'>
+                <img src='../../descargar.png'>
+                <p>Descargar imagen</p>
+                <a href='../." . $logo["img"] . "' download></a>
+            </div>
+        </div>";
+        }
+
         echo
         "<tr class='fila'>
-                    <td>
-                        <div class='logo-descargable'>
-                            <img src='../." . $logo["img"] . "' alt='" . $logo["img"] . "' height=150px>
-                            <div class='descargable'>
-                                <img src='../../descargar.png'>
-                                <p>Descargar imagen</p>
-                                <a href='../." . $logo["img"] . "' download></a>
-                            </div>
-                        </div>
-                    </td>
+                    <td>"
+            . $logotipo .
+            "</td>
                     <td>" . $vectorizada . "</td>
                     <td>" . $obsoleto . "</td>
                     <td>" . $cliente["razon_social"] . "</td>

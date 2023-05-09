@@ -16,7 +16,7 @@ class PDF extends FPDF
 		foreach ($header as $col)
 
 			// $this->Rect($x, $y, 25, 7, "");
-		$this->MultiCell(85, 7, $col, 'B', 'L', false);
+			$this->MultiCell(85, 7, $col, 'B', 'L', false);
 		// $this->ClipOut();
 		$this->Ln();
 
@@ -78,7 +78,7 @@ class PDF extends FPDF
 		$this->Ln();
 
 		$sum = 7;
-		if($nombretabla == 'tabla1') {
+		if ($nombretabla == 'tabla1') {
 			foreach ($articulos as $articulo) {
 				$this->SetXY($x, $y + $sum);
 				$this->Cell(30, 7, $articulo['CodigoArticulo'], 1, 0, 'C');
@@ -87,7 +87,7 @@ class PDF extends FPDF
 				$this->Cell(30, 7, round($articulo['Unidades'], 0, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
 				$sum += 7;
 			}
-		} else if($nombretabla == 'tabla2') {
+		} else if ($nombretabla == 'tabla2') {
 			foreach ($articulos as $articulo) {
 				$this->SetXY($x, $y + $sum);
 				$this->Cell(30, 7, $articulo['CodigoArticulo'], 1, 0, 'C');
@@ -97,7 +97,6 @@ class PDF extends FPDF
 				$sum += 7;
 			}
 		}
-		
 	}
 }
 
@@ -117,8 +116,8 @@ foreach ($pedidos as $pedido) {
 		$pedido['SeriePedido'] == $serie_pedido &&
 		$pedido['NumeroPedido'] == $numero_pedido
 	) {
-			$pdf->SetXY(80,16);
-			$pdf->Cell(0, 1, 'Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
+		$pdf->SetXY(80, 16);
+		$pdf->Cell(0, 1, 'Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
 	}
 }
 $pdf->Ln();

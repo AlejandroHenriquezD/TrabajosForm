@@ -5,7 +5,7 @@ $pedido = explode('/', $_POST["numero_pedido"]);
 $ejercicio_pedido = $pedido[0];
 $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
-$id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
+$id_boceto = $_POST["numero_boceto"] == "" ? null : $_POST["numero_boceto"];
 $_SESSION["observaciones"] = $_POST["observaciones"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
@@ -13,15 +13,15 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   var_dump($_FILES);
   $valor = explode('-', $valor);
-  echo $valor;
+  // echo $valor;
 
   $codigo_articulo = $valor[1];
   $descripcion_articulo = $valor[2];
   $id_tipo_articulo = $valor[3];
   $id_posicion = $valor[4];
   $id_tipo_trabajo = $valor[5];
-  $id_logo = $valor[6];
-  
+  $id_logo = $valor[6] == "0" ? null : $valor[6];
+
 
   $host = "localhost";
   $dbname = "centraluniformes";
@@ -62,7 +62,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     $id_boceto
   );
 
-  mysqli_stmt_execute($stmt); 
+  mysqli_stmt_execute($stmt);
 }
-header("location:pdf.php?ejercicio_pedido=".$ejercicio_pedido."&serie_pedido=".$serie_pedido."&numero_pedido=".$numero_pedido);
+header("location:pdf.php?ejercicio_pedido=" . $ejercicio_pedido . "&serie_pedido=" . $serie_pedido . "&numero_pedido=" . $numero_pedido);
 // echo $_POST['observaciones'];
