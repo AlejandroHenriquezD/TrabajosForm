@@ -38,6 +38,7 @@
                 <th>Ejercicio Pedido</th>
                 <th>Serie Pedido</th>
                 <th>Numero Pedido</th>
+                <th>Fecha Pedido</th>
                 <th>IdDelegacion</th>
                 <th>Codigo Cliente</th>
                 <th>Cif / DNI</th>
@@ -53,10 +54,12 @@
             </thead>
             <tbody>";
             while($top = sqlsrv_fetch_array($getResults)){
+                $Date = $top['FechaPedido']->format('d/m/Y');
                 echo "<tr>
                         <td>". $top["EjercicioPedido"] ."</td>
                         <td>". $top["SeriePedido"] ."</td>
                         <td>". $top["NumeroPedido"] ."</td>
+                        <td>". $Date ."</td>
                         <td>". $top["IdDelegacion"] ."</td>
                         <td>". $top["CodigoCliente"] ."</td>
                         <td>". $top["CifDni"] ."</td>

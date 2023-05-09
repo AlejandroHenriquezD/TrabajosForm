@@ -1,6 +1,8 @@
 <?php
 $id_boceto = $_POST["id_boceto"];
-$id_pedido = $_POST["id_pedido"];
+$ejercicio_pedido = $_POST["ejercicio_pedido"];
+$serie_pedido = $_POST["serie_pedido"];
+$numero_pedido = $_POST["numero_pedido"];
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -15,7 +17,7 @@ $conn = mysqli_connect(hostname: $host,
 if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
-$sql = "UPDATE `trabajos` SET `id_boceto`=". $id_boceto ."   WHERE id_pedido =" . $id_pedido ;
+$sql = "UPDATE `trabajos` SET `id_boceto`=". $id_boceto ."   WHERE ejercicio_pedido ='" . $ejercicio_pedido[0] . "'AND serie_pedido ='" . $serie_pedido[0] . "'AND numero_pedido ='". $numero_pedido[0]. "'" ;
 
 $stmt = mysqli_stmt_init($conn);
 
