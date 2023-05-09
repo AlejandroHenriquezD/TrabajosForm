@@ -107,7 +107,7 @@ $pdf = new PDF('P', 'mm', 'A4');
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 $pdf->SetFont('Arial', '', 8);
 $pdf->AddPage();
-$pdf->Image('../login/cu.png', 10, 10, 40);
+$pdf->Image('../login/cu.png', 10, 10, 45);
 $pdf->SetXY(80, 11);
 $pdf->Cell(0, 1, 'Numero pedido de venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido, 0, 1, 'L');
 foreach ($pedidos as $pedido) {
@@ -122,15 +122,25 @@ foreach ($pedidos as $pedido) {
 }
 
 include "../BDReal/numTienda.php";
-$pdf->SetXY(150, 11);
+include "../BDReal/domicilios.php";
+$pdf->SetXY(80, 21);
 $pdf->Cell(0, 1, 'Tienda: ' . $nombre, 0, 1, 'L');
+
+$pdf->SetXY(150, 11);
+$pdf->Cell(0, 1, "Domicilio: " . $domicilio[array_search($tienda, $almacen)][0], 0, 1, 'R');
+$pdf->SetXY(150, 16);
+$pdf->Cell(0, 1, "Localidad: " . $domicilio[array_search($tienda, $almacen)][1], 0, 1, 'R');
+$pdf->SetXY(150, 21);
+$pdf->Cell(0, 1, "Código Postal: " . $domicilio[array_search($tienda, $almacen)][2], 0, 1, 'R');
+$pdf->SetXY(150, 26);
+$pdf->Cell(0, 1, "Municipio: " . $domicilio[array_search($tienda, $almacen)][3], 0, 1, 'R');
 
 $articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
 
-$y = 31;
+$y = 36;
 
 include_once "../BDReal/numTienda.php";
 include_once "../BDReal/conexion_exit.php";
