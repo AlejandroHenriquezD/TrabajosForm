@@ -130,12 +130,12 @@ echo "
 
     var posicion = null;
     for(pos of posiciones){
+
       if(pos.includes('posicion-codigoArticulo-'+numeroTipoArticulos)){
         posicion = pos;
         break;
       }
     }
-    
     var divTipoArticulos = 'tipoArticulos-'+numeroArticulo+'-'+descripcion;
 
     var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+descripcion);
@@ -144,11 +144,13 @@ echo "
       for (let r of radios) {
         var numeroTipoArticulo = r.id.split('-')[3];
         var codigos = numeroArticulo+'-'+descripcion;
+
         if(r.checked) {
           posicion = posicion.replaceAll('codigoArticulo', codigos);
           posicion = elementFromHtml(posicion);
-          
-          if(!document.getElementById(divTipoArticulos).querySelector('#posiciones-'+codigos)) {
+          console.log(divTipoArticulos+codigos)
+
+          if(!document.getElementById(divTipoArticulos).querySelector('#posiciones-'+codigos+'-'+numeroTipoArticulo)) {
             document.getElementById(divTipoArticulos).appendChild(posicion);
           }
           r.parentNode.classList.add('ta-seleccionado');
