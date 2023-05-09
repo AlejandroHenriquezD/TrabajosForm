@@ -50,7 +50,7 @@
                 }
 
         echo "  </select>
-                    <button>Crear</button>"
+                    <button>Añadir</button>"
         ?>
     </form>
     <?php include "./menuPedidos.php" ?>

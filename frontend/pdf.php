@@ -46,7 +46,7 @@ class PDF extends FPDF
 			}
 		}
 		foreach ($tipo_trabajosFiltrados as $tipo_trabajo) {
-
+			
 			$posicionesFiltradas = array();
 			foreach ($trabajos as $trabajo) {
 				if ($tipo_trabajo['id'] == $trabajo['id_tipo_trabajo']) {
@@ -163,6 +163,7 @@ $pos = "izquierda";
 $x = 100;
 $countIzda = 0;
 foreach ($data as $articulo) {
+	
 	$codigo_articulo = str_replace(' ', '', $articulo['CodigoArticulo']);
 	$descripcion_articulo = str_replace(' ', '', $articulo['DescripcionArticulo']);
 	$index = 0;
@@ -174,17 +175,19 @@ foreach ($data as $articulo) {
 			$trabajo['serie_pedido'] == $serie_pedido &&
 			$trabajo['numero_pedido'] == $numero_pedido
 		) {
+			
 			if (
 				$trabajo['codigo_articulo'] == $codigo_articulo &&
 				stripslashes($trabajo['descripcion_articulo']) == $descripcion_articulo
 			) {
+
 				$trabajosFiltrados[$index] = $trabajo;
 				$index .= 1;
 			}
 		}
 	}
-
 	if (isset($trabajosFiltrados[0])) {
+		
 		if ($pos == "izquierda") {
 			$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
 			$header = array('Tipos de trabajo', 'Posiciones');

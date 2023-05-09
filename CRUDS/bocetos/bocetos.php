@@ -40,7 +40,7 @@
                                 <button>Ver Boceto</button>
                               </form>";
                     echo"</td>
-                    <td>" . $boceto["id_cliente"] . "</td>
+                    <td>" . $boceto["CodigoCliente"] . "</td>
                     <td> 
                         <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
