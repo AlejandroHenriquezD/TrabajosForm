@@ -5,7 +5,7 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -46,7 +46,7 @@ class PDF extends FPDF
 			}
 		}
 		foreach ($tipo_trabajosFiltrados as $tipo_trabajo) {
-			
+
 			$posicionesFiltradas = array();
 			foreach ($trabajos as $trabajo) {
 				if ($tipo_trabajo['id'] == $trabajo['id_tipo_trabajo']) {
@@ -122,7 +122,7 @@ foreach ($pedidos as $pedido) {
 }
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
@@ -163,7 +163,7 @@ $pos = "izquierda";
 $x = 100;
 $countIzda = 0;
 foreach ($data as $articulo) {
-	
+
 	$codigo_articulo = str_replace(' ', '', $articulo['CodigoArticulo']);
 	$descripcion_articulo = str_replace(' ', '', $articulo['DescripcionArticulo']);
 	$index = 0;
@@ -175,7 +175,7 @@ foreach ($data as $articulo) {
 			$trabajo['serie_pedido'] == $serie_pedido &&
 			$trabajo['numero_pedido'] == $numero_pedido
 		) {
-			
+
 			if (
 				$trabajo['codigo_articulo'] == $codigo_articulo &&
 				$trabajo['descripcion_articulo'] == $descripcion_articulo
@@ -187,7 +187,7 @@ foreach ($data as $articulo) {
 		}
 	}
 	if (isset($trabajosFiltrados[0])) {
-		
+
 		if ($pos == "izquierda") {
 			$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
 			$header = array('Tipos de trabajo', 'Posiciones');
