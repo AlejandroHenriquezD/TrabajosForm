@@ -13,12 +13,13 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   var_dump($_FILES);
   $valor = explode('-', $valor);
+  echo $valor;
 
   $codigo_articulo = $valor[1];
   $descripcion_articulo = $valor[2];
   $id_tipo_articulo = $valor[3];
-  $id_tipo_trabajo = $valor[4];
-  $id_posicion = $valor[5];
+  $id_posicion = $valor[4];
+  $id_tipo_trabajo = $valor[5];
   $id_logo = $valor[6];
   
 

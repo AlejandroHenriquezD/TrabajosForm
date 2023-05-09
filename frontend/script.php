@@ -102,7 +102,7 @@ echo "
     var divElemento = document.getElementById(elemento);
     var numeroArticulo = elemento.split('-')[2];
     var descripcion = elemento.split('-')[3];
-    descripcion = descripcion.replaceAll(' ', '')
+    descripcion = CSS.escape(descripcion.replaceAll(' ', ''));
 
     var tipoArticulo = tipoArticulos.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
     tipoArticulo = elementFromHtml(tipoArticulo);
@@ -121,74 +121,77 @@ echo "
     validar();
   }
 
-  function mostrarTrabajos(elemento) {
+  function mostrarPosiciones(elemento) {
     
     var numeroArticulo = elemento.split('-')[2];
     var descripcion = elemento.split('-')[3];
     var numeroTipoArticulos = elemento.split('-')[4];
-    
-    var divTipoArticulos = 'tipoArticulos-'+numeroArticulo+'-'+descripcion;
+    descripcion = CSS.escape(descripcion);
 
-    var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+descripcion);
-    for (let r of radios) {
-      var numeroTipoArticulo = r.id.split('-')[3];
-      var codigos = numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo;
-      codigos = CSS.escape(codigos);
-      if(r.checked) {
-        var trabajo = trabajos.replaceAll('codigoArticulo-tiposArticulos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
-        trabajo = elementFromHtml(trabajo);
-        
-        if(!document.getElementById(divTipoArticulos).querySelector('#trabajos-'+codigos)) {
-          document.getElementById(divTipoArticulos).appendChild(trabajo);
-        }
-        r.parentNode.classList.add('ta-seleccionado');
-      } else {
-        if (document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) {
-          document.getElementById(divTipoArticulos).removeChild(document.querySelector('#trabajos-'+codigos));
-          r.parentNode.classList.remove('ta-seleccionado');
-        }
-      }
-    }
-    validar()
-  }
-
-  function mostrarPosiciones(elemento) {
-
-    var numeroArticulo = elemento.split('-')[2];
-    var descripcion = elemento.split('-')[3];
-    var numeroTipoArticulo = elemento.split('-')[4];
-    var numeroTrabajo = elemento.split('-')[5];
-
-    // Buscar un substring por cada string del array de posiciones y devolver su posicion
     var posicion = null;
     for(pos of posiciones){
-      if(pos.includes('posicion-codigoArticulo-'+numeroTipoArticulo+'-idTiposTrabajos')){
+      if(pos.includes('posicion-codigoArticulo-'+numeroTipoArticulos)){
         posicion = pos;
         break;
       }
     }
+    
+    var divTipoArticulos = 'tipoArticulos-'+numeroArticulo+'-'+descripcion;
+
+    var radios = document.getElementsByClassName('articuloRadio-'+numeroArticulo+'-'+descripcion);
 
     if(posicion != null) {
-      var cb = document.getElementById('trabajo-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
-      posicion = posicion.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
-      posicion = posicion.replaceAll('idTiposTrabajos', numeroTrabajo);
-      posicion = posicion.replaceAll('nombreTiposTrabajos', cb.name);
-      posicion = elementFromHtml(posicion);
-
-      var desplegable = desplegables.replaceAll('tipo', 'posicion');
-      desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
-      desplegable = elementFromHtml(desplegable);
-
-      var divTrabajos = document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
-
-      if (cb.checked) {
-        divTrabajos.appendChild(posicion);
-        divTrabajos.appendChild(desplegable);
-      } else {
-        divTrabajos.removeChild(document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
-        divTrabajos.removeChild(document.getElementById('desplegable-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo));
+      for (let r of radios) {
+        var numeroTipoArticulo = r.id.split('-')[3];
+        var codigos = numeroArticulo+'-'+descripcion;
+        if(r.checked) {
+          posicion = posicion.replaceAll('codigoArticulo', codigos);
+          posicion = elementFromHtml(posicion);
+          
+          if(!document.getElementById(divTipoArticulos).querySelector('#posiciones-'+codigos)) {
+            document.getElementById(divTipoArticulos).appendChild(posicion);
+          }
+          r.parentNode.classList.add('ta-seleccionado');
+        } else {
+          if (document.getElementById('posiciones-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo)) {
+            document.getElementById(divTipoArticulos).removeChild(document.getElementById('posiciones-'+codigos+'-'+numeroTipoArticulo));
+            r.parentNode.classList.remove('ta-seleccionado');
+          }
+        }
       }
     }
+    validar();
+  }
+
+  function mostrarTrabajos(elemento) {
+
+    var numeroArticulo = elemento.split('-')[2];
+    var descripcion = elemento.split('-')[3];
+    var numeroTipoArticulo = elemento.split('-')[4];
+    var numeroPosicion = elemento.split('-')[5];
+    descripcion = CSS.escape(descripcion);
+
+    var cb = document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+    trabajo = trabajos.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
+    trabajo = trabajo.replaceAll('tiposArticulos', numeroTipoArticulo);
+    trabajo = trabajo.replaceAll('posiciones', numeroPosicion);
+    trabajo = trabajo.replaceAll('nombrePosicion', cb.name);
+    trabajo = elementFromHtml(trabajo);
+
+    var desplegable = desplegables.replaceAll('tipo', 'trabajos');
+    desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+    desplegable = elementFromHtml(desplegable);
+
+    var divPosiciones = document.getElementById('posiciones-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
+
+    if (cb.checked) {
+      divPosiciones.appendChild(trabajo);
+      divPosiciones.appendChild(desplegable);
+    } else {
+      divPosiciones.removeChild(document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion));
+      divPosiciones.removeChild(document.getElementById('desplegable-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion));
+    }
+    
     validar()
   }
 
@@ -197,50 +200,59 @@ echo "
     var numeroArticulo = elemento.split('-')[2];
     var descripcion = elemento.split('-')[3];
     var numeroTipoArticulo = elemento.split('-')[4];
-    var numeroTrabajo = elemento.split('-')[5];
-    var numeroPosicion = elemento.split('-')[6];
+    var numeroPosicion = elemento.split('-')[5];
+    var numeroTrabajo = elemento.split('-')[6];
+    descripcion = CSS.escape(descripcion);
 
     // Buscar contenedor de logos del pedido actual
     var logo = null;
     for(log of logos){
-      if(log.includes('logos-'+elementoActual+'-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion')){
+      if(log.includes('logos-'+elementoActual+'-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos')){
         logo = log;
         break;
       }
     }
 
+    var divTrabajos = document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+
+    var radios = document.getElementsByClassName('trabajo-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+
     if(logo != null) {
-      var cb = document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion);
       logo = logo.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
       logo = logo.replaceAll('idTipoArticulo', numeroTipoArticulo);
       logo = logo.replaceAll('idTiposTrabajos', numeroTrabajo);
       logo = logo.replaceAll('idPosicion', numeroPosicion);
-      logo = logo.replaceAll('nombrePosicion', cb.parentNode.textContent);
-      logo = elementFromHtml(logo);
-
+      
       var desplegable = desplegables.replaceAll('tipo', 'logos');
-      desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion);
+      desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroTrabajo);
       desplegable = elementFromHtml(desplegable);
 
-      var divPosiciones = document.getElementById('posicion-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo);
-      if (cb.checked) {
-        divPosiciones.appendChild(logo);
-        divPosiciones.appendChild(desplegable);
-      } else {
-        divPosiciones.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
-        divPosiciones.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroTrabajo+'-'+numeroPosicion));
+      for (let r of radios) {
+        if (r.checked) {
+          logo = logo.replaceAll('nombrePosicion', r.parentNode.textContent);
+          logo = elementFromHtml(logo);
+          
+          divTrabajos.appendChild(logo);
+          divTrabajos.appendChild(desplegable);
+        } else {
+          var nTrabajo = r.id.split('-')[5];
+          if (document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo)) {
+            divTrabajos.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
+            divTrabajos.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
+          }
+        }
       }
     }
-    validar()
+    validar();
   }
 
   function logoSeleccionado(radios) {
-    var numeroPedido = radios.split('-')[1];
-    var numeroArticulo = radios.split('-')[2];
-    var numeroTipoArticulo = radios.split('-')[3];
-    var numeroTrabajo = radios.split('-')[4];
-    var numeroPosicion = radios.split('-')[5];
-    radios = document.getElementsByClassName(radios);
+    // var numeroPedido = radios.split('-')[1];
+    // var numeroArticulo = radios.split('-')[2];
+    // var numeroTipoArticulo = radios.split('-')[3];
+    // var numeroTrabajo = radios.split('-')[4];
+    // var numeroPosicion = radios.split('-')[5];
+    radios = document.getElementsByClassName(CSS.escape(radios));
     for (let r of radios) {
       var numeroLogo = r.id.split('-')[6];
       if(r.checked) {
@@ -253,7 +265,7 @@ echo "
   }
 
   function desplegable(elemento) {
-    
+    elemento = CSS.escape(elemento);
     var divElemento = document.getElementById(elemento);
     var hijos = divElemento.children;
     var indices = elemento.substring(elemento.indexOf('-'));

@@ -14,18 +14,19 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
 $sql = "SELECT 
             CodigoAlmacen,
             CodigoArticulo,
+            EjercicioPedido,
             SeriePedido,
             NumeroPedido,
             DescripcionArticulo
 
 
         FROM PedidoVentaLineas
-        WHERE    
-        (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+        WHERE (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
         AND EX_Serigrafiado = -1
         AND TipoArticulo = 'M'
         AND SeriePedido = 'I'
-        AND NumeroPedido = '2053'
+        AND NumeroPedido = '585'
+        AND EjercicioPedido = '2023'
         
         AND CodigoAlmacen = '06'
         ";
@@ -36,6 +37,7 @@ echo "<table>
             <thead>
                 <th>Codigo Almacen</th>
                 <th>Codigo Articulo</th>
+                <th>Ejercicio Pedido</th>
                 <th>Serie Pedido</th>
                 <th>Numero Pedido</th>
                 <th>Descripcion Articulo</th>
@@ -46,6 +48,7 @@ echo "<table>
                 echo "<tr>
                         <td>". $top["CodigoAlmacen"] ."</td>
                         <td>". $top["CodigoArticulo"] ."</td>
+                        <td>". $top["EjercicioPedido"] ."</td>
                         <td>". $top["SeriePedido"] ."</td>
                         <td>". $top["NumeroPedido"] ."</td>
                         <td>". $top["DescripcionArticulo"] ."</td>

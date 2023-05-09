@@ -5,7 +5,7 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -15,8 +15,8 @@ class PDF extends FPDF
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
 
-			$this->Rect($x, $y, 25, 7, "");
-		$this->Cell(25, 7, $col, 'B', 0, 'L');
+			// $this->Rect($x, $y, 25, 7, "");
+		$this->MultiCell(85, 7, $col, 'B', 'L', false);
 		// $this->ClipOut();
 		$this->Ln();
 
@@ -24,7 +24,7 @@ class PDF extends FPDF
 
 		$this->SetXY($x, $y + 7);
 		$this->Cell(25, 19, '', 0, 0, 'C');
-		$this->Image('.' . $tipo_articulo['img'], 13, $y + 8, 20);
+		$this->Image('.' . $tipo_articulo['img'], $x + 3, $y + 8, 20);
 	}
 
 	function TablaTrabajo($header, $trabajos, $x, $y)
@@ -57,7 +57,7 @@ class PDF extends FPDF
 			$this->SetXY($x, $y + 7 + $possum);
 			$this->Cell(25, 10 * count($posicionesFiltradas), $tipo_trabajo['nombre'], 1, 0, 'C');
 			foreach ($posicionesFiltradas as $posicion) {
-				$this->SetX(70);
+				$this->SetX($x + 25);
 				$this->Cell(25, 10, $posicion['descripcion'], 1, 0, 'C');
 				// $this->Cell(40, 14, '', 0, 0, 'C');
 				$this->Ln();
@@ -66,6 +66,39 @@ class PDF extends FPDF
 		}
 		$possum = 0;
 	}
+
+	function TablaReferencia($header, $articulos, $nombretabla, $x, $y)
+	{
+		$this->SetXY($x, $y);
+		foreach ($header as $col)
+
+			// $this->Rect($x, $y, 25, 7, "");
+			$this->Cell(30, 7, $col, 1, 0, 'C');
+		// $this->ClipOut();
+		$this->Ln();
+
+		$sum = 7;
+		if($nombretabla == 'tabla1') {
+			foreach ($articulos as $articulo) {
+				$this->SetXY($x, $y + $sum);
+				$this->Cell(30, 7, $articulo['CodigoArticulo'], 1, 0, 'C');
+				$this->Cell(30, 7, $articulo['CodigoColor_'], 1, 0, 'C');
+				$this->Cell(30, 7, $articulo['CodigoTalla'], 1, 0, 'C');
+				$this->Cell(30, 7, round($articulo['Unidades'], 0, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
+				$sum += 7;
+			}
+		} else if($nombretabla == 'tabla2') {
+			foreach ($articulos as $articulo) {
+				$this->SetXY($x, $y + $sum);
+				$this->Cell(30, 7, $articulo['CodigoArticulo'], 1, 0, 'C');
+				$this->Cell(30, 7, round($articulo['Unidades'], 0, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
+				$this->Cell(30, 7, round($articulo['PrecioNeto'], 2, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
+				$this->Cell(30, 7, round($articulo['PrecioNeto'] * $articulo['Unidades'], 2, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
+				$sum += 7;
+			}
+		}
+		
+	}
 }
 
 $pdf = new PDF('P', 'mm', 'A4');
@@ -73,17 +106,29 @@ $pdf = new PDF('P', 'mm', 'A4');
 
 // Carga de datos
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
-$pdf->SetFont('Times', '', 8);
+$pdf->SetFont('Arial', '', 8);
 $pdf->AddPage();
-$pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
+$pdf->Image('../login/cu.png', 10, 10, 40);
+$pdf->SetXY(80, 11);
+$pdf->Cell(0, 1, 'Numero pedido de venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido, 0, 1, 'L');
+foreach ($pedidos as $pedido) {
+	if (
+		$pedido['EjercicioPedido'] == $ejercicio_pedido &&
+		$pedido['SeriePedido'] == $serie_pedido &&
+		$pedido['NumeroPedido'] == $numero_pedido
+	) {
+			$pdf->SetXY(80,16);
+			$pdf->Cell(0, 1, 'Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
+	}
+}
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
 
-$y = 22;
+$y = 31;
 
 include_once "../BDReal/numTienda.php";
 include_once "../BDReal/conexion_exit.php";
@@ -95,10 +140,11 @@ $tsql = "SELECT DISTINCT
 						NumeroPedido,
 						DescripcionArticulo
 		FROM PedidoVentaLineas
-		WHERE EjercicioPedido = $ejercicio_pedido
+		WHERE EjercicioPedido = '$ejercicio_pedido'
 		AND SeriePedido = '$serie_pedido'
-		AND NumeroPedido = $numero_pedido
+		AND NumeroPedido = '$numero_pedido'
 		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
 		AND CodigoAlmacen = '06'
 		";
@@ -110,6 +156,14 @@ $data = [];
 
 while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 	$data[] = $articulo;
+}
+
+sqlsrv_free_stmt($getResults);
+
+$pos = "izquierda";
+$x = 100;
+$countIzda = 0;
+foreach ($data as $articulo) {
 	$codigo_articulo = str_replace(' ', '', $articulo['CodigoArticulo']);
 	$descripcion_articulo = str_replace(' ', '', $articulo['DescripcionArticulo']);
 	$index = 0;
@@ -131,12 +185,92 @@ while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 		}
 	}
 
-	$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
-	$header = array('Tipos de trabajo', 'Posiciones');
-	$pdf->TablaTrabajo($header, $trabajosFiltrados, 45, $y);
-	$y += 10 * count($trabajosFiltrados) + 30;
+	if (isset($trabajosFiltrados[0])) {
+		if ($pos == "izquierda") {
+			$pdf->TablaArticulo($header, $trabajosFiltrados[0], 10, $y);
+			$header = array('Tipos de trabajo', 'Posiciones');
+			$pdf->TablaTrabajo($header, $trabajosFiltrados, 45, $y + 7);
+			$countIzda = count($trabajosFiltrados);
+			$pos = "derecha";
+		} else if ($pos == "derecha") {
+			$pdf->TablaArticulo($header, $trabajosFiltrados[0], $x + 10, $y);
+			$header = array('Tipos de trabajo', 'Posiciones');
+			$pdf->TablaTrabajo($header, $trabajosFiltrados, $x + 45, $y + 7);
+			if ($countIzda > count($trabajosFiltrados)) {
+				$y += 10 * $countIzda + 30;
+			} else {
+				$y += 10 * count($trabajosFiltrados) + 30;
+			}
+			$pos = "izquierda";
+		}
+	}
 }
+
+// echo json_encode($data);
+if ($pos == "derecha") {
+	$y += 10 * $countIzda + 30;
+}
+
+$tsql = "SELECT
+				CodigoArticulo,
+				CodigoColor_,
+   	 			CodigoTalla,
+				Unidades
+		FROM PedidoVentaLineas
+		WHERE EjercicioPedido = $ejercicio_pedido
+		AND SeriePedido = '$serie_pedido'
+		AND NumeroPedido = $numero_pedido
+		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		AND EX_Serigrafiado = -1
+		AND TipoArticulo = 'M'
+		AND CodigoAlmacen = '06'
+		";
+
+$getResults = sqlsrv_query($conn, $tsql);
+
+$data2 = [];
+
+while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+	$data2[] = $articulo;
+}
+
 sqlsrv_free_stmt($getResults);
+
+$header = array('REF.PREND', 'COLOR', 'TALLA', 'CANTIDAD');
+$pdf->TablaReferencia($header, $data2, 'tabla1', 10, $y);
+
+$y += 7 * count($data2) + 20;
+
+$conn3 = sqlsrv_connect($serverName, $connectionOptions);
+
+$tsql3 = "SELECT
+            CodigoArticulo,
+            Unidades,
+            PrecioNeto
+        FROM PedidoVentaLineas
+        WHERE 
+        (CodigoArticulo LIKE ('6000%') OR CodigoArticulo LIKE ('6001%') OR CodigoArticulo LIKE ('6002%') OR CodigoArticulo LIKE ('6003%'))
+        AND LEN(CodigoArticulo) = 7
+				AND EjercicioPedido = $ejercicio_pedido
+        AND SeriePedido = '$serie_pedido'
+        AND NumeroPedido = $numero_pedido
+        ";
+
+$getResults3 = sqlsrv_query($conn3, $tsql3);
+
+$data3 = [];
+
+while ($articulo = sqlsrv_fetch_array($getResults3, SQLSRV_FETCH_ASSOC)) {
+	$data3[] = $articulo;
+}
+
+sqlsrv_free_stmt($getResults3);
+
+$header = array('REF.ESTAMPA', 'UNIDADES', 'PRECIO UNIDADES', 'TOTAL IMPORTE');
+$pdf->TablaReferencia($header, $data3, 'tabla2', 10, $y);
+
+$y += 7 * count($data3) + 20;
+
 
 $pdf->SetXY(10, $y);
 $pdf->Cell(80, 7, 'OBSERVACIONES', 'B', 0, 'L');

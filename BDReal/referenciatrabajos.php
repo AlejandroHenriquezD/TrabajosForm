@@ -17,7 +17,8 @@ $sql = "SELECT
             CodigoColor_,
             CodigoTalla,
             DescripcionArticulo,
-            Unidades
+            Unidades,
+            PrecioNeto
 
         FROM PedidoVentaLineas
         WHERE 
@@ -37,6 +38,7 @@ echo "<table>
                 <th>Codigo Talla</th>
                 <th>DescripcionArticulo</th>
                 <th>Unidades</th>
+                <th>PrecioNeto</th>
             </thead>
             <tbody>";
             while($top = sqlsrv_fetch_array($getResults)){
@@ -47,6 +49,7 @@ echo "<table>
                         <td>". $top["CodigoTalla"] ."</td>
                         <td>". $top["DescripcionArticulo"] ."</td>
                         <td>". $top["Unidades"] ."</td>
+                        <td>". $top["PrecioNeto"] ."</td>
                       </tr>";
             }
       echo "</tbody>
