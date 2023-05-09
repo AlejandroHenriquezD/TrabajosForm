@@ -297,7 +297,7 @@
           console.log("crea el input")
 
           // Crear el elemento de entrada de texto
-          let CreLog = elementFromHtml("<input type='text' onchange='validar()' placeholder='Indique aquí el texto con el que quiere trabajar' class='log' id='logo-" + corta + "-logotipo'><p>Seleccione un logo</p></div>");
+          let CreLog = elementFromHtml("<input type='text' onchange='validar()' placeholder='Indique aquí el texto con el que quiere trabajar' id='logo-" + corta + "-logotipo'><p>Seleccione un logo</p></div>");
 
           // Obtener el elemento al que deseas agregar el elemento de entrada de texto
 
