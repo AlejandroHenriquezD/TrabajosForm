@@ -5,7 +5,7 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosform/pedidos"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -83,7 +83,8 @@ class PDF extends FPDF
 				$this->SetXY($x, $y + $sum);
 				$this->Cell(30, 7, $articulo['CodigoArticulo'], 1, 0, 'C');
 				$this->Cell(30, 7, $articulo['CodigoColor_'], 1, 0, 'C');
-				$this->Cell(30, 7, $articulo['CodigoTalla'] . " / " . round($articulo['Unidades'], 0, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
+				$this->Cell(30, 7, $articulo['CodigoTalla'], 1, 0, 'C');
+				$this->Cell(30, 7, round($articulo['Unidades'], 0, PHP_ROUND_HALF_DOWN), 1, 0, 'C');
 				$sum += 7;
 			}
 		} else if($nombretabla == 'tabla2') {
@@ -105,17 +106,29 @@ $pdf = new PDF('P', 'mm', 'A4');
 
 // Carga de datos
 $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
-$pdf->SetFont('Times', '', 8);
+$pdf->SetFont('Arial', '', 8);
 $pdf->AddPage();
-$pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
+$pdf->Image('../login/cu.png', 10, 10, 40);
+$pdf->SetXY(80, 11);
+$pdf->Cell(0, 1, 'Numero pedido de venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido, 0, 1, 'L');
+foreach ($pedidos as $pedido) {
+	if (
+		$pedido['EjercicioPedido'] == $ejercicio_pedido &&
+		$pedido['SeriePedido'] == $serie_pedido &&
+		$pedido['NumeroPedido'] == $numero_pedido
+	) {
+			$pdf->SetXY(80,16);
+			$pdf->Cell(0, 1, 'Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
+	}
+}
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
 
-$y = 22;
+$y = 31;
 
 include_once "../BDReal/numTienda.php";
 include_once "../BDReal/conexion_exit.php";
@@ -223,7 +236,7 @@ while ($articulo = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
 sqlsrv_free_stmt($getResults);
 
-$header = array('REF.PREND', 'COLOR', 'TALLA/CANTIDAD');
+$header = array('REF.PREND', 'COLOR', 'TALLA', 'CANTIDAD');
 $pdf->TablaReferencia($header, $data2, 'tabla1', 10, $y);
 
 $y += 7 * count($data2) + 20;
