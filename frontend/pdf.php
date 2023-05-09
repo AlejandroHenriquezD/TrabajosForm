@@ -120,8 +120,11 @@ foreach ($pedidos as $pedido) {
 		$pdf->Cell(0, 1, 'Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
 	}
 }
-$pdf->Ln();
-$pdf->Ln();
+
+include "../BDReal/numTienda.php";
+$pdf->SetXY(150, 11);
+$pdf->Cell(0, 1, 'Tienda: ' . $nombre, 0, 1, 'L');
+
 $articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
