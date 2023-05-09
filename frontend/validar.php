@@ -224,7 +224,6 @@
     }
   }
 
-
   function validarLogos() {
     // Se cogen todos los inputs
     const inputs = document.getElementsByTagName('input');
@@ -270,9 +269,52 @@
       }
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
+        corta = ""
+        larga = ""
+        a = 0
+        for (let i of id) {
+          if (a < 3) {
+            larga += i
+          } else {
+            larga += i
+            corta += i
+          }
+          if (a != 7) {
+            larga += "-";
+            if (a >= 3) {
+              corta += "-";
+            }
+          }
+          a++;
+        }
+        inputLogo = document.getElementById("logo-" + corta + "-logotipo")
+        logoDefecto = document.getElementById("logo-" + corta + "-0")
         if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("msg-art-" + id[3] + '-' + id[4]).childElementCount === 1) {
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
+        }
+        if (logoDefecto.checked && !inputLogo) {
+          console.log("crea el input")
+
+          // Crear el elemento de entrada de texto
+          let CreLog = elementFromHtml("<input type='text' onchange='validar()' placeholder='Indique aquí el texto con el que quiere trabajar' class='log' id='logo-" + corta + "-logotipo'><p>Seleccione un logo</p></div>");
+
+          // Obtener el elemento al que deseas agregar el elemento de entrada de texto
+
+          var container = document.getElementById(larga);
+
+          // Agregar el elemento de entrada de texto al contenedor utilizando appendChild
+          container.appendChild(CreLog);
+        }
+        inputLogo = document.getElementById("logo-" + corta + "-logotipo")
+        if (inputLogo != null && inputLogo.value === "" && document.getElementById("msg-art-" + id[3] + '-' + id[4]).childElementCount === 1) {
+
+          let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Introduzca el texto que quiere</p></div>");
+          msgArt[i].appendChild(msg);
+
+        }
+        if (inputLogo != null && !logoDefecto.checked) {
+          console.log("Borra el input")
         }
       }
     }

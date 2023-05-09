@@ -14,10 +14,10 @@ class PDF extends FPDF
 	{
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
-			
+
 			$this->Rect($x, $y, 25, 7, "");
-			$this->Cell(25, 7, $col, 'B', 0, 'L');
-			// $this->ClipOut();
+		$this->Cell(25, 7, $col, 'B', 0, 'L');
+		// $this->ClipOut();
 		$this->Ln();
 
 		$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $trabajo['id_tipo_articulo']), true);
@@ -29,14 +29,14 @@ class PDF extends FPDF
 
 	function TablaTrabajo($header, $trabajos, $x, $y)
 	{
-		
+
 		$possum = 0;
 		$this->SetXY($x, $y);
 		foreach ($header as $col)
 			$this->Cell(25, 7, $col, 'B', 0, 'C');
 		$this->Ln();
 		$tipo_trabajosFiltrados = array();
-		
+
 		foreach ($trabajos as $trabajo) {
 			$tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajo['id_tipo_trabajo']), true);
 			// $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajo['id_logo']), true);
@@ -46,7 +46,7 @@ class PDF extends FPDF
 			}
 		}
 		foreach ($tipo_trabajosFiltrados as $tipo_trabajo) {
-			
+
 			$posicionesFiltradas = array();
 			foreach ($trabajos as $trabajo) {
 				if ($tipo_trabajo['id'] == $trabajo['id_tipo_trabajo']) {
@@ -63,7 +63,6 @@ class PDF extends FPDF
 				$this->Ln();
 				$possum += 10;
 			}
-			
 		}
 		$possum = 0;
 	}
@@ -79,7 +78,7 @@ $pdf->AddPage();
 $pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
@@ -141,11 +140,11 @@ sqlsrv_free_stmt($getResults);
 
 $pdf->SetXY(10, $y);
 $pdf->Cell(80, 7, 'OBSERVACIONES', 'B', 0, 'L');
-$pdf->SetXY(10, $y+7);
+$pdf->SetXY(10, $y + 7);
 $pdf->MultiCell(80, 5, $_SESSION["observaciones"], 'LRTB', 'L', false);
 $pdf->SetXY(90, $y);
 $pdf->Cell(80, 7, 'FIRMA', 'B', 0, 'L');
-$pdf->SetXY(90, $y+7);
+$pdf->SetXY(90, $y + 7);
 $pdf->Cell(80, 20, '', 1, 0, 'L');
 
 $pdf->Output();
