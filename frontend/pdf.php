@@ -110,7 +110,7 @@ $pdf->AddPage();
 $pdf->Cell(0, 1, 'Ejercicio Pedido: ' . $ejercicio_pedido . '                 Serie Pedido: ' . $serie_pedido . '                 Numero Pedido: ' . $numero_pedido, 0, 1, 'C');
 $pdf->Ln();
 $pdf->Ln();
-$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_articulos.php"), true);
 
 // echo json_encode($trabajos);
 // echo json_encode($articulos);
@@ -127,10 +127,11 @@ $tsql = "SELECT DISTINCT
 						NumeroPedido,
 						DescripcionArticulo
 		FROM PedidoVentaLineas
-		WHERE EjercicioPedido = $ejercicio_pedido
+		WHERE EjercicioPedido = '$ejercicio_pedido'
 		AND SeriePedido = '$serie_pedido'
-		AND NumeroPedido = $numero_pedido
+		AND NumeroPedido = '$numero_pedido'
 		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
 		AND CodigoAlmacen = '06'
 		";
@@ -198,15 +199,16 @@ if ($pos == "derecha") {
 }
 
 $tsql = "SELECT
-						CodigoArticulo,
-						CodigoColor_,
-   	 				CodigoTalla,
-						Unidades
+				CodigoArticulo,
+				CodigoColor_,
+   	 			CodigoTalla,
+				Unidades
 		FROM PedidoVentaLineas
 		WHERE EjercicioPedido = $ejercicio_pedido
 		AND SeriePedido = '$serie_pedido'
 		AND NumeroPedido = $numero_pedido
 		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
 		AND CodigoAlmacen = '06'
 		";

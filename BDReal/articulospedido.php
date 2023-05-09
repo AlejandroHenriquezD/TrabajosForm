@@ -21,12 +21,12 @@ $sql = "SELECT
 
 
         FROM PedidoVentaLineas
-        WHERE    
-        (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
+        WHERE (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
         AND EX_Serigrafiado = -1
         AND TipoArticulo = 'M'
         AND SeriePedido = 'I'
-        AND NumeroPedido = '285'
+        AND NumeroPedido = '585'
+        AND EjercicioPedido = '2023'
         
         AND CodigoAlmacen = '06'
         ";
