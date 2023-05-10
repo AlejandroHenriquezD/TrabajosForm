@@ -12,10 +12,10 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
-$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
 $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
 $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
 $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
@@ -158,8 +158,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       }
       $arrayLogos[$o] .= "<div class='seleccionado'><h1>nombrePosicion</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
 
-      $arrayLogos[$o] .= "<div class='ta' id=\"form-control-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\">";
-      $arrayLogos[$o] .= "<input type='radio' class=\"logoRadio-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion\" id=\"logo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\" name=\"img-input[grupo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion]\" value=\"logo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\" onclick='logoSeleccionado(\"logoRadio-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion\")'>";
+      $arrayLogos[$o] .= "<div class='ta' id=\"form-control-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\">";
+      $arrayLogos[$o] .= "<input type='radio' class=\"logoRadio-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos\" id=\"logo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\" name=\"img-input[grupo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos]\" value=\"logo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\" onclick='logoSeleccionado(\"logoRadio-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos\")'>";
       $arrayLogos[$o] .= "<img src=\"../frontend/img/eliminar.png\" alt=\"Sin logo\"/>";
       $arrayLogos[$o] .= "</div>";
 

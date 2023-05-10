@@ -148,9 +148,8 @@ echo "
         if(r.checked) {
           posicion = posicion.replaceAll('codigoArticulo', codigos);
           posicion = elementFromHtml(posicion);
-          console.log(divTipoArticulos+codigos)
 
-          if(!document.getElementById(divTipoArticulos).querySelector('#posiciones-'+codigos+'-'+numeroTipoArticulo)) {
+          if(!document.getElementById('posiciones-'+codigos+'-'+numeroTipoArticulo)) {
             document.getElementById(divTipoArticulos).appendChild(posicion);
           }
           r.parentNode.classList.add('ta-seleccionado');
@@ -228,16 +227,17 @@ echo "
       var desplegable = desplegables.replaceAll('tipo', 'logos');
       desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroTrabajo);
       desplegable = elementFromHtml(desplegable);
-
       for (let r of radios) {
+        var nTrabajo = r.id.split('-')[5];
+
         if (r.checked) {
           logo = logo.replaceAll('nombrePosicion', r.parentNode.textContent);
           logo = elementFromHtml(logo);
-          
-          divTrabajos.appendChild(logo);
-          divTrabajos.appendChild(desplegable);
+          if(!document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo)) {
+            divTrabajos.appendChild(logo);
+            divTrabajos.appendChild(desplegable);
+          }
         } else {
-          var nTrabajo = r.id.split('-')[5];
           if (document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo)) {
             divTrabajos.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
             divTrabajos.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
