@@ -6,7 +6,7 @@ $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
 $id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
 
-$pedidos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
 $FechaPedido = null;
 foreach ($pedidos as $ped) {
 	if ( 
