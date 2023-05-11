@@ -351,4 +351,7 @@ $pdf->Cell(80, 7, 'FIRMA', 'B', 0, 'L', false);
 $pdf->SetXY(90, $y + 7);
 $pdf->Cell(80, 20, '', 1, 0, 'L');
 
-$pdf->Output();
+$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+
+
+
