@@ -38,7 +38,7 @@ $arrayLogos = array();
 $posiciones = array();
 $arrayLogos = array();
 $relacion = array();
-$divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange=mostrarArticulos()>";
+$divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select name='selectPedido[]' id='selectPedido' onchange='mostrarArticulos()'>";
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
@@ -158,8 +158,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       }
       $arrayLogos[$o] .= "<div class='seleccionado'><h1>nombrePosicion</h1></div><h1>Logotipo</h1><div class='slider'><div class='coleccion'>";
 
-      $arrayLogos[$o] .= "<div class='ta' id=\"form-control-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\">";
-      $arrayLogos[$o] .= "<input type='radio' class=\"logoRadio-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion\" id=\"logo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\" name=\"img-input[grupo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion]\" value=\"logo-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion-0\" onclick='logoSeleccionado(\"logoRadio-codigoArticulo-idTipoArticulo-idTiposTrabajos-idPosicion\")'>";
+      $arrayLogos[$o] .= "<div class='ta' id=\"form-control-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\">";
+      $arrayLogos[$o] .= "<input type='radio' class=\"logoRadio-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos\" id=\"logo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\" name=\"img-input[grupo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos]\" value=\"logo-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos-0\" onclick='logoSeleccionado(\"logoRadio-codigoArticulo-idTipoArticulo-idPosicion-idTiposTrabajos\")'>";
       $arrayLogos[$o] .= "<img src=\"../frontend/img/eliminar.png\" alt=\"Sin logo\"/>";
       $arrayLogos[$o] .= "</div>";
 

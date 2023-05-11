@@ -1,6 +1,5 @@
 <?php
 session_start();
-echo $_POST["numero_pedido"];
 $pedido = explode('/', $_POST["numero_pedido"]);
 $ejercicio_pedido = $pedido[0];
 $serie_pedido = $pedido[1];
@@ -10,12 +9,12 @@ $id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
 $pedidos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_pedidos.php"), true);
 $FechaPedido = null;
 foreach ($pedidos as $ped) {
-	if (
+	if ( 
 		$ped['EjercicioPedido'] == $ejercicio_pedido &&
 		$ped['SeriePedido'] == $serie_pedido &&
 		$ped['NumeroPedido'] == $numero_pedido
 	) {
-		$FechaPedido = $ped['FechaPedido'];
+		$FechaPedido = $ped['FechaPedido']['date'];
 	}
 }
 
@@ -25,10 +24,11 @@ $num_tienda = $tienda;
 // $pdf = "/pdf.php?ejercicio_pedido=". $ejercicio_pedido ."&serie_pedido=". $serie_pedido ."&numero_pedido=". $numero_pedido;
 
 $id_boceto = $_POST["numero_boceto"] == "" ? null : $_POST["numero_boceto"];
+$observaciones = $_POST["observaciones"];
 $_SESSION["observaciones"] = $_POST["observaciones"];
 
 foreach ($_POST['img-input'] as $grupo => $valor) {
-  echo "El valor seleccionado es $valor del grupo $grupo <br>";
+  // echo "El valor seleccionado es $valor del grupo $grupo <br>";
 
   var_dump($_FILES);
   $valor = explode('-', $valor);
@@ -70,8 +70,9 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
       id_tipo_trabajo, 
       id_posicion, 
       id_logo, 
-      id_boceto
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+      id_boceto,
+      observaciones
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
   $stmt = mysqli_stmt_init($conn);
 
@@ -81,7 +82,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
 
   mysqli_stmt_bind_param(
     $stmt,
-    "isiiiisiiiii",
+    "isisiisiiiiis",
     $ejercicio_pedido,
     $serie_pedido,
     $numero_pedido,
@@ -93,7 +94,8 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
     $id_tipo_trabajo,
     $id_posicion,
     $id_logo,
-    $id_boceto
+    $id_boceto,
+    $observaciones
   );
 
   mysqli_stmt_execute($stmt);

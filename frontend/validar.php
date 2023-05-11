@@ -215,7 +215,7 @@
 
       if (inputsFiltrados.length > 0) {
         for (var i = 0; i < valido.length; i++) {
-          if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4])) {
+          if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tra-' + msgArt[i].id.split('-')[2]) && document.getElementById("trabajos-" + id[1] + "-" + id[2] + "-" + id[3] + "-" + id[4]) && document.getElementById("msg-art-" + id[1] + "-" + id[2]).childElementCount === 1) {
             let msg = elementFromHtml("<div class='tra' id='tra-" + msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3] + "'><p>Seleccione un trabajo</p></div>");
             msgArt[i].appendChild(msg);
           }
