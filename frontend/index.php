@@ -24,7 +24,7 @@ echo "
       $divPedidos
       <div id='observaciones'>
         <h1>Observaciones</h1>
-        <textarea name='observaciones' placeholder='Escriba aquí otras demandas'></textarea>
+        <textarea id='observaciones2' name='observaciones' onchange='validar()' placeholder='Escriba aquí otras demandas'></textarea>
       </div>
       <input type='submit' id='enviar' disabled>
       <input type='text' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
@@ -51,4 +51,3 @@ echo "
   </div>
 </body>
 </html>";
-?>
