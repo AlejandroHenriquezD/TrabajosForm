@@ -46,7 +46,11 @@
     $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
     $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
-
+    if($trabajos[$p]['id_logo'] == null) {
+      $colLogo = "No hay logo";
+    }else {
+      $colLogo = "<img src='../." . $logo['img'] . "' alt='" . $logo['img'] . "' height=150px>";
+    }
 
     echo
     "<tr class='fila'>
@@ -56,7 +60,7 @@
            <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
            <td>" . $tipo_trabajo['nombre'] . "</td>
            <td>" . $trabajos[$p]['FechaPedido'] . "</td>
-           <td><img src='../." . $logo['img'] . "' alt='hola' height=150px></td>
+           <td>" . $colLogo . "</td>
            <td>";
 
     if ($trabajos[$p]['id_boceto'] != null) {
