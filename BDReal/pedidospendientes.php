@@ -29,7 +29,7 @@
                 StatusPedido,
                 EX_Serigrafiado
             FROM PedidoVentaCabecera
-            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '06'";
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 ";
 
     $getResults = sqlsrv_query($conn, $sql);
 

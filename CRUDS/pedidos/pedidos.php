@@ -52,6 +52,19 @@
   $getResults = sqlsrv_query($conn, $sql);
 
 
+  $host = "localhost";
+  $dbname = "centraluniformes";
+  $username = "root";
+  $password = "";
+
+  $conn1 = mysqli_connect(
+      hostname: $host,
+      username: $username,
+      password: $password,
+      database: $dbname
+    );
+
+
   echo "<h1>PEDIDOS PENDIENTES</h1>";
   echo "<table>
           <tr>
@@ -61,6 +74,7 @@
             <th>Codigo Cliente</th>
             <th>Razon Social</th>
             <th>Acciones</th>
+            <th>Estado</th>
           </tr>";
   while ($top = sqlsrv_fetch_array($getResults)) {
 
@@ -90,6 +104,27 @@
             <button>Añadir Orden Trabajo<ion-icon name='create'></button> 
           </form>
         </td>
+        <td>";
+
+        
+        $sql = "SELECT id_boceto,pdf FROM `trabajos` WHERE ejercicio_pedido = '". $top['EjercicioPedido']."' AND serie_pedido = '" .$top["SeriePedido"] . "' AND numero_pedido ='".$top["NumeroPedido"]."'";
+
+        $result = mysqli_query($conn1, $sql);
+        $row = mysqli_fetch_array($result);
+        if (mysqli_num_rows($result) > 0) {
+
+          if ( $row[0]== "" || $row[1]== "") {
+            echo "<img src='../../frontend/img/cancelar.png'/>";
+          }else {
+          echo "<img src='../../frontend/img/aceptar.png'/>";
+          } 
+        }else {
+          echo "<img src='../../frontend/img/cancelar.png'/>";
+        }
+          
+        
+        
+        echo "</td>
       </tr>
     ";
   }
