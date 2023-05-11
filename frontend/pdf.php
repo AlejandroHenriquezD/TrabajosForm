@@ -467,4 +467,5 @@ $pdf->Cell(70, 20, '', 1, 0, 'L');
 
 $pdf->AliasNbPages();
 
-$pdf->Output();
+$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+

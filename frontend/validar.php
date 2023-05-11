@@ -270,29 +270,14 @@
       }
       // Si el formulario es válido, te lo indico
       for (var i = 0; i < valido.length; i++) {
-        corta = ""
-        larga = ""
-        a = 0
-        for (let i of id) {
-          if (a < 3) {
-            larga += i
-          } else {
-            larga += i
-            corta += i
-          }
-          if (a != 7) {
-            larga += "-";
-            if (a >= 3) {
-              corta += "-";
-            }
-          }
-          a++;
-        }
-        inputLogo = document.getElementById("logo-" + corta + "-logotipo")
-        logoDefecto = document.getElementById("logo-" + corta + "-0")
+
         if (!valido[i] && (msgArt[i].id.split('-')[2] + "-" + msgArt[i].id.split('-')[3]).replaceAll(" ", "") == id[3] + "-" + id[4] && !msgArt[i].querySelector('#log-' + msgArt[i].id.split('-')[2]) && document.getElementById("msg-art-" + id[3] + '-' + id[4]).childElementCount === 1) {
-          let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
+          let msg = elementFromHtml("<div><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
+        } else if (document.getElementById("logo-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4] + "-" + ml.id.split('-')[5] + "-" + ml.id.split('-')[6] + "-" + ml.id.split('-')[7] + "-0").checked && document.getElementById('observaciones2').value == "" && document.getElementById("msg-art-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4]).childElementCount === 1) {
+          let msg = elementFromHtml("<div><p>Especifique el logotipo</p></div>")
+          document.getElementById("msg-art-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4]).appendChild(msg);
+          console.log("logo-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4] + "-" + ml.id.split('-')[5] + "-" + ml.id.split('-')[6] + "-" + ml.id.split('-')[7] + "-0")
         }
       }
     }
