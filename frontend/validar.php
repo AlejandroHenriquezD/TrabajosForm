@@ -294,6 +294,10 @@
           let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Seleccione un logo</p></div>");
           msgArt[i].appendChild(msg);
         }
+        if (document.getElementById("logo-" + corta + "-0").checked && document.getElementById('observaciones2').value == "" && document.getElementById("msg-art-" + id[3] + '-' + id[4]).childElementCount === 1) {
+          let msg = elementFromHtml("<div class='log' id='log-" + msgArt[i].id.split('-')[2] + "'><p>Especifique el logotipo</p></div>");
+          msgArt[i].appendChild(msg);
+        }
       }
     }
   }
