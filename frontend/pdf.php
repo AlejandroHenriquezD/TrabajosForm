@@ -6,7 +6,7 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -25,7 +25,7 @@ class PDF extends FPDF
 		$ejercicio_pedido = $_GET["ejercicio_pedido"];
 		$serie_pedido = $_GET["serie_pedido"];
 		$numero_pedido = $_GET["numero_pedido"];
-		$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+		$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 		$this->Image('../login/cu.png', 10, 10, 45);
 
@@ -44,7 +44,7 @@ class PDF extends FPDF
 		$this->Cell(0, 1, utf8_decode("Código Postal: " . $domicilio[array_search($tienda, $almacen)][2]), 0, 1, 'L');
 		$this->SetXY(100, 21);
 		$this->Cell(0, 1, utf8_decode("Municipio: " . $domicilio[array_search($tienda, $almacen)][3]), 0, 1, 'L');
-	
+
 		$this->SetXY(150, 11);
 		$this->SetFont('SourceSansPro', 'B', 10);
 		$this->Cell(0, 1, utf8_decode('Datos del pedido'), 0, 1, 'R');
@@ -192,7 +192,7 @@ $pdf->AddPage();
 
 $pdf->Cabecera();
 
-$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 
 $y = 36;
 

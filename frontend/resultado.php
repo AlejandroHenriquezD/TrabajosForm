@@ -4,18 +4,18 @@ $pedido = explode('/', $_POST["numero_pedido"]);
 $ejercicio_pedido = $pedido[0];
 $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
-$id_boceto = $_POST["numero_boceto"]=="" ? null : $_POST["numero_boceto"];
+$id_boceto = $_POST["numero_boceto"] == "" ? null : $_POST["numero_boceto"];
 
-$pedidos = json_decode(file_get_contents("http://localhost/test/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 $FechaPedido = null;
 foreach ($pedidos as $ped) {
-	if ( 
-		$ped['EjercicioPedido'] == $ejercicio_pedido &&
-		$ped['SeriePedido'] == $serie_pedido &&
-		$ped['NumeroPedido'] == $numero_pedido
-	) {
-		$FechaPedido = $ped['FechaPedido']['date'];
-	}
+  if (
+    $ped['EjercicioPedido'] == $ejercicio_pedido &&
+    $ped['SeriePedido'] == $serie_pedido &&
+    $ped['NumeroPedido'] == $numero_pedido
+  ) {
+    $FechaPedido = $ped['FechaPedido']['date'];
+  }
 }
 
 include "../BDReal/numTienda.php";
