@@ -8,15 +8,15 @@ if(isset($_SESSION['usuario'])) {
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
-        <a href='../../frontend/index.php'>Formulario</a>
+        <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a class='seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
         <a href='../logos/logos.php'>Logos</a>
         <a href='../posicion/posiciones.php'>Posiciones</a>
         <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
         <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
-        <a href='../pedidos/pedidos.php'>Pedidos</a>
-        <a href='../trabajos/trabajos.php'>Trabajos</a>
+        <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
+        <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/cerrarSesion.php'>Cerrar sesión</a>
       </div>
     </div>
@@ -29,12 +29,12 @@ if(isset($_SESSION['usuario'])) {
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
-        <a href='../../frontend/index.php'>Formulario</a>
+        <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a class='seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
         <a href='../logos/logos.php'>Logos</a>
-        <a href='../pedidos/pedidos.php'>Pedidos</a>
-        <a href='../trabajos/trabajos.php'>Trabajos</a>
+        <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
+        <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/login.php'>Iniciar sesión</a>
       </div>
     </div>

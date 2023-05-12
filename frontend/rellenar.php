@@ -48,7 +48,7 @@ $divPedidos .= "</select></div>";
 
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $arrayBocetos[$o] = "<div class='boceto' id='boceto-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
+  $arrayBocetos[$o] = "<div class='div-boceto' id='boceto-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><div id='boceto'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   // Hay que buscar el boceto por el id en la tabla cliente, por tanto debemos obtenerlo antes comparando valores con la tabla pedidos
   foreach ($clientes as $cliente) {
     if (
@@ -63,7 +63,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'];
       $result = mysqli_query($conn, $sql);
       if (mysqli_num_rows($result) >= 0) {
-        $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>--</option>";
+        $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>Boceto no seleccionado</option>";
         while ($row = mysqli_fetch_assoc($result)) {
           $arrayBocetos[$o] .= "<option id=" . trim(json_encode([$row["id"]][0]), '"')  . " value=" . trim(json_encode([$row["id"]][0]), '"') . ">" . trim(json_encode([$row['nombre']][0]), '"') . "</option>";
           $bocetosUrl[$o][$row["id"]][0] = trim(json_encode([$row["pdf"]][0]), '"');
@@ -71,7 +71,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       }
     }
   }
-  $arrayBocetos[$o] .= "</select></div>";
+  $arrayBocetos[$o] .= "</select></div></div>";
 
   $arrayArticulos[$o] = "<div class='articulo' id='articulos-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><h1>Articulos </h1><div id='cb-articulos'>";
   for ($i = 0; $i < $numeroArticulos; $i++) {

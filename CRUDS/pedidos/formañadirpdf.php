@@ -3,9 +3,10 @@
 <html>
 
 <head>
-    <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../cruds.css">
+    <title>Pedidos de Venta</title>
+    <link rel="shortcut icon" href="../../frontend/img/favicon.png">
+    <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body>

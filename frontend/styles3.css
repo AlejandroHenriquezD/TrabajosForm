@@ -284,10 +284,37 @@ textarea {
   border: 1px solid #000;
 }
 
-.boceto {
-  width: 50%;
+.div-boceto {
+  width: 100%;
   position: relative;
   float: left;
+  position: absolute;
+  top: calc(100% + 20px);
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#boceto {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#boceto select {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#boceto select option {
+  color: #000;
+}
+
+.select-default {
+  color: #e1251a;
 }
 
 .articulo {
@@ -580,12 +607,6 @@ msg-ped {
   color: #00bb2d
 }
 
-
-
-.boceto {
-  position: absolute;
-  top: calc(100% + 20px);
-}
 
 #div-cli {
   position: relative;

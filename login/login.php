@@ -24,7 +24,7 @@
   <script>
 
     function entrarSinSesion() {
-      window.location = "../frontend/index.php";
+      window.location = "../CRUDS/clientes/clientes.php";
     }
 
   </script>
