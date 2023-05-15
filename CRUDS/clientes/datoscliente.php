@@ -163,8 +163,14 @@
   }
   echo "</table>";
 
-  $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+  $pedidos = array();
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
+
+  if (!isset($_SESSION['usuario'])) {
+    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+  } else {
+    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
+  }
 
   $pedidosCliente = array();
   foreach($pedidos as $pedido) {
@@ -179,17 +185,6 @@
       array_push($pedidosCliente, $pedido);
     }
   }
-
-  // if (!isset($_SESSION['usuario'])) {
-  //   include "../../BDReal/numTienda.php";
-  //   $trabajosTemp = array();
-  //   foreach ($trabajos as $trabajo) {
-  //     if ($trabajo['num_tienda'] == $tienda) {
-  //       array_push($trabajosTemp, $trabajo);
-  //     }
-  //   }
-  //   $trabajos = $trabajosTemp;
-  // }
 
   echo "
   <h1>Ordenes de trabajo Serigrafía</h1>

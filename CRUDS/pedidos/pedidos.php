@@ -17,9 +17,9 @@
 
 
   if (isset($_SESSION['usuario'])) {
-    $pedidos = json_encode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
+    $pedidos = json_encode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
   } else {
-    $pedidos = json_encode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+    $pedidos = json_encode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
   }
 
   echo "
