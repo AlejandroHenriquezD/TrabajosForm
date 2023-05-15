@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload="filtrar()">
@@ -28,16 +28,16 @@
       return template.content.firstElementChild;
     }
 
-    function datosCliente(cliente) {
-      document.getElementById('nombre').value = cliente[\"nombre\"];
-      document.getElementById('telefono').value = cliente[\"telefono\"];
-      document.getElementById('correo').value = cliente[\"correo\"];
-      document.getElementById('dirección').value = cliente[\"dirección\"];
-      document.getElementById('cif_nif').value = cliente[\"cif_nif\"];
-      document.getElementById('numero_cliente').value = cliente[\"numero_cliente\"];
-      document.getElementById('razon_social').value = cliente[\"razon_social\"];
-      console.log(document.getElementById('nombre').value)
-      // document.getElementById('inputsOcultos').submit();
+    function datosCliente(id, nombre, telefono, correo, dirección, cif_nif, numero_cliente, razon_social) {
+      document.getElementById('id').value = id;
+      document.getElementById('nombre').value = nombre;
+      document.getElementById('telefono').value = telefono;
+      document.getElementById('correo').value = correo;
+      document.getElementById('dirección').value = dirección;
+      document.getElementById('cif_nif').value = cif_nif;
+      document.getElementById('numero_cliente').value = numero_cliente;
+      document.getElementById('razon_social').value = razon_social;
+      document.getElementById('inputsOcultos').submit();
     }
 
     function filtrar() {
@@ -55,10 +55,9 @@
         var CIF_NIF = document.getElementById('filtro_nif').value
         clientes = clientes.filter((clientes) => clientes.cif_nif.toUpperCase().includes(CIF_NIF.toUpperCase()));
       }
-      console.log(clientes)
       var tabla = '<table id=\"tablaClientes\"><tr><th>Nombre</th><th>Telefono</th><th>Correo</th><th>Dirección</th><th>CIF/NIF</th><th>Código de cliente</th><th>Razón social</th></tr>';
       for(cliente of clientes) {
-        tabla += '<tr class=\"fila\" onclick=datosCliente(cliente)>'
+        tabla += '<tr class=\"fila\" onclick=\"datosCliente(\'' + cliente[\"id\"] + '\',\'' + cliente[\"nombre\"] + '\',\'' + cliente[\"telefono\"] + '\',\'' + cliente[\"correo\"] + '\',\'' + cliente[\"dirección\"] + '\',\'' + cliente[\"cif_nif\"] + '\',\'' + cliente[\"numero_cliente\"] + '\',\'' + cliente[\"razon_social\"] + '\')\">'
         tabla += '<td>' + cliente[\"nombre\"] + '</td>'
         tabla += '<td>' + cliente[\"telefono\"] + '</td>'
         tabla += '<td>' + cliente[\"correo\"] + '</td>'
@@ -69,13 +68,13 @@
         tabla += '</tr>';
       }
       tabla += '</table>'
+      // console.log(tabla);
       tabla = elementFromHtml(tabla);
       var divTabla = document.getElementById('divTabla');
       if(document.getElementById('tablaClientes') != null){
         divTabla.removeChild(document.getElementById('tablaClientes'));
       }
       divTabla.appendChild(tabla);
-      console.log(tabla);
     }
     </script>
     ";
@@ -90,8 +89,9 @@
     <label>CIF/NIF<input type='text' id='filtro_nif' onchange='filtrar()'></label>
     <div class='boton-de-pega'>Buscar</div>
   </div>
-  <div id='divTabla'>
-  <form id='inputsOcultos' action='datoscliente.php'>
+  <div id='divTabla'></div>
+  <form id='inputsOcultos' method='post' action='datoscliente.php'>
+    <input type='text' name='id' id='id' value=''/>
     <input type='text' name='nombre' id='nombre' value=''/>
     <input type='text' name='telefono' id='telefono' value=''/>
     <input type='text' name='correo' id='correo' value=''/>

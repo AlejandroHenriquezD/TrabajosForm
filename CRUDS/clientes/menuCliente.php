@@ -8,10 +8,8 @@ if(isset($_SESSION['usuario'])) {
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
+        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>  
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
-        <a href='../bocetos/bocetos.php'>Bocetos</a>
-        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>
-        <a href='../logos/logos.php'>Logos</a>
         <a href='../posicion/posiciones.php'>Posiciones</a>
         <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
         <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
@@ -29,10 +27,8 @@ if(isset($_SESSION['usuario'])) {
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
+        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>  
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
-        <a href='../bocetos/bocetos.php'>Bocetos</a>
-        <a class='seleccionado' href='../clientes/clientes.php'>Clientes</a>
-        <a href='../logos/logos.php'>Logos</a>
         <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
         <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/login.php'>Iniciar sesión</a>

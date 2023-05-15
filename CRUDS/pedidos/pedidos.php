@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar();'>
@@ -17,9 +17,9 @@
 
 
   if (isset($_SESSION['usuario'])) {
-    $pedidos = json_encode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
+    $pedidos = json_encode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
   } else {
-    $pedidos = json_encode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+    $pedidos = json_encode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
   }
 
   echo "
