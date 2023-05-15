@@ -43,9 +43,9 @@ mysqli_stmt_bind_param($stmt, "ssi",
 
 
 
-echo "<form action='CRUDS/bocetos/bocetos.php'>
-        <button >Volver</button>
-      </form>";
+// echo "<form action='CRUDS/bocetos/bocetos.php'>
+//         <button >Volver</button>
+//       </form>";
 
     //   if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     //     exit('POST request method required');
@@ -129,4 +129,10 @@ echo "<form action='CRUDS/bocetos/bocetos.php'>
     }
     mysqli_stmt_execute($stmt);
 
-    echo "Registro Guardado."; 
+    // echo "Registro Guardado."; 
+    echo '
+        <script>
+            alert("Registro Guardado");
+            window.location = "./CRUDS/clientes/clientes.php";
+        </script>
+    ';

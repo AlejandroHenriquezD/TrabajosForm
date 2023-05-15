@@ -62,11 +62,18 @@ mysqli_stmt_bind_param(
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado.";
+// echo "Registro Guardado.";
 
-echo "<form action='CRUDS/logos/logos.php'>
-        <button >Volver</button>
-      </form>";
+// echo "<form action='CRUDS/logos/logos.php'>
+//         <button >Volver</button>
+//       </form>";
+
+echo '
+        <script>
+            alert("Registro Guardado");
+            window.location = "./CRUDS/clientes/clientes.php";
+        </script>
+    ';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit('POST request method required');

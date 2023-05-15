@@ -69,9 +69,16 @@ if (!move_uploaded_file($_FILES["img_vectorizada"]["tmp_name"], $destination)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
+// echo "Cambios Guardados."; 
 
-echo "<form action='CRUDS/logos/logos.php'>
-        <button >Volver</button>
-      </form>";
+// echo "<form action='CRUDS/logos/logos.php'>
+//         <button >Volver</button>
+//       </form>";
+
+echo '
+        <script>
+            alert("Cambios guardados");
+            window.location = "./CRUDS/clientes/clientes.php";
+        </script>
+    ';
 ?>

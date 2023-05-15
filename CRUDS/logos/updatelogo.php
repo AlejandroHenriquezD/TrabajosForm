@@ -30,9 +30,16 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
+// echo "Cambios Guardados."; 
 
-echo "<form action='logos.php'>
-        <button >Volver</button>
-      </form>";
+// echo "<form action='logos.php'>
+//         <button >Volver</button>
+//       </form>";
+
+echo '
+        <script>
+            alert("Cambios guardados");
+            window.location = "../clientes/clientes.php";
+        </script>
+    ';
 ?>

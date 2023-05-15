@@ -32,10 +32,15 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Borrado."; 
-echo "<form action='bocetos.php'>
-        <button >Volver</button>
-      </form>";
+// echo "Registro Borrado."; 
+// echo "<form action='bocetos.php'>
+//         <button >Volver</button>
+//       </form>";
+echo '
+        <script>
+            alert("Registro Borrado");
+            window.location = "../clientes/clientes.php";
+        </script>
+    ';
 
 ?>
-<?php include "./menuBoceto.php" ?>
