@@ -29,18 +29,6 @@
             <label for="pdf">PDF file</label>
             <input require type="file" id="pdf" name="pdf">
 
-            <?php
-            // $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
-            // echo "
-            // <label for='id_cliente'>Clientes</label>
-            // <select name='id_cliente'>";
-            // foreach ($clientes as $cliente) {
-            //     echo "<option value='" . $cliente["id"] . "' id='id_cliente' name='id_cliente'>" . $cliente["razon_social"] . "</option>";
-            // }
-
-            // echo "  </select>"
-            ?>
-
             <button>Crear</button>
         </form>
     </div>

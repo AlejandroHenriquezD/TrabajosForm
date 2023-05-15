@@ -13,19 +13,7 @@
     <h1>Logo</h1>
     <div id='div-form'>
         <form action="../../createlogo.php" method="post" enctype="multipart/form-data">
-            
-            
-            <!-- <label for="img_vectorizada">Imagen Vectorizada</label>
-            <input type="file" id="img_vectorizada" name="img_vectorizada" /> -->
-
             <?php
-            // $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
-            // echo"
-            //     <label for='id_cliente'>Clientes</label>
-            //     <select name='id_cliente'>";
-            // foreach ($clientes as $cliente) {
-            //     echo "<option value='".$cliente["id"]."' id='id_cliente' name='id_cliente'>".$cliente["razon_social"]."</option>";
-            // }
             echo "
             <div class='datos'>
                 <p class='tituloDatos'>Cliente</p>
