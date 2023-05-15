@@ -73,11 +73,28 @@
       tabla += '<button>Añadir Orden Trabajo<ion-icon name=\'create\'></button>' 
       tabla += '</form>'
       tabla += '</td>'
+      tabla += '<td>'
 
-      tabla += '</tr>';
+      $sql = \"SELECT id_boceto,pdf FROM \'trabajos\' WHERE ejercicio_pedido = \'" . pedido['EjercicioPedido'] . "\' AND serie_pedido = \'" . pedido["SeriePedido"] . "\' AND numero_pedido =\'" . pedido["NumeroPedido"] . "\'";
+
+      $result = mysqli_query($conn1, $sql);
+      $row = mysqli_fetch_array($result);
+      if (mysqli_num_rows($result) > 0) {
+  
+        if ($row[0] == "" || $row[1] == "") {
+          echo "tabla += '<img src='../../frontend/img/cancelar.png'/>'";
+        } else {
+          echo "tabla += '<img src='../../frontend/img/aceptar.png'/>'";
+        }
+      } else {
+        echo "tabla += '<img src='../../frontend/img/cancelar.png'/>'";
+      }
+      echo "tabla += '</td>'";
+      echo "tabla += '</tr>'";
     }
+    echo "
     tabla += '</table>'
-    tabla = elementFromHtml(tabla);
+    tabla += 'elementFromHtml(tabla)'";
     var divTabla = document.getElementById('divTabla');
     if(document.getElementById('tablaClientes') != null){
       divTabla.removeChild(document.getElementById('tablaClientes'));
