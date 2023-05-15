@@ -1,5 +1,5 @@
 <?php
-include_once "../numTienda.php";
+session_start();
 
 $serverName = "192.168.0.23\SQLEXIT,1433";
 $connectionOptions = array(
@@ -29,7 +29,7 @@ $sql = "SELECT
                 StatusPedido,
                 EX_Serigrafiado
             FROM PedidoVentaCabecera
-            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '". $tienda . "'";
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 ";
 
 $getResults = sqlsrv_query($conn, $sql);
 
