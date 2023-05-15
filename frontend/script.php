@@ -80,7 +80,7 @@ echo "
       document.getElementById('pedidos').appendChild(articulo);
       }
       if(!document.getElementById('div-pdf')){
-      document.getElementsByClassName('boceto')[0].appendChild(divpdf);
+      document.getElementsByClassName('div-boceto')[0].appendChild(divpdf);
       }
 
       // elementoActual = pedido['id'];
@@ -313,18 +313,20 @@ echo "
     if(pdf != null){
       divPdf.removeChild(pdf);
     }
-
-    if(document.getElementById('selectBoceto') != null) {
-      var option = document.getElementById('selectBoceto').value;
+    var selectBoceto = document.getElementById('selectBoceto');
+    if(selectBoceto != null) {
+      var option = selectBoceto.value;
       
-      if(document.getElementById('selectBoceto').value == 'bocetoDefault') {
-        if(document.getElementById('selectBoceto').lastChild.id == 'bocetoDefault') {
+      if(selectBoceto.value == 'bocetoDefault') {
+        selectBoceto.classList.add('select-default');
+        if(selectBoceto.lastChild.id == 'bocetoDefault') {
           pdf = elementFromHtml('<p id=\"pdf\">No existen bocetos para este pedido<p>');
         } else {
           pdf = elementFromHtml('<p id=\"pdf\">Seleccione un boceto<p>');
         }
         divPdf.appendChild(pdf);
       } else {
+        selectBoceto.classList.remove('select-default');
         document.getElementById('numero_boceto').value = option;
         var urlBoceto = null;
         for(var p=0; p < pedidos.length; p++) {

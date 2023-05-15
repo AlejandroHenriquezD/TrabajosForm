@@ -74,13 +74,14 @@ tr {
 }
 
 table {
-  width: 80%;
+  width: 80vw;
   border-collapse: collapse;
   margin-top: 20px;
   border-radius: 5px;
   box-shadow: 0 0 0 1px #666;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
+  height: max-content;
 }
 
 td {
@@ -283,4 +284,50 @@ ion-icon {
   width: 30vw;
   top: 50vw;
   left: 90vw;
+}
+
+#divInputs {
+  margin-top: 20px;
+  width: 80vw;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px #666;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  display: grid;
+  grid-template-columns: repeat(3, 2fr) 1fr;
+}
+
+#divInputs label {
+  justify-self: center;
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+#divInputs label input {
+  width: 98%;
+  margin-top: 5px;
+}
+
+.boton-de-pega {
+  align-self: center;
+  justify-self: center;
+  height: min-content;
+  width: min-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+#inputsOcultos {
+  height: 0px;
+  width: 0px;
+  visibility: hidden;
 }
