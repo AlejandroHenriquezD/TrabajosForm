@@ -6,9 +6,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clientes</title>
+  <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
   echo "
   <h1>DATOS CLIENTE</h1>
-  <div id='divDatos'>
+  <div id='divDatosCliente'>
     <div>
       <p class='tituloDatos'>Nombre</p>
       <p>" . $_POST['nombre'] . "</p>

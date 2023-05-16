@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body onload="filtrar()">
@@ -91,14 +91,14 @@
   </div>
   <div id='divTabla'></div>
   <form id='inputsOcultos' method='post' action='datoscliente.php'>
-    <input type='text' name='id' id='id' value=''/>
-    <input type='text' name='nombre' id='nombre' value=''/>
-    <input type='text' name='telefono' id='telefono' value=''/>
-    <input type='text' name='correo' id='correo' value=''/>
-    <input type='text' name='dirección' id='dirección' value=''/>
-    <input type='text' name='cif_nif' id='cif_nif' value=''/>
-    <input type='text' name='numero_cliente' id='numero_cliente' value=''/>
-    <input type='text' name='razon_social' id='razon_social' value=''/>
+    <input type='hidden' name='id' id='id' value=''/>
+    <input type='hidden' name='nombre' id='nombre' value=''/>
+    <input type='hidden' name='telefono' id='telefono' value=''/>
+    <input type='hidden' name='correo' id='correo' value=''/>
+    <input type='hidden' name='dirección' id='dirección' value=''/>
+    <input type='hidden' name='cif_nif' id='cif_nif' value=''/>
+    <input type='hidden' name='numero_cliente' id='numero_cliente' value=''/>
+    <input type='hidden' name='razon_social' id='razon_social' value=''/>
   </form>"
   ?>
   <?php include "./menuCliente.php" ?>
