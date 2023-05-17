@@ -24,8 +24,8 @@ $sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" . $id;
 $result = mysqli_query($conn, $sql);
 
 
-echo "<link rel='stylesheet' href='../../cruds.css'>";
-echo "<h1>" . $tipo_articulo["nombre"] . "</h1>";
+echo "<link rel='stylesheet' href='../../cruds2.css'>";
+echo "<h1>".$tipo_articulo["nombre"] ."</h1>";
 
 echo "<h2>Posiciones Actuales</h2>
 <table id='seleccionados'>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -128,6 +128,7 @@
   <h1>BOCETOS</h1>
   <form action='../bocetos/formcreateboceto.php' method='post'> 
     <input name='id' type='hidden' value=" . $_POST['id'] . "></input> 
+    <input name='numero_cliente' type='hidden' value=" . $_POST['numero_cliente'] . "></input> 
     <input name='razon_social' type='hidden' value='" . $_POST['razon_social'] . "'></input> 
     <button id='boton-crear'>Crear Boceto</button>
   </form>

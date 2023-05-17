@@ -5,7 +5,7 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../cruds.css">
+    <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -20,6 +20,7 @@
                 <p class='tituloDatos'>Cliente</p>
                 <p>" . $_POST["razon_social"] . "</p>
                 <input type='hidden' value= '" . $_POST["id"] . "' id='id_cliente' name='id_cliente' />
+                <input type='hidden' value= '" . $_POST["numero_cliente"] . "' id='numero_cliente' name='numero_cliente' />
             </div>
             ";  
             ?>

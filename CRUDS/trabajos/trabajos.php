@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar()'>
@@ -77,40 +77,60 @@
       trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
     }
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Fecha Pedido</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
-    
+    tabla += '<tr class=\'fila\'>'
+
+    var countTrabajos = 0;
     for(var p=0; p<trabajos.length; p++) {
       if (trabajos[p]['id_logo'] == null) {
         var colLogo = \"No hay logo\";
       } else {
         var colLogo = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height=150px>\";
       }
-
-      tabla += '<tr class=\'fila\'>'
-      tabla += '<td>' + trabajos[p][\"num_tienda\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
+      var mismoTrabajo = false;
+      if(countTrabajos == 0) {
+        var elementos = [trabajos[p][\"ejercicio_pedido\"], '\"' + trabajos[p][\"serie_pedido\"] + '\"', trabajos[p][\"numero_pedido\"]];
+        for(trabajo of trabajos) {
+          if (
+            trabajo['ejercicio_pedido'] === trabajos[p]['ejercicio_pedido'] &&
+            trabajo['serie_pedido'] === trabajos[p]['serie_pedido'] &&
+            trabajo['numero_pedido'] === trabajos[p]['numero_pedido']
+          ) {
+            countTrabajos++;
+          }
+        }
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"num_tienda\"] + '</td>'
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"FechaPedido\"] + '</td>'
+        mismoTrabajo = true;
+      }
+      
       tabla += '<td>' + posiciones[p][\"descripcion\"] + '</td>'
       tabla += '<td>' + trabajos[p][\"codigo_articulo\"] + '</td>'
       tabla += '<td>' + tipos_trabajo[p][\"nombre\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"FechaPedido\"] + '</td>'
       tabla += '<td>' + colLogo + '</td>'
-      tabla += '<td>'
 
-      if (trabajos[p]['id_boceto'] != null) {
-        tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\' target=\'_blank\'><button>Ver Boceto </button></form>'
-      } else {
-        tabla += 'No Existe Boceto'
-      }
-      tabla += '</td>'
-                  
-      tabla += '<td>'
+      if(mismoTrabajo == true) {
+        tabla += '<td rowspan=\"' + countTrabajos + '\">'
+        if (trabajos[p]['id_boceto'] != null) {
+          tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
+        } else {
+          tabla += 'No Existe Boceto'
+        }
+        tabla += '</td>'
+                
+        tabla += '<td rowspan=\"' + countTrabajos + '\">'
 
-      if (trabajos[p]['pdf'] != null) {
-        tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\' target=\'_blank\'><button>Ver Orden Trabajo</button></form>'
-      } else {
-        tabla += 'Falta Orden Trabajo'
+        if (trabajos[p]['pdf'] != null) {
+          tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
+        } else {
+          tabla += 'Falta Orden Trabajo'
+        }
+        tabla += '</td>'
       }
+      tabla += '</tr>'
+      countTrabajos--;
     }
-    tabla += '</td></tr></table>'
+    tabla += '</table>'
     tabla = elementFromHtml(tabla)
     var divTabla = document.getElementById('divTabla');
     if(document.getElementById('tablaTrabajos') != null){
