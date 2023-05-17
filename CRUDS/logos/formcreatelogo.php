@@ -24,7 +24,7 @@
             
             ?>
             <label for="img">Imagen</label>
-            <input required type="file" id="img" name="img" />
+            <input required type="file" id="img" name="img" accept="image/*"/>
             <button>Crear</button>
         </form>
     </div>
