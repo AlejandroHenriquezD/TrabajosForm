@@ -277,7 +277,6 @@
         } else if (document.getElementById("logo-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4] + "-" + ml.id.split('-')[5] + "-" + ml.id.split('-')[6] + "-" + ml.id.split('-')[7] + "-0").checked && document.getElementById('observaciones2').value == "" && document.getElementById("msg-art-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4]).childElementCount === 1) {
           let msg = elementFromHtml("<div><p>Especifique el logotipo</p></div>")
           document.getElementById("msg-art-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4]).appendChild(msg);
-          console.log("logo-" + ml.id.split('-')[3] + "-" + ml.id.split('-')[4] + "-" + ml.id.split('-')[5] + "-" + ml.id.split('-')[6] + "-" + ml.id.split('-')[7] + "-0")
         }
       }
     }

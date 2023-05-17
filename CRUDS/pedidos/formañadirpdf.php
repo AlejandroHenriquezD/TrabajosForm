@@ -43,7 +43,7 @@
                 <input name='numero_pedido[]' type='hidden' value=" . $_POST["numero_pedido"][0] . "></input> 
 
                 <label for='pdf'>Añadir PDF</label>
-                <input type='file' id='pdf' name='pdf'/>
+                <input required accept='application/pdf' type='file' id='pdf' name='pdf'/>
                     <button>Añadir</button>"
         ?>
     </form>

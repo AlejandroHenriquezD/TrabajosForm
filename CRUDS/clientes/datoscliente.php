@@ -193,15 +193,16 @@
     <tr>
       <th>Tienda</th>
       <th>Num Pedido Venta</th>
+      <th>Fecha de pedido</th>
       <th>Posición</th>
       <th>Cod Artículo</th>
       <th>Tipo de trabajo</th>
-      <th>Fecha de pedido</th>
       <th>Logo</th>
       <th>Boceto</th>
       <th>Orden de Trabajo</th>
     </tr>
   ";
+  $countTrabajos = 0;
   for ($p = 0; $p < count($trabajos); $p++) {
     foreach($pedidosCliente as $pedidoCliente){
       if(
@@ -220,40 +221,59 @@
           $colLogo = "<img src='../." . $logo['img'] . "' alt='" . $logo['img'] . "' height=150px>";
         }
 
-        echo
-        "<tr class='fila'>
-              <td>" . $trabajos[$p]['num_tienda'] . "</td> 
-              <td>" . $trabajos[$p]['ejercicio_pedido'] . '/' . $trabajos[$p]['serie_pedido'] . '/' . $trabajos[$p]['numero_pedido']  . "</td> 
-              <td>" . $posicion['descripcion'] . "</td> 
-              <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
-              <td>" . $tipo_trabajo['nombre'] . "</td>
-              <td>" . $trabajos[$p]['FechaPedido'] . "</td>
-              <td>" . $colLogo . "</td>
-              <td>";
-
-        if ($trabajos[$p]['id_boceto'] != null) {
-          echo "<form action='../." . $boceto['pdf'] . "'>
-                            <button>Ver Boceto </button>
-                          </form>";
-        } else {
-          echo "No Existe Boceto";
+        echo "<tr class='fila'>";
+        $mismoTrabajo = false;
+        if($countTrabajos == 0) {
+          foreach($trabajos as $trabajo) {
+            if (
+              $trabajo['ejercicio_pedido'] === $trabajos[$p]['ejercicio_pedido'] &&
+              $trabajo['serie_pedido'] === $trabajos[$p]['serie_pedido'] &&
+              $trabajo['numero_pedido'] === $trabajos[$p]['numero_pedido']
+            ) {
+              $countTrabajos++;
+            }
+          }
+          echo "
+          <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['num_tienda'] . "</td> 
+          <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['ejercicio_pedido'] . '/' . $trabajos[$p]['serie_pedido'] . '/' . $trabajos[$p]['numero_pedido']  . "</td> 
+          <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['FechaPedido'] . "</td>
+          ";
+          $mismoTrabajo = true;
         }
         echo "
-                </td>
-                
-              <td>";
+        <td>" . $posicion['descripcion'] . "</td> 
+        <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
+        <td>" . $tipo_trabajo['nombre'] . "</td>
+        <td>" . $colLogo . "</td>
+        ";
 
-        if ($trabajos[$p]['pdf'] != null) {
-          echo "<form action='../." . $trabajos[$p]['pdf'] . "'>
-                        <button>Ver Orden Trabajo</button>
-                      </form>";
-        } else {
-          echo "Falta Orden Trabajo";
+        if($mismoTrabajo == true) {
+          echo "<td rowspan='" . $countTrabajos . "'>";
+          if ($trabajos[$p]['id_boceto'] != null) {
+            echo "
+            <form action='../." . $boceto['pdf'] . "'>
+              <button>Ver Boceto </button>
+            </form>
+            ";
+          } else {
+            echo "No Existe Boceto";
+          }
+          echo "
+          </td>
+          <td rowspan='" . $countTrabajos . "'>
+          ";
+          if ($trabajos[$p]['pdf'] != null) {
+            echo "
+            <form action='../." . $trabajos[$p]['pdf'] . "'>
+              <button>Ver Orden Trabajo</button>
+            </form>
+            ";
+          } else {
+            echo "Falta Orden Trabajo";
+          }
+          echo "</td>";
         }
-        echo "
-                </td>
-
-                </tr>";
+        echo "</tr>";
       }
     }
   }

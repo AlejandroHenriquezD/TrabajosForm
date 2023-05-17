@@ -17,7 +17,7 @@
             <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
 
             <label for="image">Image file</label>
-            <input type="file" id="image" name="image">
+            <input type="file" id="image" name="image" accept="image/*">
             <button>Crear</button>
         </form>
     </div>

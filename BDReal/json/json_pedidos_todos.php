@@ -29,7 +29,9 @@ $sql = "SELECT
                 StatusPedido,
                 EX_Serigrafiado
             FROM PedidoVentaCabecera
-            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 ";
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 
+            ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+        ";
 
 $getResults = sqlsrv_query($conn, $sql);
 
