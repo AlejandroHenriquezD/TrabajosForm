@@ -19,7 +19,7 @@
 
             <label for='img_vectorizada'>Imagen Vectorizada</label>
             <input name='id[]' type='hidden' value=" . $_POST["id"][0] . "></input>
-            <input required type='file' id='img_vectorizada' name='img_vectorizada'/>
+            <input required type='file' id='img_vectorizada' name='img_vectorizada' accept='image/*'/>
 
             <button>Editar</button>
 
