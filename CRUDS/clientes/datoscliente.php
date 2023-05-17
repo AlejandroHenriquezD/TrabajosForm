@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -167,9 +167,9 @@
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
   if (!isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
   } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
   }
 
   $pedidosCliente = array();

@@ -5,7 +5,7 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -50,7 +50,7 @@ class PDF extends FPDF
 			$ejercicio_pedido = $_GET["ejercicio_pedido"];
 			$serie_pedido = $_GET["serie_pedido"];
 			$numero_pedido = $_GET["numero_pedido"];
-			$pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+			$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 			self::$nombre_tienda = utf8_decode($nombre);
 			self::$calle = utf8_decode("Domicilio: " . $domicilio[array_search($tienda, $almacen)][0]);
@@ -300,7 +300,7 @@ $pdf->SetFont('SourceSansPro', 'B', 15);
 $pdf->Cell(0, 1, utf8_decode('Orden de trabajo para Serigrafía'), 0, 1, 'C');
 $pdf->posY += 15;
 
-$articulos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_articulos.php"), true);
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 
 include_once "../BDReal/conexion_exit.php";
 
@@ -317,7 +317,7 @@ $tsql = "SELECT DISTINCT
 		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
 		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
-		AND CodigoAlmacen = '06'
+		-- AND CodigoAlmacen = '06'
 		";
 
 
@@ -398,7 +398,7 @@ $tsql = "SELECT
 		AND (CodigoArticulo NOT LIKE ('6000%') OR CodigoArticulo NOT LIKE ('6001%') OR CodigoArticulo NOT LIKE ('6002%') OR CodigoArticulo NOT LIKE ('6003%'))
 		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
-		AND CodigoAlmacen = '06'
+		-- AND CodigoAlmacen = '06'
 		";
 
 $getResults = sqlsrv_query($conn, $tsql);
@@ -468,4 +468,5 @@ $pdf->Cell(70, 20, '', 1, 0, 'L');
 $pdf->AliasNbPages();
 
 $pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+// $pdf->Output();
 
