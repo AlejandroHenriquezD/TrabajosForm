@@ -129,6 +129,7 @@
   <h1>BOCETOS</h1>
   <form action='../bocetos/formcreateboceto.php' method='post'> 
     <input name='id' type='hidden' value=" . $_POST['id'] . "></input> 
+    <input name='numero_cliente' type='hidden' value=" . $_POST['numero_cliente'] . "></input> 
     <input name='razon_social' type='hidden' value='" . $_POST['razon_social'] . "'></input> 
     <button id='boton-crear'>Crear Boceto</button>
   </form>
@@ -167,9 +168,9 @@
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
   if (!isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
   } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
   }
 
   $pedidosCliente = array();

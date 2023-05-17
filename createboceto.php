@@ -12,6 +12,7 @@ $destination = __DIR__ . "/uploads/" . $filename;
 $nombre = $_POST["nombre"];
 $pdf = "./uploads/" . $filename;
 $id_cliente = $_POST["id_cliente"];
+$numero_cliente = $_POST["numero_cliente"];
 
 
 $host = "localhost";
@@ -28,7 +29,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "INSERT INTO bocetos (nombre,pdf,id_cliente) VALUES (?,?,?)";
+$sql = "INSERT INTO bocetos (nombre,pdf,id_cliente,CodigoCliente) VALUES (?,?,?,?)";
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -36,10 +37,11 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
-mysqli_stmt_bind_param($stmt, "ssi",
+mysqli_stmt_bind_param($stmt, "ssis",
                        $nombre,
                        $pdf,
-                       $id_cliente);
+                       $id_cliente,
+                       $numero_cliente);
 
     
     // Replace any characters not \w- in the original filename

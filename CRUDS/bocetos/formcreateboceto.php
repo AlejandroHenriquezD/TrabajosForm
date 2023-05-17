@@ -20,6 +20,7 @@
                 <p class='tituloDatos'>Cliente</p>
                 <p>" . $_POST["razon_social"] . "</p>
                 <input type='hidden' value= '" . $_POST["id"] . "' id='id_cliente' name='id_cliente' />
+                <input type='hidden' value= '" . $_POST["numero_cliente"] . "' id='numero_cliente' name='numero_cliente' />
             </div>
             ";  
             ?>
