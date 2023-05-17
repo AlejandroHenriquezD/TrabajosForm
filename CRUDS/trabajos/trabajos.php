@@ -76,7 +76,7 @@
       var numero = document.getElementById('filtro_num').value
       trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
     }
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Fecha Pedido</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
     tabla += '<tr class=\'fila\'>'
 
     var countTrabajos = 0;
@@ -88,7 +88,6 @@
       }
       var mismoTrabajo = false;
       if(countTrabajos == 0) {
-        var elementos = [trabajos[p][\"ejercicio_pedido\"], '\"' + trabajos[p][\"serie_pedido\"] + '\"', trabajos[p][\"numero_pedido\"]];
         for(trabajo of trabajos) {
           if (
             trabajo['ejercicio_pedido'] === trabajos[p]['ejercicio_pedido'] &&

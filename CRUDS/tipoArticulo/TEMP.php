@@ -23,8 +23,7 @@ $sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" . $id;
 
 $result = mysqli_query($conn, $sql);
 
-
-echo "<link rel='stylesheet' href='../../cruds2.css'>";
+echo "<link rel='stylesheet' href='../cruds2.css'>";
 echo "<h1>".$tipo_articulo["nombre"] ."</h1>";
 
 echo "<h2>Posiciones Actuales</h2>
@@ -43,7 +42,7 @@ if (mysqli_num_rows($result) > 0) {
 
                 <form action='deleterelacion.php'>
                   <input type='hidden' value='" . $row["id"] . "' name='id_relacion' id='id_relacion'/>
-                  <button>Borrar</button>
+                  <button>Borrar<ion-icon name='trash'></button>
                 </form>
 
               </td>

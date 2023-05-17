@@ -127,6 +127,7 @@ ion-icon {
   color: red;
   height: 20px;
   width: 20px;
+  margin-left: 5px;
 }
 
 #div-form, #añadir-posiciones {
@@ -222,12 +223,22 @@ ion-icon {
   background-color: #0e1c2e;
   color:rgb(255, 255, 255);
   border: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+#volver p {
+  margin: 0;
+}
+
+/* #volver ion-icon {
+  float: right;
+} */
 
 #datosTienda {
   top: 20px;

@@ -14,6 +14,7 @@ $tsql = "SELECT DISTINCT
 		AND EX_Serigrafiado = -1
 		AND TipoArticulo = 'M'
 		-- AND CodigoAlmacen = '06'
+		ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
 		";
 
 
