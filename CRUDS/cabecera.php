@@ -1,5 +1,5 @@
 <?php
-include_once "c:/xampp/htdocs/centraluniformes/BDReal/numTienda.php";
+include_once "../../BDReal/numTienda.php";
 // header("Cache-Control: no-store, no-cache, must-revalidate");
 // header("Pragma: no-cache");
 echo "

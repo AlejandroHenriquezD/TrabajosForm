@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+    <h1>Posiciones</h1>
     <?php
 
     $posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);

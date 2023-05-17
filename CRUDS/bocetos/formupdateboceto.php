@@ -20,7 +20,10 @@
 
             <label for='nombre'>Nombre</label>
             <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
-            <input required value='" . $nombre ."' type='text' id='nombre' name='nombre' placeholder='Nombre' />
+            <select name='firmado'>
+                <option value='1' id='firmado' name='firmado'>FIRMADO</option>
+                <option value='0' id='firmado' name='firmado'>NO FIRMADO</option>
+            </select>
 
             <button>Editar</button>
         </form>
