@@ -68,7 +68,6 @@
         tabla += '</tr>';
       }
       tabla += '</table>'
-      // console.log(tabla);
       tabla = elementFromHtml(tabla);
       var divTabla = document.getElementById('divTabla');
       if(document.getElementById('tablaClientes') != null){

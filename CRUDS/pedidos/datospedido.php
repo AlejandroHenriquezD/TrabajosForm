@@ -32,15 +32,22 @@
     <div>
       <p class='tituloDatos'>Razón social</p>
       <p>" . $_POST['RazonSocial'] . "</p>
-    </div>  
-    <div>
+      </div>";
+
+  if ($_POST['Estado'] == 'cancelar') {
+    $estado = "No listo";
+  } else {
+    $estado = "Listo";
+  }
+
+  echo "<div>
       <p class='tituloDatos'>Estado</p>
-      <p>" . $_POST['Estado'] . "</p>
+      <p>" . $estado . "</p>
     </div> 
   </div>";
 
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
-  
+
   echo "
   <h1>Ordenes de trabajo Serigrafía</h1>
   <table>
@@ -60,7 +67,7 @@
     // echo $trabajos[$p]['ejercicio_pedido'] . "<br>" . $_POST['EjercicioPedido'] . "<br><br>";
     // echo $trabajos[$p]['serie_pedido'] . "<br>" . $_POST['SeriePedido'] . "<br><br>";
     // echo $trabajos[$p]['numero_pedido'] . "<br>" . $_POST['NumeroPedido'] . "<br><br><ln>";
-    if(
+    if (
       trim($trabajos[$p]['ejercicio_pedido']) === trim($_POST['EjercicioPedido']) &&
       trim($trabajos[$p]['serie_pedido']) === trim($_POST['SeriePedido']) &&
       trim($trabajos[$p]['numero_pedido']) === trim($_POST['NumeroPedido'])
@@ -70,9 +77,9 @@
       $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
       $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
-      if($trabajos[$p]['id_logo'] == null) {
+      if ($trabajos[$p]['id_logo'] == null) {
         $colLogo = "No hay logo";
-      }else {
+      } else {
         $colLogo = "<img src='../." . $logo['img'] . "' alt='" . $logo['img'] . "' height=150px>";
       }
 
@@ -88,7 +95,7 @@
             <td>";
 
       if ($trabajos[$p]['id_boceto'] != null) {
-        echo "<form action='../." . $boceto['pdf'] . "'>
+        echo "<form action='../." . $boceto['pdf'] . "' target='_blank'>
                           <button>Ver Boceto </button>
                         </form>";
       } else {
@@ -100,7 +107,7 @@
             <td>";
 
       if ($trabajos[$p]['pdf'] != null) {
-        echo "<form action='../." . $trabajos[$p]['pdf'] . "'>
+        echo "<form action='../." . $trabajos[$p]['pdf'] . "' target='_blank'>
                       <button>Ver Orden Trabajo</button>
                     </form>";
       } else {

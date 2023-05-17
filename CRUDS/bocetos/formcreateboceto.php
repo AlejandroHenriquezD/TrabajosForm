@@ -27,7 +27,7 @@
             <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
 
             <label for="pdf">PDF file</label>
-            <input require type="file" id="pdf" name="pdf">
+            <input required type="file" id="pdf" name="pdf" accept="application/pdf">
 
             <button>Crear</button>
         </form>

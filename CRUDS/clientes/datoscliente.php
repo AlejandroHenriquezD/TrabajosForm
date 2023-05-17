@@ -120,7 +120,6 @@
         </td>
       </tr>";
     }
-    
   }
   echo "</table>";
 
@@ -139,14 +138,14 @@
       <th>Acciones</th>
     </tr>
   ";
-  
+
   foreach ($bocetos as $boceto) {
     if ($boceto['id_cliente'] == $_POST['id']) {
       echo "
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
         <td>
-          <form action='../.".$boceto['pdf']."'>
+          <form action='../." . $boceto['pdf'] . "' target='_blank'>
             <button>Ver Boceto</button>
           </form>
         </td>
@@ -167,14 +166,14 @@
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
   if (!isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
   } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
+    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
   }
 
   $pedidosCliente = array();
-  foreach($pedidos as $pedido) {
-    if ( 
+  foreach ($pedidos as $pedido) {
+    if (
       $pedido['Nombre'] === $_POST['nombre'] &&
       $pedido['Telefono'] === $_POST['telefono'] &&
       $pedido['Email1'] === $_POST['correo'] &&
@@ -202,8 +201,8 @@
     </tr>
   ";
   for ($p = 0; $p < count($trabajos); $p++) {
-    foreach($pedidosCliente as $pedidoCliente){
-      if(
+    foreach ($pedidosCliente as $pedidoCliente) {
+      if (
         $trabajos[$p]['ejercicio_pedido'] === $pedidoCliente['EjercicioPedido'] &&
         $trabajos[$p]['serie_pedido'] === $pedidoCliente['SeriePedido'] &&
         $trabajos[$p]['numero_pedido'] === $pedidoCliente['NumeroPedido']
@@ -213,9 +212,9 @@
         $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
         $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
-        if($trabajos[$p]['id_logo'] == null) {
+        if ($trabajos[$p]['id_logo'] == null) {
           $colLogo = "No hay logo";
-        }else {
+        } else {
           $colLogo = "<img src='../." . $logo['img'] . "' alt='" . $logo['img'] . "' height=150px>";
         }
 
@@ -231,7 +230,7 @@
               <td>";
 
         if ($trabajos[$p]['id_boceto'] != null) {
-          echo "<form action='../." . $boceto['pdf'] . "'>
+          echo "<form action='../." . $boceto['pdf'] . "' target='_blank'>
                             <button>Ver Boceto </button>
                           </form>";
         } else {
@@ -243,7 +242,7 @@
               <td>";
 
         if ($trabajos[$p]['pdf'] != null) {
-          echo "<form action='../." . $trabajos[$p]['pdf'] . "'>
+          echo "<form action='../." . $trabajos[$p]['pdf'] . "' target='_blank'>
                         <button>Ver Orden Trabajo</button>
                       </form>";
         } else {

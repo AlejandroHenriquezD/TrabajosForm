@@ -12,14 +12,14 @@
 
     <h1>Logo</h1>
     <?php
-    
+
     echo "
     <div id='div-form'>
         <form action='../../updatelogo.php' method='post' enctype='multipart/form-data'>
 
             <label for='img_vectorizada'>Imagen Vectorizada</label>
-            <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
-            <input type='file' id='img_vectorizada' name='img_vectorizada'/>
+            <input name='id[]' type='hidden' value=" . $_POST["id"][0] . "></input>
+            <input required type='file' id='img_vectorizada' name='img_vectorizada'/>
 
             <button>Editar</button>
 

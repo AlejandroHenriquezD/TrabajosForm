@@ -76,7 +76,6 @@
       var numero = document.getElementById('filtro_num').value
       trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
     }
-    console.log(trabajos)
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Fecha Pedido</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
     
     for(var p=0; p<trabajos.length; p++) {
@@ -97,7 +96,7 @@
       tabla += '<td>'
 
       if (trabajos[p]['id_boceto'] != null) {
-        tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
+        tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\' target=\'_blank\'><button>Ver Boceto </button></form>'
       } else {
         tabla += 'No Existe Boceto'
       }
@@ -106,7 +105,7 @@
       tabla += '<td>'
 
       if (trabajos[p]['pdf'] != null) {
-        tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
+        tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\' target=\'_blank\'><button>Ver Orden Trabajo</button></form>'
       } else {
         tabla += 'Falta Orden Trabajo'
       }
@@ -118,7 +117,6 @@
       divTabla.removeChild(document.getElementById('tablaTrabajos'));
     }
     divTabla.appendChild(tabla);
-    console.log(tabla);
   }
   </script>
   ";
