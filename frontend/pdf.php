@@ -6,6 +6,7 @@ $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
 $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 
 class PDF extends FPDF
 {
@@ -47,6 +48,10 @@ class PDF extends FPDF
 			include "../BDReal/numTienda.php";
 			include "../BDReal/domicilios.php";
 
+		$ejercicio_pedido = $_GET["ejercicio_pedido"];
+		$serie_pedido = $_GET["serie_pedido"];
+		$numero_pedido = $_GET["numero_pedido"];
+		$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 			$ejercicio_pedido = $_GET["ejercicio_pedido"];
 			$serie_pedido = $_GET["serie_pedido"];
 			$numero_pedido = $_GET["numero_pedido"];
@@ -300,6 +305,7 @@ $pdf->SetFont('SourceSansPro', 'B', 15);
 $pdf->Cell(0, 1, utf8_decode('Orden de trabajo para Serigrafía'), 0, 1, 'C');
 $pdf->posY += 15;
 
+$articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 $articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
 
 include_once "../BDReal/conexion_exit.php";
