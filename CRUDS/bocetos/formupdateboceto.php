@@ -26,16 +26,7 @@
         </form>
     </div>";
     ?>
-    <?php include "./menuBoceto.php" ?>
-
-<!-- "    <form action="updatepos.php" method="post" enctype="multipart/form-data">
-        <label for="descripcion">Descripción</label>
-        <input required type="text" id="descripcion" name="descripcion" placeholder="Descripción" />
-
-        </br> 
-
-        <button>Editar</button>
-    </form>" -->
+    <?php include "../clientes/menuCliente.php" ?>
 </body>
 
 </html>

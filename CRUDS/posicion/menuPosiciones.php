@@ -6,10 +6,8 @@ echo "
             <div id='flecha-lateral'></div>
         </div>
         <div id='enlaces-menu'>
-            <a href='../../frontend/index.php'>Nuevo Trabajo</a>
-            <a href='../bocetos/bocetos.php'>Bocetos</a>
             <a href='../clientes/clientes.php'>Clientes</a>
-            <a href='../logos/logos.php'>Logos</a>
+            <a href='../../frontend/index.php'>Nuevo Trabajo</a>
             <a class='seleccionado' href='../posicion/posiciones.php'>Posiciones</a>
             <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
             <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>

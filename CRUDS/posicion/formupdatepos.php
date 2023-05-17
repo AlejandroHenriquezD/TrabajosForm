@@ -26,14 +26,6 @@
     </div>";
     ?>
     <?php include "./menuPosiciones.php" ?>
-<!-- "    <form action="updatepos.php" method="post" enctype="multipart/form-data">
-        <label for="descripcion">Descripción</label>
-        <input required type="text" id="descripcion" name="descripcion" placeholder="Descripción" />
-
-        </br> 
-
-        <button>Editar</button>
-    </form>" -->
 </body>
 
 </html>

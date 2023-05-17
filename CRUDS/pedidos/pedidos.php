@@ -11,48 +11,16 @@
   <link rel="stylesheet" href="../cruds.css">
 </head>
 
-<body>
+<body onload='filtrar();'>
 
   <?php
-  $serverName = "192.168.0.23\SQLEXIT,1433";
-  $connectionOptions = array(
-    "Database" => "ExitERP0415",
-    "Uid" => "programacion",
-    "PWD" => "CU_2023",
-    "CharacterSet" => "UTF-8",
-    "TrustServerCertificate" => true
-  );
-  $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-  $sql = "SELECT    
-            EjercicioPedido,
-            SeriePedido,
-            NumeroPedido,
-            FechaPedido,
-            IdDelegacion,
-            CodigoCliente,
-            CifDni,
-            RazonSocial,
-            Nombre,
-            Domicilio,
-            CodigoPostal,
-            Municipio,
-            Email1,
-            Telefono,
-            StatusPedido,
-            EX_Serigrafiado
-          FROM PedidoVentaCabecera
-          WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1";
-  
-  if(!isset($_SESSION['usuario'])) {
-    include "../../BDReal/numTienda.php";
-    $sql .= "AND IdDelegacion = '$tienda'";
+  $pedidos = array();
+  if (isset($_SESSION['usuario'])) {
+    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos_todos.php"), true);
   } else {
-    $sql .= "ORDER BY IdDelegacion";
+    $pedidos = json_decode(file_get_contents("http://localhost/trabajosformfront/BDReal/json/json_pedidos.php"), true);
   }
-
-  $getResults = sqlsrv_query($conn, $sql);
-
 
   $host = "localhost";
   $dbname = "centraluniformes";
@@ -60,79 +28,127 @@
   $password = "";
 
   $conn1 = mysqli_connect(
-      hostname: $host,
-      username: $username,
-      password: $password,
-      database: $dbname
-    );
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
+  );
 
-
-  echo "<h1>PEDIDOS PENDIENTES</h1>";
-  echo "<table>
-          <tr>
-            <th>Tienda</th>
-            <th>Ejercicio</th>
-            <th>Serie</th>
-            <th>Numero</th>
-            <th>Codigo Cliente</th>
-            <th>Razon Social</th>
-            <th>Acciones</th>
-            <th>Estado</th>
-          </tr>";
-  while ($top = sqlsrv_fetch_array($getResults)) {
-
-    echo "
-      <tr class='fila'>
-        <td>" . $top["IdDelegacion"] . "</td>
-        <td>" . $top["EjercicioPedido"] . "</td>
-        <td>" . $top["SeriePedido"] . "</td>
-        <td>" . $top["NumeroPedido"] . "</td>
-        <td>" . $top["CodigoCliente"] . "</td>
-        <td>" . $top["RazonSocial"] . "</td>
-        <td> 
-          <form action='formupdatepedido.php' method='post'> 
-            <input name='ejercicio_pedido[]' type='hidden' value=" . $top["EjercicioPedido"] . "></input> 
-            <input name='serie_pedido[]' type='hidden' value=" . $top["SeriePedido"] . "></input> 
-            <input name='numero_pedido[]' type='hidden' value=" . $top["NumeroPedido"] . "></input> 
-
-            <input name='CodigoCliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
-            <button>Añadir Boceto<ion-icon name='create'></button> 
-          </form>
-
-          <form action='formañadirpdf.php' method='post'> 
-            <input name='ejercicio_pedido[]' type='hidden' value=" . $top["EjercicioPedido"] . "></input> 
-            <input name='serie_pedido[]' type='hidden' value=" . $top["SeriePedido"] . "></input> 
-            <input name='numero_pedido[]' type='hidden' value=" . $top["NumeroPedido"] . "></input> 
-
-            <input name='CodigoCliente[]' type='hidden' value=" . $top["CodigoCliente"] . "></input> 
-            <button>Añadir Orden Trabajo<ion-icon name='create'></button> 
-          </form>
-        </td>
-        <td>";
-
-        
-        $sql = "SELECT id_boceto,pdf FROM `trabajos` WHERE ejercicio_pedido = '". $top['EjercicioPedido']."' AND serie_pedido = '" .$top["SeriePedido"] . "' AND numero_pedido ='".$top["NumeroPedido"]."'";
-
-        $result = mysqli_query($conn1, $sql);
-        $row = mysqli_fetch_array($result);
-        if (mysqli_num_rows($result) > 0) {
-
-          if ( $row[0]== "" || $row[1]== "") {
-            echo "<img src='../../frontend/img/cancelar.png'/>";
-          }else {
-          echo "<img src='../../frontend/img/aceptar.png'/>";
-          } 
-        }else {
-          echo "<img src='../../frontend/img/cancelar.png'/>";
-        }
-          
-        
-        
-        echo "</td>
-      </tr>
-    ";
+  for($i = 0; $i < count($pedidos); $i++) {
+    $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
+    $result = mysqli_query($conn1, $sql);
+    $row = mysqli_fetch_array($result);
+    $estado = array();
+    if (mysqli_num_rows($result) > 0) {
+      if ($row[0] == "" || $row[1] == "") {
+        $estado = array(
+          'Estado' => "cancelar",
+        );
+      } else {
+        $estado = array(
+          'Estado' => "aceptar",
+        );
+      }
+    } else {
+      $estado = array(
+        'Estado' => "cancelar",
+      );
+    }
+    $pedidos[$i] = array_merge($pedidos[$i], $estado);
   }
-  echo "</table>"
+  $pedidos = json_encode($pedidos);
+  echo "
+<script>
+  function elementFromHtml(html) {
+    const template = document.createElement('template');
+
+    template.innerHTML = html.trim();
+
+    return template.content.firstElementChild;
+  }
+
+  function datosPedido(IdDelegacion, EjercicioPedido, SeriePedido, NumeroPedido, CodigoCliente, RazonSocial, Estado) {
+    document.getElementById('IdDelegacion').value = IdDelegacion;
+    document.getElementById('EjercicioPedido').value = EjercicioPedido;
+    document.getElementById('SeriePedido').value = SeriePedido;
+    document.getElementById('NumeroPedido').value = NumeroPedido;
+    document.getElementById('CodigoCliente').value = CodigoCliente;
+    document.getElementById('RazonSocial').value = RazonSocial;
+    document.getElementById('Estado').value = Estado;
+    document.getElementById('inputsOcultos').submit();
+  }
+
+  function filtrar() {
+    var pedidos = $pedidos
+    if(document.getElementById('filtro_serie').value != ''){
+      var serie = document.getElementById('filtro_serie').value
+      pedidos = pedidos.filter((pedidos) => pedidos.SeriePedido.toUpperCase().includes(serie.toUpperCase()));
+    }
+    if(document.getElementById('filtro_ejercicio').value != ''){
+      var ejercicio = document.getElementById('filtro_ejercicio').value
+      pedidos = pedidos.filter((pedidos) => pedidos.EjercicioPedido.toString().includes(ejercicio.toString()));
+    }
+    if(document.getElementById('filtro_numero').value != ''){
+      var numero = document.getElementById('filtro_numero').value
+      pedidos = pedidos.filter((pedidos) => pedidos.NumeroPedido.toString().includes(numero.toString()));
+    }
+    var tabla = '<table id=\"tablaClientes\"><tr><th>Tienda</th><th>Ejercicio</th><th>Serie</th><th>Número</th><th>Código cliente</th><th>Razón social</th><th>Acciones</th><th>Estado</th></tr>';
+    for(pedido of pedidos) {
+      tabla += '<tr class=\"fila\" onclick=\"datosPedido(\'' + pedido[\"IdDelegacion\"] + '\',\'' + pedido[\"EjercicioPedido\"] + '\',\'' + pedido[\"SeriePedido\"] + '\',\'' + pedido[\"NumeroPedido\"] + '\',\'' + pedido[\"CodigoCliente\"] + '\',\'' + pedido[\"RazonSocial\"] + '\',\'' + pedido[\"Estado\"] + '\')\">'
+      tabla += '<td>' + pedido[\"IdDelegacion\"] + '</td>'
+      tabla += '<td>' + pedido[\"EjercicioPedido\"] + '</td>'
+      tabla += '<td>' + pedido[\"SeriePedido\"] + '</td>'
+      tabla += '<td>' + pedido[\"NumeroPedido\"] + '</td>'
+      tabla += '<td>' + pedido[\"CodigoCliente\"] + '</td>'
+      tabla += '<td>' + pedido[\"RazonSocial\"] + '</td>'
+      tabla += '<td>' 
+      tabla += '<form action=\'formupdatepedido.php\' method=\'post\'>'
+      tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
+      tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>'
+      tabla += '<input name=\'numero_pedido[]\' type=\'hidden\' value=' + pedido[\"NumeroPedido\"] + '></input>' 
+      tabla += '<input name=\'CodigoCliente[]\' type=\'hidden\' value=' + pedido[\"CodigoCliente\"] + '></input>'
+      tabla += '<button>Añadir Boceto<ion-icon name=\'create\'></button>'
+      tabla += '</form>'
+      tabla += '<form action=\'formañadirpdf.php\' method=\'post\'>' 
+      tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
+      tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>' 
+      tabla += '<input name=\'numero_pedido[]\' type=\'hidden\' value=' + pedido[\"NumeroPedido\"] + '></input>' 
+      tabla += '<input name=\'CodigoCliente[]\' type=\'hidden\' value=' + pedido[\"CodigoCliente\"] + '></input>' 
+      tabla += '<button>Añadir Orden Trabajo<ion-icon name=\'create\'></button>' 
+      tabla += '</form>'
+      tabla += '</td>'
+      tabla += '<td>'
+      tabla += '<img src=\'../../frontend/img/' + pedido[\"Estado\"] + '.png\'/>'
+    }
+    tabla += '</table>'
+    tabla = elementFromHtml(tabla)
+    var divTabla = document.getElementById('divTabla');
+    if(document.getElementById('tablaClientes') != null){
+      divTabla.removeChild(document.getElementById('tablaClientes'));
+    }
+    divTabla.appendChild(tabla);
+  }
+  </script>
+  ";
+
+  echo "
+  <h1>PEDIDOS DE VENTA</h1>
+  <div id='divInputs'>
+    <label>Ejercicio<input type='text' id='filtro_ejercicio' onchange='filtrar()'></label>
+    <label>Serie<input type='text' id='filtro_serie' onchange='filtrar()'></label>
+    <label>Número<input type='text' id='filtro_numero' onchange='filtrar()'></label>
+    <div class='boton-de-pega'>Buscar</div>
+  </div>
+  <div id='divTabla'>
+  <form id='inputsOcultos' method='post' action='datospedido.php'>
+    <input type='hidden' name='IdDelegacion' id='IdDelegacion' value=''/>
+    <input type='hidden' name='EjercicioPedido' id='EjercicioPedido' value=''/>
+    <input type='hidden' name='SeriePedido' id='SeriePedido' value=''/>
+    <input type='hidden' name='NumeroPedido' id='NumeroPedido' value=''/>
+    <input type='hidden' name='CodigoCliente' id='CodigoCliente' value=''/>
+    <input type='hidden' name='RazonSocial' id='RazonSocial' value=''/>
+    <input type='hidden' name='Estado' id='Estado' value=''/>
+  </form>"
   ?>
   <?php include "./menuPedidos.php" ?>
 
