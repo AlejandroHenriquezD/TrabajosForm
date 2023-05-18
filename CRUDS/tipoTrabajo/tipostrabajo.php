@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+    <h1>Tipos Trabajos</h1>
     <?php
 
     $tipo_trabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);

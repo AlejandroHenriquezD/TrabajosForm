@@ -2,7 +2,7 @@
 <?php
 
 $id = $_POST["id"];
-$nombre = $_POST["nombre"];
+$firmado = $_POST["firmado"];
 
 // if ( ! $terms){
 //     die("Terms must be accepted");
@@ -22,7 +22,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "UPDATE `bocetos` SET `nombre`='". $nombre ."' WHERE id =" . $id[0] ;
+$sql = "UPDATE `bocetos` SET `firmado`='". $firmado ."' WHERE id =" . $id[0] ;
 
 $stmt = mysqli_stmt_init($conn);
 

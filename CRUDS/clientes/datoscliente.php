@@ -156,7 +156,7 @@
           <form action='../bocetos/formupdateboceto.php' method='post'> 
             <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input>
             <input name='nombre[]' type='hidden' value=" . urlencode($boceto["nombre"]) . "></input> 
-            <button>Editar Nombre<ion-icon name='create'></button> 
+            <button>Editar Estado<ion-icon name='create'></button> 
           </form>
         </td>
       </tr>";
