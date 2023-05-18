@@ -6,6 +6,7 @@ body {
   align-items: center;
   font-family: "Tilt Neon", cursive;
   margin: 0;
+  height: 100vh;
 }
 
 button {

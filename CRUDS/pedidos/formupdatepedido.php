@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>Pedidos de Venta</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds2.css">
+    <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
