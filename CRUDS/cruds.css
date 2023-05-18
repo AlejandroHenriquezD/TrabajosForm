@@ -444,3 +444,53 @@ ion-icon {
 .datos p {
   margin: 0;
 }
+
+#fondo-confirmar-accion {
+  position: fixed !important;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cuadro-confirmar-accion {
+  height: 200px;
+  width: 280px;
+  border-radius: 10px;
+  background-color: rgba(225, 225, 225, 1);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#cuadro-confirmar-accion p {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+input[type=submit]{
+  width: min-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Tilt Neon", cursive;
+  font-size: 16px;
+  cursor: pointer;
+}

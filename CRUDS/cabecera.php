@@ -3,7 +3,7 @@ include_once "../../BDReal/numTienda.php";
 // header("Cache-Control: no-store, no-cache, must-revalidate");
 // header("Pragma: no-cache");
 echo "
-<button id='volver' onclick='history.back()'><p>Volver</p><ion-icon name='arrow-back-outline'></ion-icon></a>
+<button id='volver' onclick='history.back()'><p>Volver</p><ion-icon name='arrow-back-outline'></ion-icon></a></button>
 <img id='logoCabecera' src='../../login/cu.png' alt=''/>
 <div id='datosTienda'>
   <div>

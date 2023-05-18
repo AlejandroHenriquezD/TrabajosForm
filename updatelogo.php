@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pathinfo = pathinfo($_FILES["img_vectorizada"]["name"]);
 
 $base = $pathinfo["filename"];
@@ -69,10 +70,13 @@ if (!move_uploaded_file($_FILES["img_vectorizada"]["tmp_name"], $destination)) {
 
 mysqli_stmt_execute($stmt);
 
-echo '
-        <script>
-            alert("Cambios guardados");
-            window.location = "./CRUDS/clientes/clientes.php";
-        </script>
-    ';
+// echo '
+//         <script>
+//             alert("Cambios guardados");
+//             window.location = "./CRUDS/clientes/clientes.php";
+//         </script>
+//     ';
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Imagen vectorizada añadida";
+header("location:./CRUDS/logos/formañadirimagen.php");
 ?>

@@ -18,9 +18,9 @@
             echo "
             <div class='datos'>
                 <p class='tituloDatos'>Cliente</p>
-                <p>" . $_POST["razon_social"] . "</p>
-                <input type='hidden' value= '" . $_POST["id"] . "' id='id_cliente' name='id_cliente' />
-                <input type='hidden' value= '" . $_POST["numero_cliente"] . "' id='numero_cliente' name='numero_cliente' />
+                <p>" . $_SESSION["razon_social"] . "</p>
+                <input type='hidden' value= '" . $_SESSION["id"] . "' id='id_cliente' name='id_cliente' />
+                <input type='hidden' value= '" . $_SESSION["numero_cliente"] . "' id='numero_cliente' name='numero_cliente' />
             </div>
             ";  
             ?>
@@ -30,11 +30,15 @@
             <label for="pdf">PDF file</label>
             <input required type="file" id="pdf" name="pdf" accept="application/pdf">
 
-            <button>Crear</button>
+            <button>Subir</button>
         </form>
     </div>
+    <?php 
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "../clientes/menuCliente.php" ?>
-    <?php include "../background.php" ?>
 </body>
 
 </html>

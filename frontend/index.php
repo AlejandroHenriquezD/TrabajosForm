@@ -10,7 +10,7 @@ echo "
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Nuevo trabajo</title>
   <link rel='shortcut icon' href='./img/favicon.png'>
-  <link rel='stylesheet' href='styles3.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='validar();'>
 ";
@@ -26,7 +26,7 @@ echo "
         <h1>Observaciones</h1>
         <textarea id='observaciones2' name='observaciones' onchange='validar()' placeholder='Escriba aquí otras demandas'></textarea>
       </div>
-      <input type='submit' id='enviar' disabled>
+      <input type='submit' id='enviar' value='Enviar orden de trabajo' disabled>
       <input type='text' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
       <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>

@@ -1,6 +1,6 @@
 <?php
 echo "
-<link rel='stylesheet' href='../menu.css'>
+<link rel='stylesheet' href='../../menu3.css'>
 <div id='menu-lateral'>
     <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
@@ -10,7 +10,7 @@ echo "
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a href='../posicion/posiciones.php'>Posiciones</a>
         <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
-        <a class='seleccionado' href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
+        <a class='enlace-seleccionado' href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
         <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
         <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/cerrarSesion.php'>Cerrar sesión</a>

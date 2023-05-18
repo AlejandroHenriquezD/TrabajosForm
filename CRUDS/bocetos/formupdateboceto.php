@@ -12,14 +12,16 @@
 
     <h1>Boceto</h1>
     <?php
-    
-    $nombre = str_replace('+',' ',$_POST["nombre"][0]);
+    if(isset($_POST["nombre"])) {
+        $_SESSION["nombre_boceto"] = $_POST["nombre"][0];
+    }
+    $nombre = str_replace('+',' ',$_SESSION["nombre_boceto"]);
     echo "
     <div id='div-form'>
         <form action='updateboceto.php' method='post' enctype='multipart/form-data'>
 
             <label for='nombre'>Nombre</label>
-            <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
+            <input name='id[]' type='hidden' value=". $_SESSION["id"] ."></input>
             <select name='firmado'>
                 <option value='1' id='firmado' name='firmado'>FIRMADO</option>
                 <option value='0' id='firmado' name='firmado'>NO FIRMADO</option>
@@ -28,6 +30,9 @@
             <button>Editar</button>
         </form>
     </div>";
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
     ?>
     <?php include "../clientes/menuCliente.php" ?>
 </body>

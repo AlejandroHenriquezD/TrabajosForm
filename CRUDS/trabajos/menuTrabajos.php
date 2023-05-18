@@ -2,7 +2,7 @@
 
 if(isset($_SESSION['usuario'])) {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
@@ -14,14 +14,14 @@ if(isset($_SESSION['usuario'])) {
         <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
         <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
         <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
-        <a class='seleccionado' href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
+        <a class='enlace-seleccionado' href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/cerrarSesion.php'>Cerrar sesión</a>
       </div>
     </div>
   ";
 } else {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
@@ -30,7 +30,7 @@ if(isset($_SESSION['usuario'])) {
         <a href='../clientes/clientes.php'>Clientes</a>  
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
-        <a class='seleccionado' href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
+        <a class='enlace-seleccionado' href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/login.php'>Iniciar sesión</a>
       </div>
     </div>

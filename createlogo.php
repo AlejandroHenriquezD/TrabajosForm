@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pathinfo = pathinfo($_FILES["img"]["name"]);
 
 $base = $pathinfo["filename"];
@@ -51,12 +52,12 @@ mysqli_stmt_bind_param(
 
 mysqli_stmt_execute($stmt);
 
-echo '
-        <script>
-            alert("Registro Guardado");
-            window.location = "./CRUDS/clientes/clientes.php";
-        </script>
-    ';
+// echo '
+//         <script>
+//             alert("Registro Guardado");
+//             window.location = "./CRUDS/clientes/clientes.php";
+//         </script>
+//     ';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit('POST request method required');
@@ -138,4 +139,8 @@ if (!move_uploaded_file($_FILES["img"]["tmp_name"], $destination)) {
 
     exit("Can't move uploaded file");
 }
+
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Archivo subido";
+header("location:./CRUDS/logos/formcreatelogo.php");
 

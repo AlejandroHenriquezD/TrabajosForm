@@ -8,6 +8,9 @@
   top: 0;
   background-color: #0e1c2e;
   z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu-lateral-desplegado {
@@ -16,10 +19,10 @@
 
 #enlaces-menu {
   height: 100%;
-  width: 100%;
+  width: max-content;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   justify-content: center;
 }
 
@@ -36,7 +39,7 @@
   color:#f0cb25 !important;
 }
 
-.seleccionado {
+.enlace-seleccionado {
   color:#00bb2d !important;
   font-size: 20px;
   margin-top: 20px;

@@ -2,14 +2,14 @@
 
 if(isset($_SESSION['usuario'])) {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
-        <a class='seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
+        <a class='enlace-seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
         <a href='../logos/logos.php'>Logos</a>
         <a href='../posicion/posiciones.php'>Posiciones</a>
@@ -23,14 +23,14 @@ if(isset($_SESSION['usuario'])) {
   ";
 } else {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
         <a href='../../frontend/index.php'>Nuevo Trabajo</a>
-        <a class='seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
+        <a class='enlace-seleccionado' href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
         <a href='../logos/logos.php'>Logos</a>
         <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>

@@ -14,43 +14,53 @@
 <body>
   <?php
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+  if(isset($_POST['id'])) {
+    $_SESSION['id'] = $_POST['id'];
+    $_SESSION['nombre'] = $_POST['nombre'];
+    $_SESSION['correo'] = $_POST['correo'];
+    $_SESSION['cif_nif'] = $_POST['cif_nif'];
+    $_SESSION['dirección'] = $_POST['dirección'];
+    $_SESSION['telefono'] = $_POST['telefono'];
+    $_SESSION['razon_social'] = $_POST['razon_social'];
+    $_SESSION['numero_cliente'] = $_POST['numero_cliente'];
+  }
   echo "
   <h1>DATOS CLIENTE</h1>
   <div id='divDatosCliente'>
     <div>
       <p class='tituloDatos'>Nombre</p>
-      <p>" . $_POST['nombre'] . "</p>
+      <p>" . $_SESSION['nombre'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Número cliente</p>
-      <p>" . $_POST['numero_cliente'] . "</p>
+      <p>" . $_SESSION['numero_cliente'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Correo</p>
-      <p>" . $_POST['correo'] . "</p>
+      <p>" . $_SESSION['correo'] . "</p>
     </div> 
     <div>
       <p class='tituloDatos'>Cif/Nif</p>
-      <p>" . $_POST['cif_nif'] . "</p>
+      <p>" . $_SESSION['cif_nif'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Dirección</p>
-      <p>" . $_POST['dirección'] . "</p>
+      <p>" . $_SESSION['dirección'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Teléfono</p>
-      <p>" . $_POST['telefono'] . "</p>
+      <p>" . $_SESSION['telefono'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Razón social</p>
-      <p>" . $_POST['razon_social'] . "</p>
+      <p>" . $_SESSION['razon_social'] . "</p>
     </div> 
   </div>
   <h1>LOGOS</h1>
   <form action='../logos/formcreatelogo.php' method='post'> 
-    <input name='id' type='hidden' value=" . $_POST['id'] . "></input> 
-    <input name='razon_social' type='hidden' value='" . $_POST['razon_social'] . "'></input> 
-    <button id='boton-crear'>Crear Logo</button>
+    <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
+    <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
+    <button id='boton-crear'>Subir Logo</button>
   </form>
   <table>
     <tr>
@@ -63,7 +73,7 @@
   ";
 
   foreach ($logos as $logo) {
-    if ($logo['id_cliente'] == $_POST['id']) {
+    if ($logo['id_cliente'] == $_SESSION['id']) {
       $obsoleto = "";
       $vectorizada = "";
 
@@ -106,7 +116,7 @@
         <td>" . $logotipo . "</td>
         <td>" . $vectorizada . "</td>
         <td>" . $obsoleto . "</td>
-        <td>" . $_POST['razon_social'] . "</td>
+        <td>" . $_SESSION['razon_social'] . "</td>
         <td> 
           <form action='../logos/deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
           <form action='../logos/formupdatelogo.php' method='post'> 
@@ -128,10 +138,10 @@
   echo "
   <h1>BOCETOS</h1>
   <form action='../bocetos/formcreateboceto.php' method='post'> 
-    <input name='id' type='hidden' value=" . $_POST['id'] . "></input> 
-    <input name='numero_cliente' type='hidden' value=" . $_POST['numero_cliente'] . "></input> 
-    <input name='razon_social' type='hidden' value='" . $_POST['razon_social'] . "'></input> 
-    <button id='boton-crear'>Crear Boceto</button>
+    <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
+    <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
+    <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
+    <button id='boton-crear'>Subir Boceto</button>
   </form>
   <table>
     <tr>
@@ -142,7 +152,7 @@
   ";
   
   foreach ($bocetos as $boceto) {
-    if ($boceto['id_cliente'] == $_POST['id']) {
+    if ($boceto['id_cliente'] == $_SESSION['id']) {
       echo "
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
@@ -176,12 +186,12 @@
   $pedidosCliente = array();
   foreach($pedidos as $pedido) {
     if ( 
-      $pedido['Nombre'] === $_POST['nombre'] &&
-      $pedido['Telefono'] === $_POST['telefono'] &&
-      $pedido['Email1'] === $_POST['correo'] &&
-      $pedido['CifDni'] === $_POST['cif_nif'] &&
-      $pedido['CodigoCliente'] === $_POST['numero_cliente'] &&
-      $pedido['RazonSocial'] === $_POST['razon_social']
+      $pedido['Nombre'] === $_SESSION['nombre'] &&
+      $pedido['Telefono'] === $_SESSION['telefono'] &&
+      $pedido['Email1'] === $_SESSION['correo'] &&
+      $pedido['CifDni'] === $_SESSION['cif_nif'] &&
+      $pedido['CodigoCliente'] === $_SESSION['numero_cliente'] &&
+      $pedido['RazonSocial'] === $_SESSION['razon_social']
     ) {
       array_push($pedidosCliente, $pedido);
     }
@@ -278,6 +288,9 @@
     }
   }
   echo "</table>";
+  if(isset($_SESSION['confirmarAccion'])) {
+    include "../confirmarAccion.php";
+  }
   ?>
   <?php include "./menuCliente.php" ?>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

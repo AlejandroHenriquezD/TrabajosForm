@@ -32,11 +32,7 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo '
-        <script>
-            alert("Registro Borrado");
-            window.location = "../clientes/clientes.php";
-        </script>
-    ';
-
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Boceto borrado";
+header("location:../clientes/datoscliente.php");
 ?>
