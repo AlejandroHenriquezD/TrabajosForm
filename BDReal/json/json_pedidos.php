@@ -29,7 +29,7 @@ $sql = "SELECT
                 StatusPedido,
                 EX_Serigrafiado
             FROM PedidoVentaCabecera
-            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '". $tienda . "' 
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $tienda . "' 
             ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
         ";
 
@@ -61,26 +61,27 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
     // Compruebo si los datos están en la otra base de datos
     $condicion = mysqli_query($conn2, "
-        SELECT 
-            1
-        FROM clientes WHERE 
-            numero_cliente = '" . $numero_cliente . "' AND
-            cif_nif = '" . $cif_nif . "'
-    ");
+                SELECT 
+                    1
+                FROM clientes WHERE 
+                    razon_social = '" . $row["RazonSocial"] . "' AND
+                    numero_cliente = '" . $row["CodigoCliente"] . "' AND
+                    cif_nif = '" . $row["CifDni"] . "'
+            ");
 
     // Si no están los introduzco
     if (mysqli_num_rows($condicion) == 0) {
         $sql2 = "
-            INSERT INTO clientes (
-                numero_cliente,
-                cif_nif,
-                razon_social,
-                nombre,
-                dirección,
-                correo,
-                telefono) 
-            VALUES (?,?,?,?,?,?,?)
-        ";
+                    INSERT INTO clientes (
+                        numero_cliente,
+                        cif_nif,
+                        razon_social,
+                        nombre,
+                        dirección,
+                        correo,
+                        telefono) 
+                    VALUES (?,?,?,?,?,?,?)
+                ";
 
         $stmt = mysqli_stmt_init($conn2);
 
@@ -105,4 +106,4 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 }
 
 sqlsrv_free_stmt($getResults);
-echo json_encode($data);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);

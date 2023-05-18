@@ -57,14 +57,21 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   $arrayBocetos[$o] = "<div class='div-boceto' id='boceto-{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'><div id='boceto'><h1 class='titulo'>Boceto</h1><select name='selectBoceto[]' id='selectBoceto' onchange='updatePdf()'>";
   // Hay que buscar el boceto por el id en la tabla cliente, por tanto debemos obtenerlo antes comparando valores con la tabla pedidos
   foreach ($clientes as $cliente) {
+    // if($cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
+    // $cliente['cif_nif'] == $pedidos[$o]['CifDni'] ){
+    //   if($cliente['telefono'] == $pedidos[$o]['Telefono']) {
+    //   echo $cliente['telefono'] . " // " . $pedidos[$o]['Telefono'] . " // true <br><br>";
+    //   } else {
+    //     echo $cliente['telefono'] . " // " . $pedidos[$o]['Telefono'] . " // false <br><br>";
+    //   }
+    // }
     if (
       $cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
       $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
       $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
       $cliente['dirección'] == $pedidos[$o]['Domicilio'] &&
-      $cliente['correo'] == $pedidos[$o]['Email1'] &&
-      $cliente['telefono'] == $pedidos[$o]['Telefono']
+      $cliente['correo'] == $pedidos[$o]['Email1']
     ) {
       $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'];
       $result = mysqli_query($conn, $sql);

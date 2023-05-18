@@ -331,6 +331,7 @@ echo "
         var urlBoceto = null;
         for(var p=0; p < pedidos.length; p++) {
           if(pedidos[p]['SeriePedido']+'-'+pedidos[p]['NumeroPedido'] == elementoActual) {
+            console.log(bocetosUrl)
             if(bocetosUrl[p][option]) {
               var urlBoceto = '.' + bocetosUrl[p][option];
               break;

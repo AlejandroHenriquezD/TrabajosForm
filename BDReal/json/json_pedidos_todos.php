@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 $serverName = "192.168.0.23\SQLEXIT,1433";
 $connectionOptions = array(
     "Database" => "ExitERP0415",
@@ -64,8 +63,9 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
         SELECT 
             1
         FROM clientes WHERE 
-            numero_cliente = '" . $numero_cliente . "' AND
-            cif_nif = '" . $cif_nif . "'
+            razon_social = '" . $row["RazonSocial"] . "' AND
+            numero_cliente = '" . $row["CodigoCliente"] . "' AND
+            cif_nif = '" . $row["CifDni"] . "'
     ");
 
     // Si no están los introduzco
@@ -105,4 +105,4 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 }
 
 sqlsrv_free_stmt($getResults);
-echo json_encode($data);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
