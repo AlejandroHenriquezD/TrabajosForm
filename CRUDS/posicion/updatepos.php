@@ -34,10 +34,8 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
-
-echo "<form action='posiciones.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./posicion/posiciones.php";
+$_SESSION['mensajeAccion'] = "Posición modificada";
+header("location:./formupdatepos.php");
 ?>
 <?php include "./menuPosiciones.php" ?>

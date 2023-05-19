@@ -47,7 +47,10 @@
                 </tr>";
 
     }
-    echo "</table>"
+    echo "</table>";
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
         ?>
     <?php include "./menuTipoArticulo.php" ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
