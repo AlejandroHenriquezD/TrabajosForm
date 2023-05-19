@@ -1,11 +1,14 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION["Volver"] = "../clientes/datoscliente.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
 	<title>Formulario</title>
 	<meta charset="UTF-8" />
-	<link rel="stylesheet" href="../cruds2.css">
+	<link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>

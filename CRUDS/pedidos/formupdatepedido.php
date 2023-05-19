@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION["Volver"] = "./pedidos.php";
+?>
 <!DOCTYPE html>
 <html>
 
@@ -6,7 +9,7 @@
     <meta charset="UTF-8" />
     <title>Pedidos de Venta</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds2.css">
+    <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>

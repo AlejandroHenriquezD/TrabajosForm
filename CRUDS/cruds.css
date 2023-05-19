@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+@import url("./cabecera.css");
 
 body {
   display: flex;
@@ -53,6 +54,7 @@ h1 {
   padding-left: 50px;
   padding-right: 50px;
   margin-top: 30px;
+  font-size: 32px;
 }
 
 h2 {
@@ -104,7 +106,7 @@ td {
 
 th,
 td {
-  padding: 15px;
+  padding: 10px;
   text-align: start;
 }
 
@@ -115,6 +117,9 @@ td form {
 td button {
   display: flex;
   align-items: center;
+  width: max-content;
+  margin-top: 5px;
+  margin-bottom: 5px;
   /* justify-content: center; */
 }
 
@@ -127,6 +132,12 @@ ion-icon {
   height: 20px;
   width: 20px;
   margin-left: 5px;
+}
+
+.td-botones button {
+  width: 196px;
+  justify-content: center;
+  display: flex;
 }
 
 #div-form, #añadir-posiciones {
@@ -203,63 +214,6 @@ ion-icon {
   width: 100%;
   height: 100%;
   position: absolute;
-}
-
-#logoCabecera {
-  top: 30px;
-  z-index: -1;
-  position: absolute;
-  left: 10vw;
-  height: 40px;
-}
-
-#volver {
-  position: absolute;
-  left: 2vw;
-  top: 10px;
-  width: min-content;
-  border-radius: 5px;
-  background-color: #0e1c2e;
-  color:rgb(255, 255, 255);
-  border: 0;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#volver p {
-  margin: 0;
-}
-
-/* #volver ion-icon {
-  float: right;
-} */
-
-#datosTienda {
-  top: 20px;
-  z-index: -1;
-  height: max-content;
-  width: max-content;
-  position: absolute;
-  right: calc(10vw + 10px);
-  border-radius: 5px;
-  background-color: rgba(225, 225, 225, 0.7);
-  backdrop-filter: blur(5px);
-  display: grid;
-  row-gap: 10px;
-  padding: 10px;
-}
-
-#datosTienda p {
-  margin: 0;
-  font-size: 14px;
-  float: left;
-  position: relative; 
-  margin-right: 3px;
 }
 
 #background {
@@ -431,10 +385,6 @@ ion-icon {
   margin-left: 20px;
 }
 
-.tituloDatos {
-  font-weight: 700;
-}
-
 .datos {
   margin-bottom: 20px;
 
@@ -521,5 +471,9 @@ input[type=submit]{
 @media only screen and (max-width: 1050px) {
   #tablaClientes {
     font-size: 10px;
+  }
+
+  h1 {
+    font-size: 26px;
   }
 }

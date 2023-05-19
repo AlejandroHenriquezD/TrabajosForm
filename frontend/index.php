@@ -17,6 +17,7 @@ echo "
 
 include "script.php";
 include "validar.php";
+include "cabecera.php";
 
 echo "
   <div id='pagina'>

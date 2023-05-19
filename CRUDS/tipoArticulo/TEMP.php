@@ -1,4 +1,7 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./tiposarticulo.php";
+?>
 <?php
 
 if(isset($_POST["id"][0])) {
@@ -25,7 +28,7 @@ $sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" . $_SE
 
 $result = mysqli_query($conn, $sql);
 
-echo "<link rel='stylesheet' href='../cruds2.css'>";
+echo "<link rel='stylesheet' href='../cruds.css'>";
 echo "<h1>".$tipo_articulo["nombre"] ."</h1>";
 
 echo "<h2>Posiciones Actuales</h2>

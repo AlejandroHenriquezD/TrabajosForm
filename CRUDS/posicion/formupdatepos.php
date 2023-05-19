@@ -1,11 +1,14 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./posiciones.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../cruds2.css">
+    <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
