@@ -134,6 +134,12 @@ ion-icon {
   margin-left: 5px;
 }
 
+.td-botones button {
+  width: 196px;
+  justify-content: center;
+  display: flex;
+}
+
 #div-form, #añadir-posiciones {
   width: 40%;
   padding: 20px;
