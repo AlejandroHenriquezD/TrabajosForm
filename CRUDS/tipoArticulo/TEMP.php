@@ -1,9 +1,11 @@
 <?php include "../sesion.php" ?>
 <?php
 
-$id = $_GET["id"][0];
+if(isset($_POST["id"][0])) {
+  $_SESSION["id_tipoArticulo"] = $_POST["id"][0];
+}
 
-$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $id), true);
+$tipo_articulo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos/" . $_SESSION["id_tipoArticulo"]), true);
 
 $posiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);;
 
@@ -19,7 +21,7 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-$sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" . $id;
+$sql = "SELECT * FROM `posicionestipoarticulos` WHERE id_tipo_articulo =" . $_SESSION["id_tipoArticulo"];
 
 $result = mysqli_query($conn, $sql);
 
@@ -67,6 +69,9 @@ echo "</select>
           </div>
         </form>
       </div>";
+if(isset($_SESSION['confirmarAccion'])) {
+  include "../confirmarAccion.php";
+}
 ?>
 
 

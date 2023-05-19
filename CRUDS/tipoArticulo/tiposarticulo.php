@@ -41,7 +41,7 @@
                             <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
 
-                        <form action='temp.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
+                        <form action='temp.php' method='post'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
 
                     </td>
                 </tr>";

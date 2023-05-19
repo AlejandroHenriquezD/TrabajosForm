@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pathinfo = pathinfo($_FILES["pdf"]["name"]);
 
 $base = $pathinfo["filename"];
@@ -65,9 +66,7 @@ if ( ! move_uploaded_file($_FILES["pdf"]["tmp_name"], $destination)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
-
-echo "<form action='CRUDS/pedidos/pedidos.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./pedidos/pedidos.php";
+$_SESSION['mensajeAccion'] = "Orden de trabajo añadida";
+header("location:./CRUDS/pedidos/formañadirpdf.php");
 ?>
