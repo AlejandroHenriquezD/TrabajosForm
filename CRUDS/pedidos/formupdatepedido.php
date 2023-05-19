@@ -38,7 +38,7 @@ $_SESSION["Volver"] = "./pedidos.php";
             database: $dbname
         );
 
-        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"];
+        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"] .  " AND firmado=1";;
 
         $result = mysqli_query($conn, $sql);
 

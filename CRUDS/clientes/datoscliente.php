@@ -17,7 +17,7 @@
 <body>
   <?php
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
-  if(isset($_POST['id'])) {
+  if (isset($_POST['id'])) {
     $_SESSION['id'] = $_POST['id'];
     $_SESSION['nombre'] = $_POST['nombre'];
     $_SESSION['correo'] = $_POST['correo'];
@@ -135,7 +135,6 @@
         </td>
       </tr>";
     }
-    
   }
   echo "</table>";
 
@@ -154,19 +153,32 @@
     <tr>
       <th>Nombre</th>
       <th>PDF</th>
+      <th>Firmado</th>
       <th>Acciones</th>
     </tr>
   ";
-  
+
   foreach ($bocetos as $boceto) {
+
+    if ($boceto['firmado'] == 1) {
+      $firmado = 'Sí';
+    } else {
+      $firmado = 'No';
+    }
+
+
     if ($boceto['id_cliente'] == $_SESSION['id']) {
       echo "
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
         <td>
-          <form action='../.".$boceto['pdf']."'>
+          <form action='../." . $boceto['pdf'] . "'>
             <button>Ver Boceto</button>
           </form>
+        </td>
+        <td>" .
+        $firmado
+        . "
         </td>
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
@@ -191,8 +203,8 @@
   }
 
   $pedidosCliente = array();
-  foreach($pedidos as $pedido) {
-    if ( 
+  foreach ($pedidos as $pedido) {
+    if (
       $pedido['Nombre'] === $_SESSION['nombre'] &&
       $pedido['Telefono'] === $_SESSION['telefono'] &&
       $pedido['Email1'] === $_SESSION['correo'] &&
@@ -221,8 +233,8 @@
   ";
   $countTrabajos = 0;
   for ($p = 0; $p < count($trabajos); $p++) {
-    foreach($pedidosCliente as $pedidoCliente){
-      if(
+    foreach ($pedidosCliente as $pedidoCliente) {
+      if (
         $trabajos[$p]['ejercicio_pedido'] === $pedidoCliente['EjercicioPedido'] &&
         $trabajos[$p]['serie_pedido'] === $pedidoCliente['SeriePedido'] &&
         $trabajos[$p]['numero_pedido'] === $pedidoCliente['NumeroPedido']
@@ -232,16 +244,16 @@
         $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
         $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
-        if($trabajos[$p]['id_logo'] == null) {
+        if ($trabajos[$p]['id_logo'] == null) {
           $colLogo = "No hay logo";
-        }else {
+        } else {
           $colLogo = "<img src='../." . $logo['img'] . "' alt='" . $logo['img'] . "' height=150px>";
         }
 
         echo "<tr class='fila'>";
         $mismoTrabajo = false;
-        if($countTrabajos == 0) {
-          foreach($trabajos as $trabajo) {
+        if ($countTrabajos == 0) {
+          foreach ($trabajos as $trabajo) {
             if (
               $trabajo['ejercicio_pedido'] === $trabajos[$p]['ejercicio_pedido'] &&
               $trabajo['serie_pedido'] === $trabajos[$p]['serie_pedido'] &&
@@ -264,7 +276,7 @@
         <td>" . $colLogo . "</td>
         ";
 
-        if($mismoTrabajo == true) {
+        if ($mismoTrabajo == true) {
           echo "<td rowspan='" . $countTrabajos . "'>";
           if ($trabajos[$p]['id_boceto'] != null) {
             echo "
@@ -295,7 +307,7 @@
     }
   }
   echo "</table>";
-  if(isset($_SESSION['confirmarAccion'])) {
+  if (isset($_SESSION['confirmarAccion'])) {
     include "../confirmarAccion.php";
   }
   ?>
