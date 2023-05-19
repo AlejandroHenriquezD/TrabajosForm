@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -12,11 +13,16 @@
 
 
     <form action="../../updatepedido.php" method="post" enctype="multipart/form-data">
-
-
+        
         <?php
-        echo "<h1>Pedido " . $_POST["ejercicio_pedido"][0] . '/' . $_POST["serie_pedido"][0] .  '/' . $_POST["numero_pedido"][0] . "</h1>";
-        echo "<h2>Cliente " . $_POST["CodigoCliente"][0] . "</h2>";
+        if(isset($_POST["CodigoCliente"][0])) {
+            $_SESSION["ejercicio_pedido"] = $_POST["ejercicio_pedido"][0];
+            $_SESSION["serie_pedido"] = $_POST["serie_pedido"][0];
+            $_SESSION["numero_pedido"] = $_POST["numero_pedido"][0];
+            $_SESSION["CodigoCliente"] = $_POST["CodigoCliente"][0];
+        }
+        echo "<h1>Pedido " . $_SESSION["ejercicio_pedido"] . '/' . $_SESSION["serie_pedido"] .  '/' . $_SESSION["numero_pedido"] . "</h1>";
+        echo "<h2>Cliente " . $_SESSION["CodigoCliente"] . "</h2>";
         $host = "localhost";
         $dbname = "centraluniformes";
         $username = "root";
@@ -29,7 +35,7 @@
             database: $dbname
         );
 
-        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_POST["CodigoCliente"][0];
+        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"];
 
         $result = mysqli_query($conn, $sql);
 
@@ -37,9 +43,9 @@
 
         echo "
                 <label for='id_boceto'>Añadir Boceto al pedido</label>
-                <input name='ejercicio_pedido[]' type='hidden' value=" . $_POST["ejercicio_pedido"][0] . "></input> 
-                <input name='serie_pedido[]' type='hidden' value=" . $_POST["serie_pedido"][0] . "></input> 
-                <input name='numero_pedido[]' type='hidden' value=" . $_POST["numero_pedido"][0] . "></input> 
+                <input name='ejercicio_pedido[]' type='hidden' value=" . $_SESSION["ejercicio_pedido"] . "></input> 
+                <input name='serie_pedido[]' type='hidden' value=" . $_SESSION["serie_pedido"] . "></input> 
+                <input name='numero_pedido[]' type='hidden' value=" . $_SESSION["numero_pedido"] . "></input> 
                 <select required name='id_boceto'>
                 <option value='' id='id_boceto' name='id_boceto'>--</option>";
 
@@ -53,6 +59,11 @@
                     <button>Añadir</button>"
         ?>
     </form>
+    <?php
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "./menuPedidos.php" ?>
 
 </body>
