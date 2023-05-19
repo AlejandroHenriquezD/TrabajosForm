@@ -93,9 +93,9 @@ if(clientes.length != 0){
   echo "
   <h1>CLIENTES</h1>
   <div id='divInputs'>
-    <label>Razón social<input type='text' id='filtro_razon' onchange='filtrar()'></label>
-    <label>Código de cliente<input type='text' id='filtro_codigo' onchange='filtrar()'></label>
     <label>CIF/NIF<input type='text' id='filtro_nif' onchange='filtrar()'></label>
+    <label>Código de cliente<input type='text' id='filtro_codigo' onchange='filtrar()'></label>
+    <label>Razón social<input type='text' id='filtro_razon' onchange='filtrar()'></label>
     <div class='boton-de-pega'>Buscar</div>
   </div>
   <div id='divTabla'></div>
