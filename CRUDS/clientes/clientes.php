@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload="filtrar()">
@@ -60,7 +60,7 @@
         tabla += '<tr class=\"fila\" onclick=\"datosCliente(\'' + cliente[\"id\"] + '\',\'' + cliente[\"nombre\"] + '\',\'' + cliente[\"telefono\"] + '\',\'' + cliente[\"correo\"] + '\',\'' + cliente[\"dirección\"] + '\',\'' + cliente[\"cif_nif\"] + '\',\'' + cliente[\"numero_cliente\"] + '\',\'' + cliente[\"razon_social\"] + '\')\">'
         tabla += '<td>' + cliente[\"nombre\"] + '</td>'
         tabla += '<td>' + cliente[\"telefono\"] + '</td>'
-        tabla += '<td>' + cliente[\"correo\"] + '</td>'
+        tabla += '<td>' + cliente[\"correo\"].replaceAll(\";\", \"; \") + '</td>'
         tabla += '<td>' + cliente[\"dirección\"] + '</td>'
         tabla += '<td>' + cliente[\"cif_nif\"] + '</td>'
         tabla += '<td>' + cliente[\"numero_cliente\"] + '</td>'
