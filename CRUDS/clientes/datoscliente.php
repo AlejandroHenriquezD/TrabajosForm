@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -56,12 +56,14 @@
       <p>" . $_SESSION['razon_social'] . "</p>
     </div> 
   </div>
-  <h1>LOGOS</h1>
-  <form action='../logos/formcreatelogo.php' method='post'> 
-    <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-    <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-    <button id='boton-crear'>Subir Logo</button>
-  </form>
+  <div class='titulo-mas-boton'>
+    <h1>LOGOS</h1>
+    <form action='../logos/formcreatelogo.php' method='post'> 
+      <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
+      <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
+      <button id='boton-crear'>Subir Logo</button>
+    </form>
+  </div>
   <table>
     <tr>
       <th>Imagen</th>
@@ -136,13 +138,15 @@
 
   $bocetos = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
   echo "
-  <h1>BOCETOS</h1>
-  <form action='../bocetos/formcreateboceto.php' method='post'> 
-    <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-    <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
-    <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-    <button id='boton-crear'>Subir Boceto</button>
-  </form>
+  <div class='titulo-mas-boton'>
+    <h1>BOCETOS</h1>
+    <form action='../bocetos/formcreateboceto.php' method='post'> 
+      <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
+      <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
+      <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
+      <button id='boton-crear'>Subir Boceto</button>
+    </form>
+  </div>
   <table>
     <tr>
       <th>Nombre</th>
