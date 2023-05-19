@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../cruds.css">
 </head>
 
-<body onload="filtrar()">
+<body onload='filtrar()'>
 
   <?php
 
@@ -43,6 +43,7 @@
     function filtrar() {
       var clientes = $clientes
       clientes = JSON.parse(clientes);
+
       if(document.getElementById('filtro_razon').value != ''){
         var razon_social = document.getElementById('filtro_razon').value
         clientes = clientes.filter((clientes) => clientes.razon_social.toUpperCase().includes(razon_social.toUpperCase()));
@@ -55,26 +56,35 @@
         var CIF_NIF = document.getElementById('filtro_nif').value
         clientes = clientes.filter((clientes) => clientes.cif_nif.toUpperCase().includes(CIF_NIF.toUpperCase()));
       }
-      var tabla = '<table id=\"tablaClientes\"><tr><th>Nombre</th><th>Telefono</th><th>Correo</th><th>Dirección</th><th>CIF/NIF</th><th>Código de cliente</th><th>Razón social</th></tr>';
-      for(cliente of clientes) {
-        tabla += '<tr class=\"fila\" onclick=\"datosCliente(\'' + cliente[\"id\"] + '\',\'' + cliente[\"nombre\"] + '\',\'' + cliente[\"telefono\"] + '\',\'' + cliente[\"correo\"] + '\',\'' + cliente[\"dirección\"] + '\',\'' + cliente[\"cif_nif\"] + '\',\'' + cliente[\"numero_cliente\"] + '\',\'' + cliente[\"razon_social\"] + '\')\">'
-        tabla += '<td>' + cliente[\"nombre\"] + '</td>'
-        tabla += '<td>' + cliente[\"telefono\"] + '</td>'
-        tabla += '<td>' + cliente[\"correo\"] + '</td>'
-        tabla += '<td>' + cliente[\"dirección\"] + '</td>'
-        tabla += '<td>' + cliente[\"cif_nif\"] + '</td>'
-        tabla += '<td>' + cliente[\"numero_cliente\"] + '</td>'
-        tabla += '<td>' + cliente[\"razon_social\"] + '</td>'
-        tabla += '</tr>';
-      }
-      tabla += '</table>'
-      tabla = elementFromHtml(tabla);
-      var divTabla = document.getElementById('divTabla');
-      if(document.getElementById('tablaClientes') != null){
-        divTabla.removeChild(document.getElementById('tablaClientes'));
-      }
+      var tabla = '';
+
+if(clientes.length != 0){
+  var tabla = '<table id=\"tablaClientes\"><tr><th>Nombre</th><th>Telefono</th><th>Correo</th><th>Dirección</th><th>CIF/NIF</th><th>Código de cliente</th><th>Razón social</th></tr>';
+
+  for(cliente of clientes) {
+    tabla += '<tr class=\"fila\" onclick=\"datosCliente(\'' + cliente[\"id\"] + '\',\'' + cliente[\"nombre\"] + '\',\'' + cliente[\"telefono\"] + '\',\'' + cliente[\"correo\"] + '\',\'' + cliente[\"dirección\"] + '\',\'' + cliente[\"cif_nif\"] + '\',\'' + cliente[\"numero_cliente\"] + '\',\'' + cliente[\"razon_social\"] + '\')\">'
+    tabla += '<td>' + cliente[\"nombre\"] + '</td>'
+    tabla += '<td>' + cliente[\"telefono\"] + '</td>'
+    tabla += '<td>' + cliente[\"correo\"] + '</td>'
+    tabla += '<td>' + cliente[\"dirección\"] + '</td>'
+    tabla += '<td>' + cliente[\"cif_nif\"] + '</td>'
+    tabla += '<td>' + cliente[\"numero_cliente\"] + '</td>'
+    tabla += '<td>' + cliente[\"razon_social\"] + '</td>'
+    tabla += '</tr>';
+  }
+  tabla += '</table>'
+} else {
+  tabla = '<h1 id=\'tablaClientes\'>Sin resultados</h1>';
+}
+    tabla = elementFromHtml(tabla);
+    var divTabla = document.getElementById('divTabla');
+    if(document.getElementById('tablaClientes') != null){
+      divTabla.removeChild(document.getElementById('tablaClientes'));
+    }
+    if(document.getElementById('filtro_razon').value != '' || document.getElementById('filtro_codigo').value != '' || document.getElementById('filtro_nif').value != ''){
       divTabla.appendChild(tabla);
     }
+  }
     </script>
     ";
 
