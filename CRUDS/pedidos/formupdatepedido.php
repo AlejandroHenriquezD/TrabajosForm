@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION["Volver"] = "./pedidos.php";
+?>
 <!DOCTYPE html>
 <html>
 

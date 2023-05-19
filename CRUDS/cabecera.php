@@ -1,9 +1,19 @@
 <?php
 include_once "../../BDReal/numTienda.php";
-// header("Cache-Control: no-store, no-cache, must-revalidate");
-// header("Pragma: no-cache");
+
+if(isset($_SESSION["Volver"])) {
+  echo "
+  <script>
+    function volver() {
+      window.location = '" . $_SESSION["Volver"] . "';
+    }
+  </script>
+  ";
+  echo "<button id='volver' onclick='volver()'><p>Volver</p><ion-icon name='arrow-back-outline'></ion-icon></a></button>";
+  unset($_SESSION["Volver"]);
+}
+
 echo "
-<button id='volver' onclick='history.back()'><p>Volver</p><ion-icon name='arrow-back-outline'></ion-icon></a></button>
 <img id='logoCabecera' src='../../login/cu.png' alt=''/>
 <div id='datosTienda'>
   <div>

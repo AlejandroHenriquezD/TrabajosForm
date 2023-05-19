@@ -1,4 +1,7 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./tipostrabajo.php";
+?>
 <!DOCTYPE html>
 <html>
 

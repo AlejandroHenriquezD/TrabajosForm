@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+@import url("cabecera.css");
 
 html,
 body {
@@ -26,7 +27,6 @@ h1 {
   margin-top: 20px;
 }
 
-
 .input-hidden {
   height: 0;
   width: 0;
@@ -35,7 +35,6 @@ h1 {
 
 input {
   margin: 0px;
-  /* margin-right: 2px; */
   font-family: "Tilt Neon", cursive;
 }
 
@@ -122,7 +121,7 @@ textarea {
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: -2;
 }
 
 #pagina {
@@ -130,7 +129,7 @@ textarea {
   width: calc(100vw - 380px);
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 106px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -149,7 +148,7 @@ textarea {
   width: 280px;
   position: fixed;
   right: 20px;
-  top: 20px;
+  top: 106px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -168,18 +167,6 @@ textarea {
   justify-content: center;
   color: red;
 }
-
-/* #flecha-lateral:hover {
-  border-right: 10px solid #f0cb25;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-}
-
-.flecha-lateral-desplegada:hover {
-  border-left: 10px solid #f0cb25;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-} */
 
 #divPedidos {
   display: grid;
@@ -238,7 +225,6 @@ textarea {
   border-top: 2px solid #0e1c2e;
   position: relative;
   float: left;
-  /* border: 10px solid rgba(14, 28, 46, 0.9); */
 }
 
 #cb-articulos label {
@@ -253,8 +239,6 @@ textarea {
 
 .desplegable {
   height: 15px;
-  /* border-top: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff; */
   width: 100%;
   background-color: #0e1c2e;
   display: flex;
@@ -288,16 +272,11 @@ textarea {
 
 .posicion {
   border-top: 2px solid #0e1c2e;
-  /* flex-direction: column;
-  align-items: center; */
   pointer-events: auto;
 }
 
 .logos {
   border-top: 2px solid #0e1c2e;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
   width: 100%;
   height: max-content;
 }
@@ -306,12 +285,6 @@ textarea {
   width: 100%;
   border-top: 2px solid #0e1c2e;
 }
-
-/* .logos img {
-  width: 50%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-} */
 
 .articulo:hover:not(:focus-within) {
   background-color: rgba(128, 128, 128, 0.7);
@@ -339,7 +312,6 @@ textarea {
 
 .slider {
   width: 100%;
-  /* height: 15vh; */
   overflow-x: scroll;
   overflow-y: hidden;
 }
@@ -361,7 +333,6 @@ textarea {
 
 .ta-seleccionado {
   border: 2px solid #00bb2d;
-  /* pointer-events: none; */
 }
 
 .ta img {

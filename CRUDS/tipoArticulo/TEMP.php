@@ -1,4 +1,7 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./tiposarticulo.php";
+?>
 <?php
 
 if(isset($_POST["id"][0])) {
