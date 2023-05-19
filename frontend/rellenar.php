@@ -70,8 +70,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
       $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
       $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
-      $cliente['dirección'] == $pedidos[$o]['Domicilio'] &&
-      $cliente['correo'] == $pedidos[$o]['Email1']
+      $cliente['dirección'] == $pedidos[$o]['Domicilio']
     ) {
       $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'];
       $result = mysqli_query($conn, $sql);
@@ -155,7 +154,6 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
       $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
       $cliente['dirección'] == $pedidos[$o]['Domicilio'] &&
-      $cliente['correo'] == $pedidos[$o]['Email1'] &&
       $cliente['telefono'] == $pedidos[$o]['Telefono']
     ) {
       // 2: Querie con el id del cliente para obtener sus logos
