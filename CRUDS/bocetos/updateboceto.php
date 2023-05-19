@@ -22,7 +22,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "UPDATE `bocetos` SET `firmado`='". $firmado ."' WHERE id =" . $id[0] ;
+$sql = "UPDATE `bocetos` SET `firmado`='". $firmado ."' WHERE id_cliente=" . $id[0] ;
 
 $stmt = mysqli_stmt_init($conn);
 

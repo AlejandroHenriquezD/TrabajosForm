@@ -68,11 +68,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     if (
       $cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
-      $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
-      $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
-      $cliente['dirección'] == $pedidos[$o]['Domicilio']
+      $cliente['razon_social'] == $pedidos[$o]['RazonSocial']
     ) {
-      $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'];
+      $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'] .  " AND firmado=1";
       $result = mysqli_query($conn, $sql);
       if (mysqli_num_rows($result) >= 0) {
         $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>Boceto no seleccionado</option>";
@@ -151,10 +149,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
     if (
       $cliente['numero_cliente'] == $pedidos[$o]['CodigoCliente'] &&
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
-      $cliente['razon_social'] == $pedidos[$o]['RazonSocial'] &&
-      $cliente['nombre'] == $pedidos[$o]['Nombre'] &&
-      $cliente['dirección'] == $pedidos[$o]['Domicilio'] &&
-      $cliente['telefono'] == $pedidos[$o]['Telefono']
+      $cliente['razon_social'] == $pedidos[$o]['RazonSocial']
     ) {
       // 2: Querie con el id del cliente para obtener sus logos
       $sql = "SELECT * FROM `logos` WHERE id_cliente =" . $cliente['id'] . " AND obsoleto=0";
