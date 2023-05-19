@@ -12,6 +12,7 @@
 
     <h1>Boceto</h1>
     <?php
+
     if(isset($_POST["nombre"])) {
         $_SESSION["nombre_boceto"] = $_POST["nombre"][0];
     }
@@ -20,8 +21,9 @@
     <div id='div-form'>
         <form action='updateboceto.php' method='post' enctype='multipart/form-data'>
 
-            <label for='nombre'>Nombre</label>
+            <label for='estado'>Estado</label>
             <input name='id[]' type='hidden' value=". $_SESSION["id"] ."></input>
+            <input name='nombre[]' type='hidden' value='". $_SESSION["nombre_boceto"] ."'></input>
             <select name='firmado'>
                 <option value='1' id='firmado' name='firmado'>FIRMADO</option>
                 <option value='0' id='firmado' name='firmado'>NO FIRMADO</option>
