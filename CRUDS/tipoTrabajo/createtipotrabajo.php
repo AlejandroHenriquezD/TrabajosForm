@@ -34,10 +34,8 @@ mysqli_stmt_bind_param($stmt, "s",
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado."; 
-
-echo "<form action='tipostrabajo.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./tipoTrabajo/tipostrabajo.php";
+$_SESSION['mensajeAccion'] = "Tipo de trabajo creado";
+header("location:./formcreatetipotrabajo.php");
 ?>
 <?php include "./menuTipoTrabajo.php" ?>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 $id_boceto = $_POST["id_boceto"];
 $ejercicio_pedido = $_POST["ejercicio_pedido"];
 $serie_pedido = $_POST["serie_pedido"];
@@ -27,9 +28,7 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
-
-echo "<form action='CRUDS/pedidos/pedidos.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./pedidos/pedidos.php";
+$_SESSION['mensajeAccion'] = "Boceto añadido";
+header("location:./CRUDS/pedidos/formupdatepedido.php");
 ?>

@@ -32,10 +32,8 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Borrado."; 
-echo "<form action='tiposarticulo.php'>
-        <button >Volver</button>
-      </form>";
-
+$_SESSION['confirmarAccion'] = "./tipoArticulo/tiposarticulo.php";
+$_SESSION['mensajeAccion'] = "Tipo de artículo eliminado";
+header("location:../tipoArticulo/tiposarticulo.php");
 ?>
 <?php include "./menuTipoArticulo.php" ?>

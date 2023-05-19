@@ -21,6 +21,11 @@
             <button>Crear</button>
         </form>
     </div>
+    <?php
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "./menuTipoArticulo.php" ?>
 </body>
 

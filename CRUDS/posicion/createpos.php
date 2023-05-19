@@ -34,10 +34,8 @@ mysqli_stmt_bind_param($stmt, "s",
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado."; 
-
-echo "<form action='posiciones.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./posicion/posiciones.php";
+$_SESSION['mensajeAccion'] = "Posición creada";
+header("location:./formcreatepos.php");
 ?>
 <?php include "./menuPosiciones.php" ?>

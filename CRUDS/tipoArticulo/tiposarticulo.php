@@ -41,13 +41,16 @@
                             <button>Editar Nombre<ion-icon name='create'></button> 
                         </form>
 
-                        <form action='temp.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
+                        <form action='temp.php' method='post'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
 
                     </td>
                 </tr>";
 
     }
-    echo "</table>"
+    echo "</table>";
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
         ?>
     <?php include "./menuTipoArticulo.php" ?>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
