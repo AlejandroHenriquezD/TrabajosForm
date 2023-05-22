@@ -48,6 +48,17 @@
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
 
+  // $posicionesData = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+  // $tiposTrabajoData = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+  // $logosData = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+  // $bocetosData = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
+  // foreach ($trabajos as $trabajo) {
+  //   $posiciones[$trabajo['id_posicion']] = $posicionesData[$trabajo['id_posicion']];
+  //   $tipos_trabajo[$trabajo['id_tipo_trabajo']] = $tiposTrabajoData[$trabajo['id_tipo_trabajo']];
+  //   $logos[$trabajo['id_logo']] = $logosData[$trabajo['id_logo']];
+  //   $bocetos[$trabajo['id_boceto']] = $bocetosData[$trabajo['id_boceto']];
+  // }
+
   $pedidos = json_encode($pedidos);
   $pedidosnopen = json_encode($pedidosnopen);
   $trabajos = json_encode($trabajos);
