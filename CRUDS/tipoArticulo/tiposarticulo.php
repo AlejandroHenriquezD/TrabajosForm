@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Articulos</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds2.css">
+    <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
             <button id='boton-crear'>Crear Tipo Articulo</button>
           </form>";
 
-    echo "<table>
+    echo "<table id='tablaClientes'>
            <tr>
               <th>Nombre</th>
               <th>Imagen</th>
@@ -32,7 +32,7 @@
             "<tr class='fila'>
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
                     <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
-                    <td> 
+                    <td><div class=\"td-botones\">
                         <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatetipoarticulo.php' method='post'> 
@@ -43,7 +43,7 @@
 
                         <form action='temp.php' method='post'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Editar Posiciones<ion-icon name='create'></button> </form>
 
-                    </td>
+                    </div></td>
                 </tr>";
 
     }

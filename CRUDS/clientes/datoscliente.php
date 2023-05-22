@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
@@ -67,7 +67,7 @@
       <button id='boton-crear'>Subir Logo</button>
     </form>
   </div>
-  <table>
+  <table id='tablaClientes'>
     <tr>
       <th>Imagen</th>
       <th>Imagen Vectorizada/Texto</th>
@@ -306,7 +306,10 @@
       }
     }
   }
-  echo "</table>";
+  echo "
+  </table>
+  <div id='margen-inferior'></div>
+  ";
   if (isset($_SESSION['confirmarAccion'])) {
     include "../confirmarAccion.php";
   }
