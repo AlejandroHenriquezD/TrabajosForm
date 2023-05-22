@@ -15,26 +15,20 @@ $_SESSION["Volver"] = "../clientes/datoscliente.php";
 
     <h1>Boceto</h1>
     <?php
-
     if(isset($_POST["nombre"])) {
         $_SESSION["nombre_boceto"] = $_POST["nombre"][0];
     }
     $nombre = str_replace('+',' ',$_SESSION["nombre_boceto"]);
     echo "
     <div id='div-form'>
-        <form action='updateboceto.php' method='post' enctype='multipart/form-data'>
-
-            <label for='estado'>Estado</label>
-            <input name='id[]' type='hidden' value=". $_SESSION["id"] ."></input>
-            <input name='nombre[]' type='hidden' value='". $_SESSION["nombre_boceto"] ."'></input>
-            <select name='firmado'>
-                <option value='1' id='firmado' name='firmado'>FIRMADO</option>
-                <option value='0' id='firmado' name='firmado'>NO FIRMADO</option>
-            </select>
-
-            <button>Editar</button>
-        </form>
-    </div>";
+		<form action='../../updateboceto.php' method='post' enctype='multipart/form-data'>
+			<label for='boceto'>Boceto</label>
+			<input name='id[]' type='hidden' value=" . $_SESSION["id"] . "></input>
+            <input name='id_boceto[]' type='hidden' value=" . $_POST["id_boceto"][0] . "></input>
+			<input required type='file' id='boceto' name='boceto' accept='application/pdf'/>
+			<button>Editar</button>
+		</form>
+	</div>";
     if(isset($_SESSION['confirmarAccion'])) {
         include "../confirmarAccion.php";
     }
