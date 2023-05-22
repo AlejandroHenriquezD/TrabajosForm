@@ -17,6 +17,8 @@ button {
   color: #fff;
   border-radius: 5px;
   font-size: 16px;
+  width: max-content;
+  height: max-content;
 }
 
 form {
@@ -331,7 +333,7 @@ ion-icon {
   align-self: center;
   justify-self: center;
   height: min-content;
-  width: min-content;
+  width: max-content;
   border-radius: 5px;
   background-color: #0e1c2e;
   color:rgb(255, 255, 255);
