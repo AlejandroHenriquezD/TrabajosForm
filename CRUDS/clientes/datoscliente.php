@@ -172,7 +172,7 @@
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
         <td>
-          <form action='../." . $boceto['pdf'] . "'>
+          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
             <button>Ver Boceto</button>
           </form>
         </td>
@@ -183,9 +183,9 @@
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
           <form action='../bocetos/formupdateboceto.php' method='post'> 
-            <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input>
+            <input name='id_boceto[]' type='hidden' value=" . $boceto["id"] . "></input>
             <input name='nombre[]' type='hidden' value=" . urlencode($boceto["nombre"]) . "></input> 
-            <button>Editar Estado<ion-icon name='create'></button> 
+            <button>Añadir Boceto Firmado<ion-icon name='create'></button> 
           </form>
         </td>
       </tr>";

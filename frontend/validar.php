@@ -303,23 +303,29 @@
     }
   }
 
-  function boton() {
-    let button = document.querySelector("#enviar");
+  <?php
+  if (!isset($_SESSION['usuario'])) {
+    echo '
+    function boton() {
+      let button = document.querySelector("#enviar");
 
-    let msgArt = document.querySelectorAll('.msg-art');
+      let msgArt = document.querySelectorAll(".msg-art");
 
-    let listaCheck = document.querySelector("#listaCheck");
-    button.disabled = false;
+      let listaCheck = document.querySelector("#listaCheck");
+      button.disabled = false;
 
-    if (listaCheck.contains(document.querySelector('ar')) || listaCheck.contains(document.querySelector('msg-ped'))) {
-      button.disabled = true;
-    }
-    for (m of msgArt) {
-      if (!m.classList.contains('msg-art-verde')) {
+      if (listaCheck.contains(document.querySelector("ar")) || listaCheck.contains(document.querySelector("msg-ped"))) {
         button.disabled = true;
       }
+      for (m of msgArt) {
+        if (!m.classList.contains("msg-art-verde")) {
+          button.disabled = true;
+        }
+      }
     }
+    ';
   }
+  ?>
 
   function disablePedidos() {
     var miSelect = document.getElementById('selectPedido'); // Obtener el elemento <select>
@@ -329,6 +335,7 @@
     }
   }
 
+
   function validar() {
     validarAr();
     validarTar();
@@ -336,6 +343,12 @@
     validarTra();
     validarLogos();
     validarTodo();
-    boton();
+    <?php
+    if (!isset($_SESSION['usuario'])) {
+      echo '
+      boton();
+      ';
+    }
+    ?>
   }
 </script>
