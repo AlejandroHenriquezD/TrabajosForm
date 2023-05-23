@@ -22,9 +22,39 @@ if (isset($_SESSION['usuario'])) {
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
 $articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+// $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+
+$sql = "SELECT * FROM `tipos_trabajos` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposTrabajos = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposTrabajos[] = $row;
+  }
+}
+
+// $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+
+$sql = "SELECT * FROM `tipos_articulos` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposArticulos = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposArticulos[] = $row;
+  }
+}
+
+// $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+
+$sql = "SELECT * FROM `posiciones` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposPosiciones = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposPosiciones[] = $row;
+  }
+}
+
 $logos = array();
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
 $numeroPedidos = count($pedidos);

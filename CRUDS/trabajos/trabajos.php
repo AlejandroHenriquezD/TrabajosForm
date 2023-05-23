@@ -114,6 +114,11 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       document.getElementById('inputsOcultos').submit();
     }
 
+    function actualizarFecha(tipo) {
+      console.log(tipo);
+      document.getElementById(tipo).submit();
+    }
+
     function filtrar() {
       var trabajos = $trabajos
       var bocetos = $bocetos
@@ -157,20 +162,32 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     trabajos = trabajostemp;
     pedidos = pedidostemp;
     
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th></tr>';
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Fecha fin</th></tr>';
     
     for(var p=0; p<trabajos.length; p++) {
-      tabla += '<tr class=\"fila\" onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
+      tabla += '<tr class=\"fila\">'
       if (trabajos[p]['id_logo'] == null) {
         logoHTML = \"No hay logo\";
       } else {
         logoHTML = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height='150px'>\";
       }
-      tabla += '<td>' + trabajos[p][\"num_tienda\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"FechaPedido\"] + '</td>'
 
-      tabla += '<td>'
+      tabla += '<td><form id=\"fecha-inicio\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
+      tabla += '</form></td>'
+      
+      
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"num_tienda\"] + '</td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"FechaPedido\"] + '</td>'
+
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
       if (trabajos[p]['id_boceto'] != null) {
         tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
       } else {
@@ -178,7 +195,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       tabla += '</td>'
               
-      tabla += '<td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
 
       if (trabajos[p]['pdf'] != null) {
         tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
@@ -186,11 +203,21 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += 'Falta Orden Trabajo'
       }
       tabla += '</td>'
+
+      tabla += '<td><form id=\"fecha-terminado\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
+      tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
+      tabla += '</form></td>'
+      
       tabla += '</tr>'
     }
   
     tabla += '</table>';
-    console.log(tabla);
     tabla = elementFromHtml(tabla);
   
     var divTabla = document.getElementById('divTabla');
@@ -238,7 +265,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   echo "
     <div id='divTabla'></div>
   ";
-
+  if (isset($_SESSION['confirmarAccion'])) {
+    include "../confirmarAccion.php";
+  }
   ?>
   <?php include "./menuTrabajos.php" ?>
 

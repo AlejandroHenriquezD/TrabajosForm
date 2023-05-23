@@ -48,10 +48,6 @@ class PDF extends FPDF
 			include "../BDReal/numTienda.php";
 			include "../BDReal/domicilios.php";
 
-		$ejercicio_pedido = $_GET["ejercicio_pedido"];
-		$serie_pedido = $_GET["serie_pedido"];
-		$numero_pedido = $_GET["numero_pedido"];
-		$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
 			$ejercicio_pedido = $_GET["ejercicio_pedido"];
 			$serie_pedido = $_GET["serie_pedido"];
 			$numero_pedido = $_GET["numero_pedido"];
@@ -184,7 +180,8 @@ class PDF extends FPDF
 		$this->Cell(0, 1, self::$Email, 0, 1, 'L');
 	}
 
-	function footer() {
+	function footer()
+	{
 		$this->SetY(-15);
 		$this->SetFont('SourceSansPro', 'B', 11);
 		$this->Cell(0, 1, utf8_decode('Página ' . $this->PageNo() . ' de {nb}'), 0, 0, 'R');
@@ -198,6 +195,19 @@ class PDF extends FPDF
 			$this->AddPage();
 			$this->posY = 65;
 		}
+	}
+
+	function firma()
+	{
+		$this->SaltarPagina(100);
+		$this->SetXY(25, 235);
+		$this->SetFont('SourceSansPro', 'B', 11);
+		$this->Cell(70, 12, self::$RazonSocial, 'B', 0, 'L', false);
+		$this->SetXY(10, 247);
+		$this->SetFont('SourceSansPro', '', 11);
+		$this->Cell(30, 20, 'FIRMA', '', 0, 'L', false);
+		$this->SetXY(25, 247);
+		$this->Cell(70, 20, '', 1, 0, 'L');
 	}
 
 	function TablaArticulo($header, $trabajo, $x)
@@ -425,9 +435,9 @@ foreach ($data as $articulo) {
 			$header = array('Tipos de trabajo', 'Posiciones');
 			$pdf->TablaTrabajo($header, $trabajosFiltrados, $x + 45);
 			if ($countIzda > count($trabajosFiltrados)) {
-				$pdf->posY += 10 * $countIzda + 25;
+				$pdf->posY += 10 * $countIzda + 35;
 			} else {
-				$pdf->posY += 10 * count($trabajosFiltrados) + 25;
+				$pdf->posY += 10 * count($trabajosFiltrados) + 35;
 			}
 			$pos = "izquierda";
 		}
@@ -436,9 +446,18 @@ foreach ($data as $articulo) {
 }
 
 if ($pos == "derecha") {
-	$pdf->posY += 10 * $countIzda + 25;
+	$pdf->posY += 10 * $countIzda + 35;
 }
 
+$pdf->SaltarPagina(100);
+$pdf->SetXY(10, $pdf->posY);
+$pdf->SetFont('SourceSansPro', 'B', 11);
+$pdf->Cell(120, 12, 'OBSERVACIONES', 'B', 0, 'L', false);
+$pdf->SetXY(10, $pdf->posY + 12);
+$pdf->SetFont('SourceSansPro', '', 11);
+$pdf->MultiCell(120, 5, utf8_decode($observaciones), 'LRTB', 'L', false);
+
+$pdf->SaltarPagina(999);
 $tsql = "SELECT
 				CodigoArticulo,
 				CodigoColor_,
@@ -504,22 +523,9 @@ $pdf->TablaReferencia($header, utf8_decode('EPÍGRAFES'), $data3, 'tabla2', 10);
 
 $pdf->posY += 7 * count($data3) + 15;
 
-$pdf->SaltarPagina(100);
-
-$pdf->SetXY(10, $pdf->posY);
-$pdf->SetFont('SourceSansPro', 'B', 11);
-$pdf->Cell(120, 12, 'OBSERVACIONES', 'B', 0, 'L', false);
-$pdf->SetXY(10, $pdf->posY + 12);
-$pdf->SetFont('SourceSansPro', '', 11);
-$pdf->MultiCell(120, 5, utf8_decode($observaciones), 'LRTB', 'L', false);
-$pdf->SetXY(130, $pdf->posY);
-$pdf->SetFont('SourceSansPro', 'B', 11);
-$pdf->Cell(70, 12, 'FIRMA', 'B', 0, 'L', false);
-$pdf->SetXY(130, $pdf->posY + 12);
-$pdf->Cell(70, 20, '', 1, 0, 'L');
+$pdf->firma();
 
 $pdf->AliasNbPages();
 
-// $pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
-$pdf->Output();
-
+$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+// $pdf->Output();
