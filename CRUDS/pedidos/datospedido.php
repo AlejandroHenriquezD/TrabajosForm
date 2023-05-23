@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-$_SESSION["Volver"] = "./pedidos.php";
+$_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

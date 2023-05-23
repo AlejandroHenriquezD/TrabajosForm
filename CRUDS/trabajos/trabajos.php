@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +63,29 @@
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
 
+  for($i = 0; $i < count($pedidos); $i++) {
+    $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($result);
+    $estado = array();
+    if (mysqli_num_rows($result) > 0) {
+      if ($row[0] == "" || $row[1] == "") {
+        $estado = array(
+          'Estado' => "cancelar",
+        );
+      } else {
+        $estado = array(
+          'Estado' => "aceptar",
+        );
+      }
+    } else {
+      $estado = array(
+        'Estado' => "cancelar",
+      );
+    }
+    $pedidos[$i] = array_merge($pedidos[$i], $estado);
+  }
+
   $pedidos = json_encode($pedidos);
   $pedidosnopen = json_encode($pedidosnopen);
   $trabajos = json_encode($trabajos);
@@ -75,6 +101,17 @@
       template.innerHTML = html.trim();
 
       return template.content.firstElementChild;
+    }
+
+    function datosPedido(IdDelegacion, EjercicioPedido, SeriePedido, NumeroPedido, CodigoCliente, RazonSocial, Estado) {
+      document.getElementById('IdDelegacion').value = IdDelegacion;
+      document.getElementById('EjercicioPedido').value = EjercicioPedido;
+      document.getElementById('SeriePedido').value = SeriePedido;
+      document.getElementById('NumeroPedido').value = NumeroPedido;
+      document.getElementById('CodigoCliente').value = CodigoCliente;
+      document.getElementById('RazonSocial').value = RazonSocial;
+      document.getElementById('Estado').value = Estado;
+      document.getElementById('inputsOcultos').submit();
     }
 
     function filtrar() {
@@ -107,21 +144,23 @@
       }
 
     trabajostemp = [];
+    pedidostemp = [];
     for(pedido of pedidos){
       for(trabajo of trabajos){
         if(pedido.EjercicioPedido == trabajo.ejercicio_pedido && pedido.NumeroPedido == trabajo.numero_pedido && pedido.SeriePedido == trabajo.serie_pedido){
           trabajostemp.push(trabajo);
+          pedidostemp.push(pedido);
         }
       }
     }
   
     trabajos = trabajostemp;
-    
+    pedidos = pedidostemp;
     
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th></tr>';
-    tabla += '<tr class=\'fila\'>'
-
+    
     for(var p=0; p<trabajos.length; p++) {
+      tabla += '<tr class=\"fila\" onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
       if (trabajos[p]['id_logo'] == null) {
         logoHTML = \"No hay logo\";
       } else {
@@ -151,6 +190,7 @@
     }
   
     tabla += '</table>';
+    console.log(tabla);
     tabla = elementFromHtml(tabla);
   
     var divTabla = document.getElementById('divTabla');
