@@ -25,8 +25,8 @@
     <form action='updatecliente.php' method='post' enctype='multipart/form-data'>
 
         <label for='nombre'>Nombre</label>
-        <input name='id[]' type='hidden' value=" . $_POST["id"][0] . "></input>
-        <input name='cif_nif[]' type='hidden' value=" . $_POST["cif_nif"][0] . "></input>
+        <input name='id' type='hidden' value=" . $_POST["id"][0] . "></input>
+        
         <input value='" . urldecode($nombre) . "' type='text' id='nombre' name='nombre' placeholder='Nombre' />
         <label for='cif_nif'>CIF_NIF</label>"
         . $cif_nif .
@@ -36,8 +36,13 @@
         <input value='" . urldecode($correo) . "' type='text' id='correo' name='correo' placeholder='Correo' />
         <label for='dirección'>Dirección</label>
         <input value='" . urldecode($dirección) . "' type='text' id='dirección' name='dirección' placeholder='Dirección' />
-        <label for='numero_cliente'>Número de cliente</label>
-        <input required value='" . $numero_cliente . "' type='text' id='numero_cliente' name='numero_cliente' placeholder='Número de cliente' />
+        <label for='numero_cliente'>Número de cliente</label>";
+    if (!isset($_SESSION['usuario'])) {
+        echo $numero_cliente . "<input name='numero_cliente' type='hidden' value='" . $_POST['numero_cliente'][0] . "'></input>";
+    } else {
+        echo "<input required value='" . $numero_cliente . "' type='text' id='numero_cliente' name='numero_cliente' placeholder='Número de cliente' />";
+    }
+    echo "
         <label for='razon_social'>Razón social</label>
         <input required value='" . urldecode($razon_social) . "' type='text' id='razon_social' name='razon_social' placeholder='Razón social' />
         </br> 

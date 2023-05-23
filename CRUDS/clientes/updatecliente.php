@@ -6,9 +6,10 @@ $nombre = $_POST["nombre"];
 $telefono = $_POST["telefono"];
 $correo = $_POST["correo"];
 $dirección = $_POST["dirección"];
-$cif_nif = $_POST["cif_nif"];
 $numero_cliente = $_POST["numero_cliente"];
 $razon_social = $_POST["razon_social"];
+
+echo $_POST["numero_cliente"];
 
 // if ( ! $terms){
 //     die("Terms must be accepted");
@@ -30,7 +31,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "UPDATE `clientes` SET `nombre`='" . $nombre . "', `telefono`='" . $telefono . "', `razon_social`='" . $razon_social . "', `correo`='" . $correo . "', `dirección`='" . $dirección . "', `cif_nif`='" . $cif_nif . "', `numero_cliente`='" . $numero_cliente . "'  WHERE id =" . $id[0];
+$sql = "UPDATE `clientes` SET `nombre`='" . $nombre . "', `telefono`='" . $telefono . "', `razon_social`='" . $razon_social . "', `correo`='" . $correo . "', `dirección`='" . $dirección . "',  `numero_cliente`='" . $numero_cliente . "'  WHERE id =" . $id;
 
 $stmt = mysqli_stmt_init($conn);
 
