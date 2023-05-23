@@ -1,6 +1,6 @@
-<?php 
-  session_start(); 
-  $_SESSION["Volver"] = "./clientes.php";
+<?php
+session_start();
+$_SESSION["Volver"] = "./clientes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,10 @@
     $_SESSION['numero_cliente'] = $_POST['numero_cliente'];
   }
   echo "
-  <h1>DATOS CLIENTE</h1>
+  <div class='titulo-mas-boton'>
+    <h1>DATOS CLIENTE</h1>
+    <button>Editar</button>
+  </div>
   <div id='divDatosCliente'>
     <div>
       <p class='tituloDatos'>Nombre</p>
