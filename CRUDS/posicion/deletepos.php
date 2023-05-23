@@ -19,7 +19,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "DELETE FROM `posiciones` WHERE id =" . $id ;
+$sql = "UPDATE `posiciones` SET `habilitado` = 0 WHERE id =" . $id ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -33,7 +33,7 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 mysqli_stmt_execute($stmt);
 
 $_SESSION['confirmarAccion'] = "./posicion/posiciones.php";
-$_SESSION['mensajeAccion'] = "Posición borrada";
+$_SESSION['mensajeAccion'] = "Posición desabilitada";
 header("location:../posicion/posiciones.php");
 ?>
 <?php include "./menuPosiciones.php" ?>

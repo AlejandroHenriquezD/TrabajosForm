@@ -14,7 +14,26 @@
 <body onload='filtrar()'>
   <?php
 
-  $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
+  $host = "localhost";
+  $dbname = "centraluniformes";
+  $username = "root";
+  $password = "";
+
+  $conn = mysqli_connect(
+      hostname: $host,
+      username: $username,
+      password: $password,
+      database: $dbname
+  );
+
+  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido FROM `trabajos`";
+
+  $result = mysqli_query($conn, $sql);
+  $trabajos = [];
+
+  while ($trabajo = mysqli_fetch_assoc($result)) {
+    $trabajos[] = $trabajo;
+  }
 
   if (!isset($_SESSION['usuario'])) {
     include "../../BDReal/numTienda.php";
@@ -35,81 +54,57 @@
     $pedidosnopen = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_nopen.php"), true);
   }
 
-  $posiciones = array();
-  $tipos_trabajo = array();
-  $logos = array();
   $bocetos = array();
 
-
   for ($p = 0; $p < count($trabajos); $p++) {
-    $posiciones[$p] = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
-    $tipos_trabajo[$p] = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
-    $logos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
-
-  // $posicionesData = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
-  // $tiposTrabajoData = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-  // $logosData = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
-  // $bocetosData = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
-  // foreach ($trabajos as $trabajo) {
-  //   $posiciones[$trabajo['id_posicion']] = $posicionesData[$trabajo['id_posicion']];
-  //   $tipos_trabajo[$trabajo['id_tipo_trabajo']] = $tiposTrabajoData[$trabajo['id_tipo_trabajo']];
-  //   $logos[$trabajo['id_logo']] = $logosData[$trabajo['id_logo']];
-  //   $bocetos[$trabajo['id_boceto']] = $bocetosData[$trabajo['id_boceto']];
-  // }
 
   $pedidos = json_encode($pedidos);
   $pedidosnopen = json_encode($pedidosnopen);
   $trabajos = json_encode($trabajos);
-  $posiciones = json_encode($posiciones);
-  $tipos_trabajo = json_encode($tipos_trabajo);
-  $logos = json_encode($logos);
   $bocetos = json_encode($bocetos);
 
   echo "
-<script>
-  var todos = false;
+  <script>
+    var todos = false;
 
-  function elementFromHtml(html) {
-    const template = document.createElement('template');
+    function elementFromHtml(html) {
+      const template = document.createElement('template');
 
-    template.innerHTML = html.trim();
+      template.innerHTML = html.trim();
 
-    return template.content.firstElementChild;
-  }
+      return template.content.firstElementChild;
+    }
 
-  function filtrar() {
-    var trabajos = $trabajos
-    var posiciones = $posiciones
-    var tipos_trabajo = $tipos_trabajo
-    var logos = $logos
-    var bocetos = $bocetos
-    var pedidos = $pedidos
+    function filtrar() {
+      var trabajos = $trabajos
+      var bocetos = $bocetos
+      var pedidos = $pedidos
 
-    if(todos == true) {
-      var pedidos = $pedidosnopen
-    }
-    if(document.getElementById('filtro_serie').value != ''){
-      var serie = document.getElementById('filtro_serie').value
-      trabajos = trabajos.filter((trabajos) => trabajos.serie_pedido.toUpperCase().includes(serie.toUpperCase()));
-    }
-    if(document.getElementById('filtro_ejercicio').value != ''){
-      var ejercicio = document.getElementById('filtro_ejercicio').value
-      trabajos = trabajos.filter((trabajos) => trabajos.ejercicio_pedido.toString().includes(ejercicio.toString()));
-    }
-    if(document.getElementById('filtro_num').value != ''){
-      var numero = document.getElementById('filtro_num').value
-      trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
-    }
-    if(document.getElementById('filtro_codigo').value != ''){
-      var codigo = document.getElementById('filtro_codigo').value
-      pedidos = pedidos.filter((pedidos) => pedidos.CodigoCliente.toString().includes(codigo.toString()));
-    }
-    if(document.getElementById('filtro_cif_nif').value != ''){
-      var cif_nif = document.getElementById('filtro_cif_nif').value
-      pedidos = pedidos.filter((pedidos) => pedidos.CifDni.includes(cif_nif));
-    }
+      if(todos == true) {
+        var pedidos = $pedidosnopen
+      }
+      if(document.getElementById('filtro_serie').value != ''){
+        var serie = document.getElementById('filtro_serie').value
+        trabajos = trabajos.filter((trabajos) => trabajos.serie_pedido.toUpperCase().includes(serie.toUpperCase()));
+      }
+      if(document.getElementById('filtro_ejercicio').value != ''){
+        var ejercicio = document.getElementById('filtro_ejercicio').value
+        trabajos = trabajos.filter((trabajos) => trabajos.ejercicio_pedido.toString().includes(ejercicio.toString()));
+      }
+      if(document.getElementById('filtro_num').value != ''){
+        var numero = document.getElementById('filtro_num').value
+        trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
+      }
+      if(document.getElementById('filtro_codigo').value != ''){
+        var codigo = document.getElementById('filtro_codigo').value
+        pedidos = pedidos.filter((pedidos) => pedidos.CodigoCliente.toString().includes(codigo.toString()));
+      }
+      if(document.getElementById('filtro_cif_nif').value != ''){
+        var cif_nif = document.getElementById('filtro_cif_nif').value
+        pedidos = pedidos.filter((pedidos) => pedidos.CifDni.includes(cif_nif));
+      }
 
     trabajostemp = [];
     for(pedido of pedidos){
@@ -122,58 +117,36 @@
     trabajos = trabajostemp;
     
     
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th></tr>';
     tabla += '<tr class=\'fila\'>'
 
-    var countTrabajos = 0;
     for(var p=0; p<trabajos.length; p++) {
       if (trabajos[p]['id_logo'] == null) {
         var colLogo = \"No hay logo\";
       } else {
         var colLogo = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height=150px>\";
       }
-      var mismoTrabajo = false;
-      if(countTrabajos == 0) {
-        for(trabajo of trabajos) {
-          if (
-            trabajo['ejercicio_pedido'] === trabajos[p]['ejercicio_pedido'] &&
-            trabajo['serie_pedido'] === trabajos[p]['serie_pedido'] &&
-            trabajo['numero_pedido'] === trabajos[p]['numero_pedido']
-          ) {
-            countTrabajos++;
-          }
-        }
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"num_tienda\"] + '</td>'
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"FechaPedido\"] + '</td>'
-        mismoTrabajo = true;
-      }
-      
-      tabla += '<td>' + posiciones[p][\"descripcion\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"codigo_articulo\"] + '</td>'
-      tabla += '<td>' + tipos_trabajo[p][\"nombre\"] + '</td>'
-      tabla += '<td>' + colLogo + '</td>'
+      tabla += '<td>' + trabajos[p][\"num_tienda\"] + '</td>'
+      tabla += '<td>' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
+      tabla += '<td>' + trabajos[p][\"FechaPedido\"] + '</td>'
 
-      if(mismoTrabajo == true) {
-        tabla += '<td rowspan=\"' + countTrabajos + '\">'
-        if (trabajos[p]['id_boceto'] != null) {
-          tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
-        } else {
-          tabla += 'No Existe Boceto'
-        }
-        tabla += '</td>'
-                
-        tabla += '<td rowspan=\"' + countTrabajos + '\">'
-
-        if (trabajos[p]['pdf'] != null) {
-          tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
-        } else {
-          tabla += 'Falta Orden Trabajo'
-        }
-        tabla += '</td>'
+      tabla += '<td>'
+      if (trabajos[p]['id_boceto'] != null) {
+        tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
+      } else {
+        tabla += 'No Existe Boceto'
       }
+      tabla += '</td>'
+              
+      tabla += '<td>'
+
+      if (trabajos[p]['pdf'] != null) {
+        tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
+      } else {
+        tabla += 'Falta Orden Trabajo'
+      }
+      tabla += '</td>'
       tabla += '</tr>'
-      countTrabajos--;
     }
     tabla += '</table>'
     tabla = elementFromHtml(tabla)
@@ -199,14 +172,23 @@
 
   echo "<h1>Ordenes de trabajo Serigrafía</h1>
       <div id='divInputs'>
-      <label>Ejercicio<input type='text' id='filtro_ejercicio' onchange='filtrar()'></label>
-      <label>Serie<input type='text' id='filtro_serie' onchange='filtrar()'></label>
-      <label>Número<input type='text' id='filtro_num' onchange='filtrar()'></label>
-      <div class='boton-de-pega'>Buscar</div>
-      <label>Número cliente<input type='text' id='filtro_codigo' onchange='filtrar()'></label>
-      <label>CIF/NIF<input type='text' id='filtro_cif_nif' onchange='filtrar()'></label>
-      <button id='mostrarTodos' class='boton-de-pega' onclick='mostrarTodos()'>Mostrar todos</button>
-      </div>";
+        <label>Ejercicio<input type='text' id='filtro_ejercicio' onchange='filtrar()'></label>
+        <label>Serie<input type='text' id='filtro_serie' onchange='filtrar()'></label>
+        <label>Número<input type='text' id='filtro_num' onchange='filtrar()'></label>
+        <div class='boton-de-pega'>Buscar</div>
+        <label>Número cliente<input type='text' id='filtro_codigo' onchange='filtrar()'></label>
+        <label>CIF/NIF<input type='text' id='filtro_cif_nif' onchange='filtrar()'></label>
+        <button id='mostrarTodos' class='boton-de-pega' onclick='mostrarTodos()'>Mostrar todos</button>
+      </div>
+      <form id='inputsOcultos' method='post' action='../pedidos/datospedido.php'>
+        <input type='hidden' name='IdDelegacion' id='IdDelegacion' value=''/>
+        <input type='hidden' name='EjercicioPedido' id='EjercicioPedido' value=''/>
+        <input type='hidden' name='SeriePedido' id='SeriePedido' value=''/>
+        <input type='hidden' name='NumeroPedido' id='NumeroPedido' value=''/>
+        <input type='hidden' name='CodigoCliente' id='CodigoCliente' value=''/>
+        <input type='hidden' name='RazonSocial' id='RazonSocial' value=''/>
+        <input type='hidden' name='Estado' id='Estado' value=''/>
+      </form>";
   echo "
     <div id='divTabla'></div>
   ";

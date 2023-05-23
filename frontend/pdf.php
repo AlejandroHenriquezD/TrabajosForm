@@ -62,23 +62,23 @@ class PDF extends FPDF
 			self::$localidad = utf8_decode("Localidad: " . $domicilio[array_search($tienda, $almacen)][1]);
 			self::$codigo_postal = utf8_decode("Código Postal: " . $domicilio[array_search($tienda, $almacen)][2]);
 			self::$municipio = utf8_decode("Municipio: " . $domicilio[array_search($tienda, $almacen)][3]);
-			self::$n_ped_venta = utf8_decode('P. venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido);
+			self::$n_ped_venta = utf8_decode($ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido);
 			foreach ($pedidos as $pedido) {
 				if (
 					$pedido['EjercicioPedido'] == $ejercicio_pedido &&
 					$pedido['SeriePedido'] == $serie_pedido &&
 					$pedido['NumeroPedido'] == $numero_pedido
 				) {
-					$this->SetXY(150, 21);
-					self::$fecha_pedido = utf8_decode('Fecha pedido: ' . substr($pedido['FechaPedido']['date'], 0, 10));
-					self::$CifDni = utf8_decode('Cif/Dni: ' . $pedido['CifDni']);
-					self::$RazonSocial = utf8_decode('Razón Social: ' . $pedido['RazonSocial']);
-					self::$NombreCliente = utf8_decode('Nombre: ' . $pedido['Nombre']);
-					self::$Domicilio = utf8_decode('Domicilio: ' . $pedido['Domicilio']);
-					self::$CodigoPostal = utf8_decode('Código Postal: ' . $pedido['CodigoPostal']);
-					self::$Municipio = utf8_decode('Municipio: ' . $pedido['Municipio']);
-					self::$Email = utf8_decode('Email: ' . $pedido['Email1']);
-					self::$Telefono = utf8_decode('Teléfono: ' . $pedido['Telefono']);
+					// $this->SetXY(150, 21);
+					self::$fecha_pedido = utf8_decode(substr($pedido['FechaPedido']['date'], 0, 10));
+					self::$CifDni = utf8_decode($pedido['CifDni']);
+					self::$RazonSocial = utf8_decode($pedido['RazonSocial']);
+					self::$NombreCliente = utf8_decode($pedido['Nombre']);
+					self::$Domicilio = utf8_decode($pedido['Domicilio']);
+					self::$CodigoPostal = utf8_decode($pedido['CodigoPostal']);
+					self::$Municipio = utf8_decode($pedido['Municipio']);
+					self::$Email = utf8_decode($pedido['Email1']);
+					self::$Telefono = utf8_decode($pedido['Telefono']);
 				}
 			}
 		}
@@ -110,8 +110,15 @@ class PDF extends FPDF
 
 		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 25);
+		$this->Cell(0, 1, utf8_decode('Fecha pedido: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(130, 25);
 		$this->Cell(0, 1, self::$fecha_pedido, 0, 1, 'L');
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(150, 25);
+		$this->Cell(0, 1, utf8_decode('P. venta: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 11);
+		$this->SetXY(163, 25);
 		$this->Cell(0, 1, self::$n_ped_venta, 0, 1, 'L');
 
 		$this->Line(70, 30, 200, 30);
@@ -121,22 +128,59 @@ class PDF extends FPDF
 		$this->Cell(0, 1, utf8_decode('Datos del cliente'), 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-
 		$this->SetXY(70, 40);
+		$this->Cell(0, 1, utf8_decode('Teléfono: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(84, 40);
 		$this->Cell(0, 1, self::$Telefono, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(70, 45);
+		$this->Cell(0, 1, utf8_decode('Código Postal: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(90, 45);
 		$this->Cell(0, 1, self::$CodigoPostal, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(70, 50);
+		$this->Cell(0, 1, utf8_decode('Cif/Dni: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(81, 50);
 		$this->Cell(0, 1, self::$CifDni, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 35);
+		$this->Cell(0, 1, utf8_decode('Razón Social: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(129, 35);
 		$this->Cell(0, 1, self::$RazonSocial, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 40);
+		$this->Cell(0, 1, utf8_decode('Nombre: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(124, 40);
 		$this->Cell(0, 1, self::$NombreCliente, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 45);
+		$this->Cell(0, 1, utf8_decode('Domicilio: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(125, 45);
 		$this->Cell(0, 1, self::$Domicilio, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 50);
+		$this->Cell(0, 1, utf8_decode('Municipio: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(125, 50);
 		$this->Cell(0, 1, self::$Municipio, 0, 1, 'L');
+
+		$this->SetFont('SourceSansPro', '', 9);
 		$this->SetXY(110, 55);
+		$this->Cell(0, 1, utf8_decode('Email: '), 0, 1, 'L');
+		$this->SetFont('SourceSansPro', 'B', 9);
+		$this->SetXY(120, 55);
 		$this->Cell(0, 1, self::$Email, 0, 1, 'L');
 	}
 
@@ -354,12 +398,13 @@ foreach ($data as $articulo) {
 			$trabajo['serie_pedido'] == $serie_pedido &&
 			$trabajo['numero_pedido'] == $numero_pedido
 		) {
-			// echo stripslashes($trabajo['descripcion_articulo']) . "<br>";
+			$trabajoreplaced = str_replace('[guion]', '-', stripslashes($trabajo['descripcion_articulo']));
+			// echo $trabajoreplaced . "<br>";
 			// echo $descripcion_articulo . "<br><br>";
 			if (
 				$trabajo['codigo_articulo'] == $codigo_articulo &&
-				str_contains($descripcion_articulo, stripslashes($trabajo['descripcion_articulo']))
-				// stripslashes($trabajo['descripcion_articulo']) == $descripcion_articulo
+				// str_contains($descripcion_articulo, stripslashes($trabajo['descripcion_articulo']))
+				$trabajoreplaced == $descripcion_articulo
 			) {
 
 				$trabajosFiltrados[$index] = $trabajo;

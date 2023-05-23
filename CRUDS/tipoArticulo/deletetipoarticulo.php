@@ -19,7 +19,7 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "DELETE FROM `tipos_articulos` WHERE id =" . $id ;
+$sql = "UPDATE `tipos_articulos` SET `habilitado` = 0 WHERE id =" . $id ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -33,7 +33,7 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 mysqli_stmt_execute($stmt);
 
 $_SESSION['confirmarAccion'] = "./tipoArticulo/tiposarticulo.php";
-$_SESSION['mensajeAccion'] = "Tipo de artículo eliminado";
+$_SESSION['mensajeAccion'] = "Tipo de artículo desabilitado";
 header("location:../tipoArticulo/tiposarticulo.php");
 ?>
 <?php include "./menuTipoArticulo.php" ?>

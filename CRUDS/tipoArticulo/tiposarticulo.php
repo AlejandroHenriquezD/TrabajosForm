@@ -33,7 +33,7 @@
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
                     <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
                     <td><div class=\"td-botones\">
-                        <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+                        <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Desabilitar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatetipoarticulo.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input>
