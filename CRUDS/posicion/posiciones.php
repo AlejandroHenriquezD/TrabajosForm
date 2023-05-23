@@ -31,7 +31,7 @@
             "<tr class='fila'>
                     <td>" . $posiciones[$p]["descripcion"] . "</td>
                     <td> 
-                        <form action='deletepos.php'> <input name='id[]' type='hidden' value=" . $posiciones[$p]["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+                        <form action='deletepos.php'> <input name='id[]' type='hidden' value=" . $posiciones[$p]["id"] . "></input> <button>Desabilitar<ion-icon name='trash'></button> </form> 
                         
                         <form action='formupdatepos.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $posiciones[$p]["id"] . "></input>
