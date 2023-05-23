@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body onload='filtrar()'>
@@ -42,12 +42,22 @@
 
 
   for ($p = 0; $p < count($trabajos); $p++) {
-    $posiciones[$p] = array();
     $posiciones[$p] = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
     $tipos_trabajo[$p] = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
     $logos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
+
+  // $posicionesData = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+  // $tiposTrabajoData = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+  // $logosData = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+  // $bocetosData = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
+  // foreach ($trabajos as $trabajo) {
+  //   $posiciones[$trabajo['id_posicion']] = $posicionesData[$trabajo['id_posicion']];
+  //   $tipos_trabajo[$trabajo['id_tipo_trabajo']] = $tiposTrabajoData[$trabajo['id_tipo_trabajo']];
+  //   $logos[$trabajo['id_logo']] = $logosData[$trabajo['id_logo']];
+  //   $bocetos[$trabajo['id_boceto']] = $bocetosData[$trabajo['id_boceto']];
+  // }
 
   $pedidos = json_encode($pedidos);
   $pedidosnopen = json_encode($pedidosnopen);

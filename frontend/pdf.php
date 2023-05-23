@@ -62,7 +62,7 @@ class PDF extends FPDF
 			self::$localidad = utf8_decode("Localidad: " . $domicilio[array_search($tienda, $almacen)][1]);
 			self::$codigo_postal = utf8_decode("Código Postal: " . $domicilio[array_search($tienda, $almacen)][2]);
 			self::$municipio = utf8_decode("Municipio: " . $domicilio[array_search($tienda, $almacen)][3]);
-			self::$n_ped_venta = utf8_decode('Número pedido de venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido);
+			self::$n_ped_venta = utf8_decode('P. venta: ' . $ejercicio_pedido . '/' . $serie_pedido . '/' . $numero_pedido);
 			foreach ($pedidos as $pedido) {
 				if (
 					$pedido['EjercicioPedido'] == $ejercicio_pedido &&
@@ -354,14 +354,16 @@ foreach ($data as $articulo) {
 			$trabajo['serie_pedido'] == $serie_pedido &&
 			$trabajo['numero_pedido'] == $numero_pedido
 		) {
-
+			// echo stripslashes($trabajo['descripcion_articulo']) . "<br>";
+			// echo $descripcion_articulo . "<br><br>";
 			if (
 				$trabajo['codigo_articulo'] == $codigo_articulo &&
-				stripslashes($trabajo['descripcion_articulo']) == $descripcion_articulo
+				str_contains($descripcion_articulo, stripslashes($trabajo['descripcion_articulo']))
+				// stripslashes($trabajo['descripcion_articulo']) == $descripcion_articulo
 			) {
 
 				$trabajosFiltrados[$index] = $trabajo;
-				$index .= 1;
+				$index += 1;
 			}
 		}
 	}
@@ -473,6 +475,6 @@ $pdf->Cell(70, 20, '', 1, 0, 'L');
 
 $pdf->AliasNbPages();
 
-$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
-// $pdf->Output();
+// $pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+$pdf->Output();
 
