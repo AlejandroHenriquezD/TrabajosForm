@@ -1,6 +1,6 @@
-<?php 
-  session_start(); 
-  $_SESSION["Volver"] = "./clientes.php";
+<?php
+session_start();
+$_SESSION["Volver"] = "./clientes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,20 @@
     $_SESSION['numero_cliente'] = $_POST['numero_cliente'];
   }
   echo "
-  <h1>DATOS CLIENTE</h1>
+  <div class='titulo-mas-boton'>
+    <h1>DATOS CLIENTE</h1>
+    <form action='formupdatecliente.php' method='post'> 
+      <input name='id[]' type='hidden' value=" . urlencode($_SESSION['id']) . "></input>
+      <input name='nombre[]' type='hidden' value=" . urlencode($_SESSION['nombre']) . "></input>
+      <input name='telefono[]' type='hidden' value=" . urlencode($_SESSION['telefono']) . "></input>
+      <input name='correo[]' type='hidden' value=" . urlencode($_SESSION['correo']) . "></input>
+      <input name='dirección[]' type='hidden' value=" . urlencode($_SESSION['dirección']) . "></input>
+      <input name='cif_nif[]' type='hidden' value=" . urlencode($_SESSION['cif_nif']) . "></input>
+      <input name='numero_cliente[]' type='hidden' value=" . urlencode($_SESSION['numero_cliente']) . "></input>
+      <input name='razon_social[]' type='hidden' value=" . urlencode($_SESSION['razon_social']) . "></input> 
+      <button>Editar<ion-icon name='create'></button> 
+    </form>
+  </div>
   <div id='divDatosCliente'>
     <div>
       <p class='tituloDatos'>Nombre</p>

@@ -114,6 +114,7 @@
         }
       }
     }
+  
     trabajos = trabajostemp;
     
     
@@ -122,9 +123,9 @@
 
     for(var p=0; p<trabajos.length; p++) {
       if (trabajos[p]['id_logo'] == null) {
-        var colLogo = \"No hay logo\";
+        logoHTML = \"No hay logo\";
       } else {
-        var colLogo = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height=150px>\";
+        logoHTML = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height='150px'>\";
       }
       tabla += '<td>' + trabajos[p][\"num_tienda\"] + '</td>'
       tabla += '<td>' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
@@ -148,14 +149,19 @@
       tabla += '</td>'
       tabla += '</tr>'
     }
-    tabla += '</table>'
-    tabla = elementFromHtml(tabla)
+  
+    tabla += '</table>';
+    tabla = elementFromHtml(tabla);
+  
     var divTabla = document.getElementById('divTabla');
-    if(document.getElementById('tablaTrabajos') != null){
+  
+    if (document.getElementById('tablaTrabajos') != null) {
       divTabla.removeChild(document.getElementById('tablaTrabajos'));
     }
+  
     divTabla.appendChild(tabla);
   }
+  
 
   function mostrarTodos() {
     if(todos == true) {
