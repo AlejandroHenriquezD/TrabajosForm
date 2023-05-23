@@ -1,5 +1,7 @@
+<?php session_start(); ?>
 <?php
-session_start();
+
+
 $pathinfo = pathinfo($_FILES["pdf"]["name"]);
 
 $base = $pathinfo["filename"];
@@ -10,11 +12,15 @@ $filename = $base . "." . $pathinfo["extension"];
 
 $destination = __DIR__ . "/uploads/" . $filename;
 
+$ejercicio_pedido = $_POST["ejercicio_pedido"][0];
+$serie_pedido = $_POST["serie_pedido"][0];
+$numero_pedido = $_POST["numero_pedido"][0];
 $pdf = "./uploads/" . $filename;
-$ejercicio_pedido = $_POST["ejercicio_pedido"];
-$serie_pedido = $_POST["serie_pedido"];
-$numero_pedido = $_POST["numero_pedido"];
-$firmado = $_POST["firmado"];
+
+
+// if ( ! $terms){
+//     die("Terms must be accepted");
+// }
 
 $host = "localhost";
 $dbname = "centraluniformes";
@@ -29,7 +35,8 @@ $conn = mysqli_connect(hostname: $host,
 if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
-$sql = "UPDATE `trabajos` SET `pdf`='". $pdf ."' , `pdf_firmado`='". $firmado ."' WHERE ejercicio_pedido ='" . $ejercicio_pedido[0] . "' AND serie_pedido ='" . $serie_pedido[0] . "' AND numero_pedido ='". $numero_pedido[0]. "'" ;
+
+$sql = "UPDATE `trabajos` SET `pdf`='". $pdf ."' , `pdf_firmado`='". 1 ."' WHERE ejercicio_pedido ='" . $ejercicio_pedido . "' AND serie_pedido ='" . $serie_pedido . "' AND numero_pedido ='" . $numero_pedido . "'" ;
 
 $stmt = mysqli_stmt_init($conn);
 
@@ -37,37 +44,24 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
-// Replace any characters not \w- in the original filename
-$pathinfo = pathinfo($_FILES["pdf"]["name"]);
-    
-$base = $pathinfo["filename"];
-
-$base = preg_replace("/[^\w-]/", "_", $base);
-
-$filename = $base . "." . $pathinfo["extension"];
-
-$destination = __DIR__ . "/uploads/" . $filename;
-
-// Add a numeric suffix if the file already exists
 $i = 1;
 
 while (file_exists($destination)) {
 
     $filename = $base . "($i)." . $pathinfo["extension"];
     $destination = __DIR__ . "/uploads/" . $filename;
-
+    echo $destination;
     $i++;
 }
 
-if ( ! move_uploaded_file($_FILES["pdf"]["tmp_name"], $destination)) {
+if (!move_uploaded_file($_FILES["pdf"]["tmp_name"], $destination)) {
 
     exit("Can't move uploaded file");
-
 }
 
 mysqli_stmt_execute($stmt);
 
 $_SESSION['confirmarAccion'] = "./pedidos/pedidos.php";
-$_SESSION['mensajeAccion'] = "Orden de trabajo añadida";
-header("location:./CRUDS/pedidos/formañadirpdf.php");
+$_SESSION['mensajeAccion'] = "Orden Firmada Añadida";
+header("location:./CRUDS/pedidos/formpdffirmado.php");
 ?>
