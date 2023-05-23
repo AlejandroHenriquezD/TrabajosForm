@@ -80,61 +80,76 @@
   }
 
   function filtrar() {
-    var trabajos = $trabajos
-    var posiciones = $posiciones
-    var tipos_trabajo = $tipos_trabajo
-    var logos = $logos
-    var bocetos = $bocetos
-    var pedidos = $pedidos
-
-    if(todos == true) {
-      var pedidos = $pedidosnopen
+    var trabajos = $trabajos;
+    var posiciones = $posiciones;
+    var tipos_trabajo = $tipos_trabajo;
+    var logos = $logos;
+    var bocetos = $bocetos;
+    var pedidos = $pedidos;
+  
+    if (todos) {
+      pedidos = $pedidosnopen;
     }
-    if(document.getElementById('filtro_serie').value != ''){
-      var serie = document.getElementById('filtro_serie').value
-      trabajos = trabajos.filter((trabajos) => trabajos.serie_pedido.toUpperCase().includes(serie.toUpperCase()));
-    }
-    if(document.getElementById('filtro_ejercicio').value != ''){
-      var ejercicio = document.getElementById('filtro_ejercicio').value
-      trabajos = trabajos.filter((trabajos) => trabajos.ejercicio_pedido.toString().includes(ejercicio.toString()));
-    }
-    if(document.getElementById('filtro_num').value != ''){
-      var numero = document.getElementById('filtro_num').value
-      trabajos = trabajos.filter((trabajos) => trabajos.numero_pedido.toString().includes(numero.toString()));
-    }
-    if(document.getElementById('filtro_codigo').value != ''){
-      var codigo = document.getElementById('filtro_codigo').value
-      pedidos = pedidos.filter((pedidos) => pedidos.CodigoCliente.toString().includes(codigo.toString()));
-    }
-    if(document.getElementById('filtro_cif_nif').value != ''){
-      var cif_nif = document.getElementById('filtro_cif_nif').value
-      pedidos = pedidos.filter((pedidos) => pedidos.CifDni.includes(cif_nif));
-    }
-
-    trabajostemp = [];
-    for(pedido of pedidos){
-      for(trabajo of trabajos){
-        if(pedido.EjercicioPedido == trabajo.ejercicio_pedido && pedido.NumeroPedido == trabajo.numero_pedido && pedido.SeriePedido == trabajo.serie_pedido){
+  
+    var filtro_serie = document.getElementById('filtro_serie').value.toUpperCase();
+    var filtro_ejercicio = document.getElementById('filtro_ejercicio').value;
+    var filtro_num = document.getElementById('filtro_num').value;
+    var filtro_codigo = document.getElementById('filtro_codigo').value;
+    var filtro_cif_nif = document.getElementById('filtro_cif_nif').value;
+  
+    trabajos = trabajos.filter(trabajo => {
+      return trabajo.serie_pedido.toUpperCase().includes(filtro_serie);
+    });
+  
+    trabajos = trabajos.filter(trabajo => {
+      return trabajo.ejercicio_pedido.toString().includes(filtro_ejercicio);
+    });
+  
+    trabajos = trabajos.filter(trabajo => {
+      return trabajo.numero_pedido.toString().includes(filtro_num);
+    });
+  
+    pedidos = pedidos.filter(pedido => {
+      return pedido.CodigoCliente.toString().includes(filtro_codigo);
+    });
+  
+    pedidos = pedidos.filter(pedido => {
+      return pedido.CifDni.includes(filtro_cif_nif);
+    });
+  
+    var trabajostemp = [];
+  
+    for (var pedido of pedidos) {
+      for (var trabajo of trabajos) {
+        if (
+          pedido.EjercicioPedido == trabajo.ejercicio_pedido &&
+          pedido.NumeroPedido == trabajo.numero_pedido &&
+          pedido.SeriePedido == trabajo.serie_pedido
+        ) {
           trabajostemp.push(trabajo);
         }
       }
     }
+  
     trabajos = trabajostemp;
-    
-    
+  
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Posición</th><th>Código artículo</th><th>Tipo trabajo</th><th>Logo</th><th>Boceto</th><th>Pdf</th></tr>';
-    tabla += '<tr class=\'fila\'>'
-
+    tabla += '<tr class=\"fila\">';
+  
     var countTrabajos = 0;
-    for(var p=0; p<trabajos.length; p++) {
-      if (trabajos[p]['id_logo'] == null) {
-        var colLogo = \"No hay logo\";
-      } else {
-        var colLogo = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height=150px>\";
-      }
+  
+    for (var p = 0; p < trabajos.length; p++) {
+      var logoHTML = '';
       var mismoTrabajo = false;
-      if(countTrabajos == 0) {
-        for(trabajo of trabajos) {
+  
+      if (trabajos[p]['id_logo'] == null) {
+        logoHTML = \"No hay logo\";
+      } else {
+        logoHTML = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height='150px'>\";
+      }
+  
+      if (countTrabajos == 0) {
+        for (var trabajo of trabajos) {
           if (
             trabajo['ejercicio_pedido'] === trabajos[p]['ejercicio_pedido'] &&
             trabajo['serie_pedido'] === trabajos[p]['serie_pedido'] &&
@@ -143,46 +158,52 @@
             countTrabajos++;
           }
         }
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"num_tienda\"] + '</td>'
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
-        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"FechaPedido\"] + '</td>'
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"num_tienda\"] + '</td>';
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>';
+        tabla += '<td rowspan=\"' + countTrabajos + '\">' + trabajos[p][\"FechaPedido\"] + '</td>';
         mismoTrabajo = true;
       }
-      
-      tabla += '<td>' + posiciones[p][\"descripcion\"] + '</td>'
-      tabla += '<td>' + trabajos[p][\"codigo_articulo\"] + '</td>'
-      tabla += '<td>' + tipos_trabajo[p][\"nombre\"] + '</td>'
-      tabla += '<td>' + colLogo + '</td>'
-
-      if(mismoTrabajo == true) {
-        tabla += '<td rowspan=\"' + countTrabajos + '\">'
+  
+      tabla += '<td>' + posiciones[p][\"descripcion\"] + '</td>';
+      tabla += '<td>' + trabajos[p][\"codigo_articulo\"] + '</td>';
+      tabla += '<td>' + tipos_trabajo[p][\"nombre\"] + '</td>';
+      tabla += '<td>' + logoHTML + '</td>';
+  
+      if (mismoTrabajo == true) {
+        tabla += '<td rowspan=\"' + countTrabajos + '\">';
         if (trabajos[p]['id_boceto'] != null) {
-          tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
+          tabla += '<form action=\"../.' + bocetos[p]['pdf'] + '\"><button>Ver Boceto</button></form>';
         } else {
-          tabla += 'No Existe Boceto'
+          tabla += 'No Existe Boceto';
         }
-        tabla += '</td>'
-                
-        tabla += '<td rowspan=\"' + countTrabajos + '\">'
-
+        tabla += '</td>';
+  
+        tabla += '<td rowspan=\"' + countTrabajos + '\">';
+  
         if (trabajos[p]['pdf'] != null) {
-          tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
+          tabla += '<form action=\"../.' + trabajos[p]['pdf'] + '\"><button>Ver Orden Trabajo</button></form>';
         } else {
-          tabla += 'Falta Orden Trabajo'
+          tabla += 'Falta Orden Trabajo';
         }
-        tabla += '</td>'
+        tabla += '</td>';
       }
-      tabla += '</tr>'
+  
+      tabla += '</tr>';
       countTrabajos--;
     }
-    tabla += '</table>'
-    tabla = elementFromHtml(tabla)
+  
+    tabla += '</table>';
+    tabla = elementFromHtml(tabla);
+  
     var divTabla = document.getElementById('divTabla');
-    if(document.getElementById('tablaTrabajos') != null){
+  
+    if (document.getElementById('tablaTrabajos') != null) {
       divTabla.removeChild(document.getElementById('tablaTrabajos'));
     }
+  
     divTabla.appendChild(tabla);
   }
+  
 
   function mostrarTodos() {
     if(todos == true) {
