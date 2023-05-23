@@ -15,7 +15,7 @@ $_SESSION["Volver"] = "./pedidos.php";
 <body>
 
 
-    <form action="../../createpdf.php" method="post" enctype="multipart/form-data">
+    <form action="../../updatepdffirmado.php" method="post" enctype="multipart/form-data">
 
 
         <?php
@@ -27,21 +27,7 @@ $_SESSION["Volver"] = "./pedidos.php";
         }
         echo "<h1>Pedido " . $_SESSION["ejercicio_pedido"] . '/' . $_SESSION["serie_pedido"] .  '/' . $_SESSION["numero_pedido"] . "</h1>";
         echo "<h2>Cliente " . $_SESSION["CodigoCliente"] . "</h2>";
-        $host = "localhost";
-        $dbname = "centraluniformes";
-        $username = "root";
-        $password = "";
-
-        $conn = mysqli_connect(
-            hostname: $host,
-            username: $username,
-            password: $password,
-            database: $dbname
-        );
-
-        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"];
-
-        $result = mysqli_query($conn, $sql);
+       
 
 
 
@@ -53,22 +39,7 @@ $_SESSION["Volver"] = "./pedidos.php";
 
                 <label for='pdf'>Añadir PDF</label>
                 <input required accept='application/pdf' type='file' id='pdf' name='pdf'/>
-                <label for='firmado'>Firmado</label>
-                <input type='checkbox' name='firmado' id='firmado' value='1' onclick='clickado()'></input>
-
-                <script>
-                function clickado(){
-                    var firmadoInput = document.getElementById('firmado');
-                    var firmado = firmadoInput.checked ? 1 : 0;
-                    firmadoInput.value = firmado;
-                }
-                </script>
-                ";
-
-
-
-        echo "
-                <button>Añadir</button>"
+                    <button>Añadir</button>"
         ?>
     </form>
     <?php
