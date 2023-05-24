@@ -12,7 +12,7 @@ $destination = __DIR__ . "/uploads/" . $filename;
 
 $img = "./uploads/" . $filename;
 $img_vectorizada = "FALTA";
-$id_cliente = $_POST["id_cliente"];
+$id_cliente = $_POST["id"];
 
 // if ( ! $terms){
 //     die("Terms must be accepted");
@@ -141,6 +141,6 @@ if (!move_uploaded_file($_FILES["img"]["tmp_name"], $destination)) {
 }
 
 $_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
-$_SESSION['mensajeAccion'] = "Archivo subido";
-header("location:./CRUDS/logos/formcreatelogo.php");
+$_SESSION['mensajeAccion'] = "Logo subido";
+header("location:./CRUDS/clientes/datoscliente.php");
 

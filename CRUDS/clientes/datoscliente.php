@@ -74,10 +74,9 @@ $_SESSION["Volver"] = "./clientes.php";
   </div>
   <div class='titulo-mas-boton'>
     <h1>LOGOS</h1>
-    <form action='../logos/formcreatelogo.php' method='post'> 
+    <form action='../../createlogo.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-      <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <button id='boton-crear'>Subir Logo</button>
+      <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirboceto\").submit()'/>
     </form>
   </div>
   <table id='tablaClientes'>
@@ -155,11 +154,11 @@ $_SESSION["Volver"] = "./clientes.php";
   echo "
   <div class='titulo-mas-boton'>
     <h1>BOCETOS</h1>
-    <form action='../bocetos/formcreateboceto.php' method='post'> 
+    <form action='../../createboceto.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
       <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
       <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <button id='boton-crear'>Subir Boceto</button>
+      <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirlogo\").submit()'/>
     </form>
   </div>
   <table>

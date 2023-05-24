@@ -171,7 +171,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         logoHTML = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height='150px'>\";
       }
 
-      tabla += '<td><form id=\"fecha-inicio\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
+      tabla += '<td><form id=\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
       tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
       tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
       tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
@@ -216,7 +216,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       tabla += '</td>'
 
-      tabla += '<td><form id=\"fecha-terminado\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
+      tabla += '<td><form id=\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
       tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
       tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
       tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'

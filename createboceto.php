@@ -10,9 +10,9 @@ $filename = $base . "." . $pathinfo["extension"];
 
 $destination = __DIR__ . "/uploads/" . $filename;
 
-$nombre = $_POST["nombre"];
+$nombre = $filename;
 $pdf = "./uploads/" . $filename;
-$id_cliente = $_POST["id_cliente"];
+$id_cliente = $_POST["id"];
 $numero_cliente = $_POST["numero_cliente"];
 
 
@@ -80,5 +80,5 @@ mysqli_stmt_execute($stmt);
 
 // echo "Registro Guardado."; 
 $_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
-$_SESSION['mensajeAccion'] = "Archivo subido";
-header("location:./CRUDS/bocetos/formcreateboceto.php");
+$_SESSION['mensajeAccion'] = "Logo subido";
+header("location:./CRUDS/clientes/datoscliente.php");
