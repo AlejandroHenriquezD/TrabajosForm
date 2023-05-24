@@ -1,6 +1,6 @@
-<?php 
-session_start(); 
-$_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php'; 
+<?php
+session_start();
+$_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,10 +23,10 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   $password = "";
 
   $conn = mysqli_connect(
-      hostname: $host,
-      username: $username,
-      password: $password,
-      database: $dbname
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
   );
 
   $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido FROM `trabajos`";
@@ -63,7 +63,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
 
-  for($i = 0; $i < count($pedidos); $i++) {
+  for ($i = 0; $i < count($pedidos); $i++) {
     $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
@@ -162,7 +162,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     trabajos = trabajostemp;
     pedidos = pedidostemp;
     
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Fecha fin</th></tr>';
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th></tr>';
     
     for(var p=0; p<trabajos.length; p++) {
       tabla += '<tr class=\"fila\">'
@@ -202,6 +202,15 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       } else {
         tabla += 'Falta Orden Trabajo'
       }
+      tabla += '</td>'
+
+      tabla += '<td>'
+      tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
+      tabla += '<input name=\'ejercicio_pedido2\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
+      tabla += '<input name=\'serie_pedido2\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
+      tabla += '<input name=\'numero_pedido2\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
+      tabla += '<button>Borrar trabajos<ion-icon name=\'trash\'></button>' 
+      tabla += '</form>'
       tabla += '</td>'
 
       tabla += '<td><form id=\"fecha-terminado\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
