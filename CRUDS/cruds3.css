@@ -319,14 +319,16 @@ ion-icon {
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   display: grid;
+  padding-top: 15px;
+  padding-bottom: 15px;
   grid-template-columns: repeat(3, 2fr) 1fr;
 }
 
 #divInputs label {
   justify-self: center;
   width: 70%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   font-weight: 700;
 }
 
@@ -463,6 +465,32 @@ input[type=submit]{
 #tablaClientes {
   width: min-content;
 }
+
+#formUpdate {
+  border-radius: 5px;
+  padding: 20px;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  align-items: center;
+}
+
+#formUpdate button {
+  margin-top: 20px;
+  width: 100%;
+}
+
+#gridForm {
+  display: grid;
+  row-gap: 10px;
+  column-gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#gridForm div {
+  display: flex;
+  flex-direction: column;
+}
+
 
 @media only screen and (max-width: 1350px) {
   table {

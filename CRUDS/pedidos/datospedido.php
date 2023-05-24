@@ -11,7 +11,7 @@ $_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body>
