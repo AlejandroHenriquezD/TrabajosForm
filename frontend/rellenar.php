@@ -79,7 +79,14 @@ $divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select nam
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
+  $sql = "SELECT * FROM `trabajos` 
+          WHERE ejercicio_pedido =" . $pedidos[$o]['EjercicioPedido'] .  " 
+          AND serie_pedido ='" . $pedidos[$o]['SeriePedido'] .  "'
+          AND numero_pedido =" . $pedidos[$o]['NumeroPedido'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) == 0) { 
+    $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
+  }
 }
 $divPedidos .= "</select></div>";
 
