@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Articulos</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds.css">
+    <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -33,8 +33,17 @@
                     <td>" . $tipo_articulos[$p]["nombre"] . "</td>
                     <td><img src='../." . $tipo_articulos[$p]["img"] . "' alt='hola' height=150px></td>
                     <td><div class=\"td-botones\">
-                        <form action='deletetipoarticulo.php'> <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> <button>Desabilitar<ion-icon name='trash'></button> </form> 
+                        <form action='deletetipoarticulo.php'> 
+                            <input name='id' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input> 
+                            <input name='habilitado' type='hidden' value=" . $tipo_articulos[$p]["habilitado"] . "></input>";
+                            if($tipo_articulos[$p]["habilitado"] == 0) {
+                                echo "<button>Habilitar<ion-icon name='arrow-redo-circle'></button>";
+                            } else {
+                                echo "<button>Deshabilitar<ion-icon name='trash'></button>";
+                            }
                         
+                        echo "
+                        </form> 
                         <form action='formupdatetipoarticulo.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $tipo_articulos[$p]["id"] . "></input>
                             <input name='nombre[]' type='hidden' value=" . urlencode($tipo_articulos[$p]["nombre"]) . "></input> 

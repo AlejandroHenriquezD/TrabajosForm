@@ -17,7 +17,7 @@ if (mysqli_connect_errno()) {
 
 if(isset($_POST["fecha_inicio"])) {
   $sql = "UPDATE `trabajos` 
-          SET `fecha_inicio`=". $_POST["fecha_inicio"] ." 
+          SET `fecha_inicio`='". $_POST["fecha_inicio"] ."'
           WHERE num_tienda = '" . $_POST["num_tienda"] . "' 
           AND ejercicio_pedido ='" . $_POST["ejercicio_pedido"] . "'
           AND serie_pedido ='" . $_POST["serie_pedido"] . "'
@@ -32,16 +32,15 @@ if(isset($_POST["fecha_inicio"])) {
   echo $_POST["id_boceto"] . "<br>";
   echo $_POST["pdf"] . "<br>";
   echo $_POST["FechaPedido"] . "<br>";
-} else {
+} else if (isset($_POST["fecha_terminado"])){
+  echo $_POST["fecha_terminado"];
   $sql = "UPDATE `trabajos` 
-          SET `fecha_terminado`=". $_POST["fecha_terminado"] ." 
-          WHERE num_tienda = '" . $_POST["num_tienda"] . "' 
-          AND ejercicio_pedido ='" . $_POST["ejercicio_pedido"] . "'
-          AND serie_pedido ='" . $_POST["serie_pedido"] . "'
-          AND numero_pedido ='". $_POST["numero_pedido"]. "'
-          AND id_boceto ='". $_POST["id_boceto"]. "'
-          AND pdf ='". $_POST["pdf"]. "'
-          AND FechaPedido ='". $_POST["FechaPedido"]. "'
+          SET `fecha_terminado`='". $_POST["fecha_terminado"] ."' 
+          WHERE num_tienda='". $_POST["num_tienda"] . "'
+          AND ejercicio_pedido='" . $_POST["ejercicio_pedido"] . "'
+          AND serie_pedido='" . $_POST["serie_pedido"] . "'
+          AND numero_pedido='". $_POST["numero_pedido"]. "'
+          AND FechaPedido='". $_POST["FechaPedido"]. "'
           ";
 }
 

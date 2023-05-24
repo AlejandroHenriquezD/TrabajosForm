@@ -37,6 +37,12 @@ input[type=file] {
   font-family: "Tilt Neon", cursive;
 }
 
+input[type=date] {
+  border-radius: 5px;
+  font-family: "Tilt Neon", cursive;
+  border: 1px solid #000;
+}
+
 input::file-selector-button {
   font-family: "Tilt Neon", cursive;
   background-color: #0e1c2e;

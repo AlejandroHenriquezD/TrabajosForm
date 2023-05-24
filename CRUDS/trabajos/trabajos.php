@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar()'>
@@ -29,7 +29,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     database: $dbname
   );
 
-  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido FROM `trabajos`";
+  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido, fecha_inicio, fecha_terminado FROM `trabajos`";
 
   $result = mysqli_query($conn, $sql);
   $trabajos = [];
