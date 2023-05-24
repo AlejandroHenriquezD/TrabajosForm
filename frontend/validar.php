@@ -111,10 +111,6 @@
       // Si el formulario es válido, te lo indico
 
       for (var i = 0; i < valido.length; i++) {
-        console.log(msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2]);
-        console.log(msgArt[i].id)
-        console.log('msg-art-' + id[1] + "-" + id[2])
-        console.log("----------")
         if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1] + "-" + id[2])) {
           let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + msgArt[i].id.split('-')[3] + "'><p>Seleccione un tipo de artículo</p></div>");
           msgArt[i].appendChild(msg);
