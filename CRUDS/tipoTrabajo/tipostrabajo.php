@@ -31,8 +31,16 @@
             "<tr class='fila'>
                     <td>" . $tipo_trabajos[$p]["nombre"] . "</td>
                     <td> 
-                        <form action='deletetipotrabajo.php'> <input name='id[]' type='hidden' value=" . $tipo_trabajos[$p]["id"] . "></input> <button>Desabilitar<ion-icon name='trash'></button> </form> 
-                        
+                        <form action='deletetipotrabajo.php'> 
+                            <input name='id' type='hidden' value=" . $tipo_trabajos[$p]["id"] . "></input> 
+                            <input name='habilitado' type='hidden' value=" . $tipo_trabajos[$p]["habilitado"] . "></input>";
+                            if($tipo_trabajos[$p]["habilitado"] == 0) {
+                                echo "<button>Habilitar<ion-icon name='arrow-redo-circle'></button>";
+                            } else {
+                                echo "<button>Deshabilitar<ion-icon name='trash'></button>";
+                            }
+                        echo "
+                        </form> 
                         <form action='formupdatetipotrabajo.php' method='post'> 
                             <input name='id[]' type='hidden' value=" . $tipo_trabajos[$p]["id"] . "></input>
                             <input name='nombre[]' type='hidden' value=" . urlencode($tipo_trabajos[$p]["nombre"]) . "></input> 
