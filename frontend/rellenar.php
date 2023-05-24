@@ -22,6 +22,7 @@ if (isset($_SESSION['usuario'])) {
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
 $articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
+$articulosColor = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos_color.php"), true);
 // $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
 
 $sql = "SELECT * FROM `tipos_trabajos` WHERE habilitado = 1";
@@ -124,8 +125,20 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\">";
       $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
       $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\")'>" . $articulos[$i]['DescripcionArticulo'];
-      $arrayArticulos[$o] .= "<p class='codigo-color'><b>Color:</b> {$articulos[$i]['CodigoColor_']}</p></label>";
-      $arrayArticulos[$o] .= "</div>";
+      $arrayArticulos[$o] .= "<p class='codigo-color'><b>Colores:</b>";
+      foreach($articulosColor as $articuloColor) {
+        if(
+          $articulos[$i]['CodigoAlmacen'] == $articuloColor['CodigoAlmacen'] &&
+          $articulos[$i]['CodigoArticulo'] == $articuloColor['CodigoArticulo'] &&
+          $articulos[$i]['EjercicioPedido'] == $articuloColor['EjercicioPedido'] &&
+          $articulos[$i]['SeriePedido'] == $articuloColor['SeriePedido'] &&
+          $articulos[$i]['NumeroPedido'] == $articuloColor['NumeroPedido'] &&
+          $articulos[$i]['DescripcionArticulo'] == $articuloColor['DescripcionArticulo']
+        ) {
+          $arrayArticulos[$o] .= " " . $articuloColor['CodigoColor_'];
+        }
+      }
+      $arrayArticulos[$o] .= "</p></label></div>";
     }
   }
   $arrayArticulos[$o] .= "</div></div>";

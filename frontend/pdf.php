@@ -435,9 +435,9 @@ foreach ($data as $articulo) {
 			$header = array('Tipos de trabajo', 'Posiciones');
 			$pdf->TablaTrabajo($header, $trabajosFiltrados, $x + 45);
 			if ($countIzda > count($trabajosFiltrados)) {
-				$pdf->posY += 10 * $countIzda + 35;
+				$pdf->posY += 9 * $countIzda + 30;
 			} else {
-				$pdf->posY += 10 * count($trabajosFiltrados) + 35;
+				$pdf->posY += 9 * count($trabajosFiltrados) + 30;
 			}
 			$pos = "izquierda";
 		}
@@ -446,10 +446,10 @@ foreach ($data as $articulo) {
 }
 
 if ($pos == "derecha") {
-	$pdf->posY += 10 * $countIzda + 35;
+	$pdf->posY += 9 * $countIzda + 30;
 }
 
-$pdf->SaltarPagina(100);
+$pdf->SaltarPagina(50);
 $pdf->SetXY(10, $pdf->posY);
 $pdf->SetFont('SourceSansPro', 'B', 11);
 $pdf->Cell(120, 12, 'OBSERVACIONES', 'B', 0, 'L', false);
@@ -527,5 +527,5 @@ $pdf->firma();
 
 $pdf->AliasNbPages();
 
-$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
-// $pdf->Output();
+// $pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+$pdf->Output();
