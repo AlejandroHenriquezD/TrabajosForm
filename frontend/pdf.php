@@ -527,5 +527,5 @@ $pdf->firma();
 
 $pdf->AliasNbPages();
 
-// $pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
-$pdf->Output();
+$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+// $pdf->Output();

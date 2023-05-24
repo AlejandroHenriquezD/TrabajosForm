@@ -1,9 +1,9 @@
 <?php session_start(); ?>
 <?php
 // echo json_encode($_GET["id"][0]);
-$ejercicio = $_GET["ejercicio_pedido2"];
-$serie = $_GET["serie_pedido2"];
-$numero = $_GET["numero_pedido2"];
+$ejercicio = $_GET["ejercicio_pedido"];
+$serie = $_GET["serie_pedido"];
+$numero = $_GET["numero_pedido"];
 
 // echo $id;
 
@@ -24,7 +24,7 @@ if (mysqli_connect_errno()) {
 }
 
 $sql = "DELETE FROM `trabajos` WHERE ejercicio_pedido = " . $ejercicio . " AND serie_pedido = '" . $serie . "' AND numero_pedido = " . $numero . ";";
-
+    
 $stmt = mysqli_stmt_init($conn);
 
 if (!mysqli_stmt_prepare($stmt, $sql)) {

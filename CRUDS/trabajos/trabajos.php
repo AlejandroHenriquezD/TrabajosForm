@@ -203,14 +203,18 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += 'Falta Orden Trabajo'
       }
       tabla += '</td>'
-
       tabla += '<td>'
-      tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
-      tabla += '<input name=\'ejercicio_pedido2\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
-      tabla += '<input name=\'serie_pedido2\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
-      tabla += '<input name=\'numero_pedido2\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
-      tabla += '<button>Borrar trabajos<ion-icon name=\'trash\'></button>' 
-      tabla += '</form>'
+      if(pedidos[p][\"Estado\"] == 'cancelar'){
+        tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
+        tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
+        tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
+        tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
+        tabla += '<button>Borrar trabajos<ion-icon name=\'trash\'></button>' 
+        tabla += '</form>'
+        tabla += '</td>'
+      } else{
+        tabla += '<p>Trabajo en proceso</p>' 
+      }
       tabla += '</td>'
 
       tabla += '<td><form id=\"fecha-terminado\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
