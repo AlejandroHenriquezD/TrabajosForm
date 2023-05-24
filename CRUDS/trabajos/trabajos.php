@@ -29,7 +29,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       database: $dbname
   );
 
-  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido FROM `trabajos`";
+  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido, fecha_inicio, fecha_terminado FROM `trabajos`";
 
   $result = mysqli_query($conn, $sql);
   $trabajos = [];
@@ -203,7 +203,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += 'Falta Orden Trabajo'
       }
       tabla += '</td>'
-
+      console.log(trabajos[p][\"fecha_terminado\"]);
       tabla += '<td><form id=\"fecha-terminado\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
       tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
       tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
