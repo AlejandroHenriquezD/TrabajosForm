@@ -528,3 +528,9 @@ msg-ped {
   width: 50%;
   float: left;
 }
+
+.codigo-color {
+  margin: 0;
+  position: absolute;
+  left: 80%;
+}

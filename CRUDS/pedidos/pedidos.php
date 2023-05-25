@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION['VolverDatosPedidos'] = './pedidos.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body onload='filtrar();'>
@@ -132,6 +135,13 @@
       tabla += '<td>' + pedido[\"CodigoCliente\"] + '</td>'
       tabla += '<td>' + pedido[\"RazonSocial\"] + '</td>'
       tabla += '<td><div class=\"td-botones\">'
+      tabla += '<form action=\'formpdffirmado.php\' method=\'post\'>'
+      tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
+      tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>'
+      tabla += '<input name=\'numero_pedido[]\' type=\'hidden\' value=' + pedido[\"NumeroPedido\"] + '></input>' 
+      tabla += '<input name=\'CodigoCliente[]\' type=\'hidden\' value=' + pedido[\"CodigoCliente\"] + '></input>'
+      tabla += '<button>Añadir orden de trabajo firmada<ion-icon name=\'create\'></button>'
+      tabla += '</form>'
       tabla += '<form action=\'formupdatepedido.php\' method=\'post\'>'
       tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
       tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>'

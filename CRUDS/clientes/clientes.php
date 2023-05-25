@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body onload='filtrar()'>
@@ -108,7 +108,8 @@ if(clientes.length != 0){
     <input type='hidden' name='cif_nif' id='cif_nif' value=''/>
     <input type='hidden' name='numero_cliente' id='numero_cliente' value=''/>
     <input type='hidden' name='razon_social' id='razon_social' value=''/>
-  </form>"
+  </form>
+  ";
   ?>
   <?php include "./menuCliente.php" ?>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

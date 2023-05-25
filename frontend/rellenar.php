@@ -22,9 +22,40 @@ if (isset($_SESSION['usuario'])) {
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
 $articulos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos.php"), true);
-$tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
-$tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
-$tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+$articulosColor = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_articulos_color.php"), true);
+// $tiposTrabajos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos"), true);
+
+$sql = "SELECT * FROM `tipos_trabajos` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposTrabajos = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposTrabajos[] = $row;
+  }
+}
+
+// $tiposArticulos = json_decode(file_get_contents("http://localhost/trabajosform/tipo_articulos"), true);
+
+$sql = "SELECT * FROM `tipos_articulos` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposArticulos = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposArticulos[] = $row;
+  }
+}
+
+// $tiposPosiciones = json_decode(file_get_contents("http://localhost/trabajosform/posiciones"), true);
+
+$sql = "SELECT * FROM `posiciones` WHERE habilitado = 1";
+$result = mysqli_query($conn, $sql);
+$tiposPosiciones = [];
+if (mysqli_num_rows($result) >= 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $tiposPosiciones[] = $row;
+  }
+}
+
 $logos = array();
 $posicionesArticulos = json_decode(file_get_contents("http://localhost/trabajosform/posiciones_tipo_articulos/"), true);
 $numeroPedidos = count($pedidos);
@@ -48,7 +79,14 @@ $divPedidos = "<div id='pedidos'><div id='divPedidos'><h1>Pedido</h1><select nam
 $divPedidos .= "<option id='pedidoDefault' value='pedidoDefault'>--</option>";
 
 for ($o = 0; $o < $numeroPedidos; $o++) {
-  $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
+  $sql = "SELECT * FROM `trabajos` 
+          WHERE ejercicio_pedido =" . $pedidos[$o]['EjercicioPedido'] .  " 
+          AND serie_pedido ='" . $pedidos[$o]['SeriePedido'] .  "'
+          AND numero_pedido =" . $pedidos[$o]['NumeroPedido'];
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) == 0) { 
+    $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
+  }
 }
 $divPedidos .= "</select></div>";
 
@@ -91,10 +129,23 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $articulos[$i]['SeriePedido'] == $pedidos[$o]['SeriePedido'] &&
       $articulos[$i]['NumeroPedido'] == $pedidos[$o]['NumeroPedido']
     ) {
-      $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
+      $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\">";
       $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
-      $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\")'>" . $articulos[$i]['DescripcionArticulo'] . "</label>";
-      $arrayArticulos[$o] .= "</div>";
+      $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\")'>" . $articulos[$i]['DescripcionArticulo'];
+      $arrayArticulos[$o] .= "<p class='codigo-color'><b>Colores:</b>";
+      foreach($articulosColor as $articuloColor) {
+        if(
+          $articulos[$i]['CodigoAlmacen'] == $articuloColor['CodigoAlmacen'] &&
+          $articulos[$i]['CodigoArticulo'] == $articuloColor['CodigoArticulo'] &&
+          $articulos[$i]['EjercicioPedido'] == $articuloColor['EjercicioPedido'] &&
+          $articulos[$i]['SeriePedido'] == $articuloColor['SeriePedido'] &&
+          $articulos[$i]['NumeroPedido'] == $articuloColor['NumeroPedido'] &&
+          $articulos[$i]['DescripcionArticulo'] == $articuloColor['DescripcionArticulo']
+        ) {
+          $arrayArticulos[$o] .= " " . $articuloColor['CodigoColor_'];
+        }
+      }
+      $arrayArticulos[$o] .= "</p></label></div>";
     }
   }
   $arrayArticulos[$o] .= "</div></div>";

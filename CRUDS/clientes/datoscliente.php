@@ -1,6 +1,6 @@
-<?php 
-  session_start(); 
-  $_SESSION["Volver"] = "./clientes.php";
+<?php
+session_start();
+$_SESSION["Volver"] = "./clientes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body>
@@ -28,7 +28,20 @@
     $_SESSION['numero_cliente'] = $_POST['numero_cliente'];
   }
   echo "
-  <h1>DATOS CLIENTE</h1>
+  <div class='titulo-mas-boton'>
+    <h1>DATOS CLIENTE</h1>
+    <form action='formupdatecliente.php' method='post'> 
+      <input name='id' type='hidden' value=" . urlencode($_SESSION['id']) . "></input>
+      <input name='nombre' type='hidden' value=" . urlencode($_SESSION['nombre']) . "></input>
+      <input name='telefono' type='hidden' value=" . urlencode($_SESSION['telefono']) . "></input>
+      <input name='correo' type='hidden' value=" . urlencode($_SESSION['correo']) . "></input>
+      <input name='dirección' type='hidden' value=" . urlencode($_SESSION['dirección']) . "></input>
+      <input name='cif_nif' type='hidden' value=" . urlencode($_SESSION['cif_nif']) . "></input>
+      <input name='numero_cliente' type='hidden' value=" . urlencode($_SESSION['numero_cliente']) . "></input>
+      <input name='razon_social' type='hidden' value=" . urlencode($_SESSION['razon_social']) . "></input> 
+      <button>Editar<ion-icon name='create'></button> 
+    </form>
+  </div>
   <div id='divDatosCliente'>
     <div>
       <p class='tituloDatos'>Nombre</p>
@@ -61,13 +74,12 @@
   </div>
   <div class='titulo-mas-boton'>
     <h1>LOGOS</h1>
-    <form action='../logos/formcreatelogo.php' method='post'> 
+    <form action='../../createlogo.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-      <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <button id='boton-crear'>Subir Logo</button>
+      <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirboceto\").submit()'/>
     </form>
   </div>
-  <table>
+  <table id='tablaClientes'>
     <tr>
       <th>Imagen</th>
       <th>Imagen Vectorizada/Texto</th>
@@ -142,11 +154,11 @@
   echo "
   <div class='titulo-mas-boton'>
     <h1>BOCETOS</h1>
-    <form action='../bocetos/formcreateboceto.php' method='post'> 
+    <form action='../../createboceto.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
       <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
       <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <button id='boton-crear'>Subir Boceto</button>
+      <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirlogo\").submit()'/>
     </form>
   </div>
   <table>
@@ -306,7 +318,10 @@
       }
     }
   }
-  echo "</table>";
+  echo "
+  </table>
+  <div id='margen-inferior'></div>
+  ";
   if (isset($_SESSION['confirmarAccion'])) {
     include "../confirmarAccion.php";
   }

@@ -7,7 +7,7 @@ body {
   align-items: center;
   font-family: "Tilt Neon", cursive;
   margin: 0;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 button {
@@ -17,6 +17,8 @@ button {
   color: #fff;
   border-radius: 5px;
   font-size: 16px;
+  width: max-content;
+  height: max-content;
 }
 
 form {
@@ -35,6 +37,12 @@ input[type=file] {
   font-family: "Tilt Neon", cursive;
 }
 
+input[type=date] {
+  border-radius: 5px;
+  font-family: "Tilt Neon", cursive;
+  border: 1px solid #000;
+}
+
 input::file-selector-button {
   font-family: "Tilt Neon", cursive;
   background-color: #0e1c2e;
@@ -51,8 +59,8 @@ h1 {
   background: linear-gradient(90deg, rgba(225, 225, 225,0) 0%, rgba(225, 225, 225,0.9) 50%, rgba(225, 225, 225,0) 100%);
   backdrop-filter: blur(5px);
   padding: 5px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin-top: 30px;
   font-size: 32px;
 }
@@ -311,14 +319,16 @@ ion-icon {
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   display: grid;
+  padding-top: 15px;
+  padding-bottom: 15px;
   grid-template-columns: repeat(3, 2fr) 1fr;
 }
 
 #divInputs label {
   justify-self: center;
   width: 70%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   font-weight: 700;
 }
 
@@ -331,7 +341,7 @@ ion-icon {
   align-self: center;
   justify-self: center;
   height: min-content;
-  width: min-content;
+  width: max-content;
   border-radius: 5px;
   background-color: #0e1c2e;
   color:rgb(255, 255, 255);
@@ -456,20 +466,46 @@ input[type=submit]{
   width: min-content;
 }
 
+#formUpdate {
+  border-radius: 5px;
+  padding: 20px;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  align-items: center;
+}
+
+#formUpdate button {
+  margin-top: 20px;
+  width: 100%;
+}
+
+#gridForm {
+  display: grid;
+  row-gap: 10px;
+  column-gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#gridForm div {
+  display: flex;
+  flex-direction: column;
+}
+
+
 @media only screen and (max-width: 1350px) {
-  #tablaClientes {
+  table {
     font-size: 14px;
   }
 }
 
 @media only screen and (max-width: 1200px) {
-  #tablaClientes {
+  table {
     font-size: 12px;
   }
 }
 
 @media only screen and (max-width: 1050px) {
-  #tablaClientes {
+  table {
     font-size: 10px;
   }
 

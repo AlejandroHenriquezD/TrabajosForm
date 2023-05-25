@@ -32,8 +32,15 @@
       for (let inf of inputsFiltrados) {
         // Si hay al menos uno seleccionado se da por válido
         valido = true;
+        
+        // Escapamos el nombre del artículo
+        var posGuion = inf.id.indexOf('-') + 1;
+        posGuion = inf.id.indexOf('-', posGuion) + 1;
+        var nombreArticulo = inf.id.substr(posGuion).replaceAll('-', '[guion]'); 
+        nombreArticulo = CSS.escape(nombreArticulo.replaceAll(" ", ""));
+
         // Añadimos los articulos a la lista de checks
-        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "-" + CSS.escape(inf.id.split('-')[2].replaceAll(" ", "")) + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
+        let msgArt = elementFromHtml("<div class='msg-art' id='msg-art-" + inf.id.split('-')[1] + "-" + nombreArticulo + "'><div class='msg-div'><p id='msg-art-titulo'>" + inf.value + "</p><img id='msg-img-" + inf.id.split('-')[1] + "' src='./img/cancelar.png' alt=''/></div></div>");
         listaCheck.appendChild(msgArt);
       }
 
@@ -102,6 +109,7 @@
       }
 
       // Si el formulario es válido, te lo indico
+
       for (var i = 0; i < valido.length; i++) {
         if (!valido[i] && msgArt[i].id === 'msg-art-' + id[1] + "-" + id[2] && !msgArt[i].querySelector('#tar-' + msgArt[i].id.split('-')[2]) && document.getElementById('tipoArticulos-' + id[1] + "-" + id[2])) {
           let msg = elementFromHtml("<div class='tar' id='tar-" + msgArt[i].id.split('-')[2] + msgArt[i].id.split('-')[3] + "'><p>Seleccione un tipo de artículo</p></div>");

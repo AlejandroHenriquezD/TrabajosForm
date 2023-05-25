@@ -31,6 +31,7 @@ foreach ($_POST['img-input'] as $grupo => $valor) {
   // echo "El valor seleccionado es $valor del grupo $grupo <br>";
 
   var_dump($_FILES);
+  // echo $valor . "<br><br>";
   $valor = explode('-', $valor);
   // echo $valor;
 
