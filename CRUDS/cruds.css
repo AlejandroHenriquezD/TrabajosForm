@@ -529,6 +529,12 @@ td > form > label {
   color: transparent;
 }
 
+.datos-boton {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
 @media only screen and (max-width: 1350px) {
   table {
     font-size: 14px;
