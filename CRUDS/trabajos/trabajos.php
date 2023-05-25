@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds3.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body onload='filtrar()'>
@@ -63,6 +63,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
 
+<<<<<<< HEAD
   $serverName = "192.168.0.23\SQLEXIT,1433";
   $connectionOptions = array(
     "Database" => "ExitERP0415",
@@ -85,6 +86,11 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
     $row_count = sqlsrv_num_rows($getResults);
 
+=======
+  $pedidosListos = array();
+  for ($i = 0; $i < count($pedidos); $i++) {
+    $pedidosListos[$i] = array();
+>>>>>>> d08b8a78d9ed271f90d68552075d2220d6965585
     $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
@@ -105,9 +111,14 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       );
     }
     $pedidos[$i] = array_merge($pedidos[$i], $estado);
+    if($pedidos[$i]['Estado'] == "aceptar") {
+      $pedidosListos[$i] = $pedidos[$i];
+    }
   }
 
+  $pedidosnopenListos = array();
   for ($i = 0; $i < count($pedidosnopen); $i++) {
+<<<<<<< HEAD
     $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
     AND PVC.IdDelegacion = '" . $pedidosnopen[$i]['IdDelegacion'] . "' 
     AND PVC.EjercicioPedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "'
@@ -118,6 +129,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
     $row_count = sqlsrv_num_rows($getResults);
 
+=======
+    $pedidosnopenListos[$i] = array();
+>>>>>>> d08b8a78d9ed271f90d68552075d2220d6965585
     $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidosnopen[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidosnopen[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
@@ -138,10 +152,18 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       );
     }
     $pedidosnopen[$i] = array_merge($pedidosnopen[$i], $estado);
+    if($pedidosnopen[$i]['Estado'] == "aceptar") {
+      $pedidosnopenListos[$i] = $pedidosnopen[$i];
+    }
   }
 
-  $pedidos = json_encode($pedidos);
-  $pedidosnopen = json_encode($pedidosnopen);
+  if(isset($_SESSION['usuario'])) {
+    $pedidos = json_encode($pedidosListos);
+    $pedidosnopen = json_encode($pedidosnopenListos);
+  } else {
+    $pedidos = json_encode($pedidos);
+    $pedidosnopen = json_encode($pedidosnopen);
+  }
   $trabajos = json_encode($trabajos);
   $bocetos = json_encode($bocetos);
 
@@ -226,18 +248,28 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       } else {
         logoHTML = \"<img src='../.\" + logos[p]['img'] + \"' alt='\" + logos[p]['img'] + \"' height='150px'>\";
       }
+      ";
 
-      tabla += '<td><form id=\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
-      tabla += '</form></td>'
-      
-      
+      if(isset($_SESSION['usuario'])) {
+        echo "
+        tabla += '<td><form id=\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
+        tabla += '</form></td>'
+        ";
+      } else { 
+        echo "
+        var fechaInicio = (trabajos[p][\"fecha_inicio\"] != null ? trabajos[p][\"fecha_inicio\"] : 'Fecha no asignada');
+        fechaInicio = fechaInicio.replaceAll('-', '/');
+        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + fechaInicio + '</td>'
+        ";
+      }
+      echo " 
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"num_tienda\"] + '</td>'
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"FechaPedido\"] + '</td>'
@@ -274,17 +306,27 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<p>Trabajo en proceso</p>' 
       }
       tabla += '</td>'
+      ";
 
-      tabla += '<td><form id=\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
-      tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
-      tabla += '</form></td>'
-      
+      if(isset($_SESSION['usuario'])) {
+        echo "
+        tabla += '<td><form id=\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"serie_pedido\" value=' + trabajos[p][\"serie_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"numero_pedido\" value=' + trabajos[p][\"numero_pedido\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"id_boceto\" value=' + trabajos[p][\"id_boceto\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
+        tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
+        tabla += '</form></td>'
+        ";
+      } else {
+        echo "
+        var fechaFin = (trabajos[p][\"fecha_terminado\"] != null ? trabajos[p][\"fecha_terminado\"] : 'Fecha no asignada');
+        fechaFin = fechaFin.replaceAll('-', '/');
+        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + fechaFin + '</td>'";
+      }
+      echo "
       tabla += '</tr>'
     }
   

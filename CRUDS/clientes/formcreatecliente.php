@@ -5,7 +5,7 @@
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../cruds3.css">
+    <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
