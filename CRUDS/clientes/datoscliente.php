@@ -11,7 +11,7 @@ $_SESSION["Volver"] = "./clientes.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds3.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -76,8 +76,11 @@ $_SESSION["Volver"] = "./clientes.php";
     <h1>LOGOS</h1>
     <form action='../../createlogo.php' method='post' id='subirlogo' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-      <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirlogo\").submit()'/>
-    </form>
+      <label for='img'>
+        <div class='boton-de-pega'>Subir logo<ion-icon name='arrow-up-circle'></ion-icon></div>
+        <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirlogo\").submit()'/>
+      </label>
+      </form>
   </div>
   <table id='tablaClientes'>
     <tr>
@@ -139,11 +142,20 @@ $_SESSION["Volver"] = "./clientes.php";
             <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
             <button>Editar Estado<ion-icon name='create'></button> 
           </form>
+        ";
+        if(isset($_SESSION['usuario'])) {
+          echo "
           <form action='../../updatelogo.php' method='post' id='subirvectorizada-" . $logo["id"] . "' enctype='multipart/form-data'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
             <input name='id_logo' type='hidden' value=" . $logo["id"] . "></input>
-            <input required type='file' id='img_vectorizada' name='img_vectorizada' accept='image/*' onchange='document.getElementById(\"subirvectorizada-" . $logo["id"] . "\").submit()' />
+            <label for='img_vectorizada'>
+              <div class='boton-de-pega'>Añadir imagen vectorizada<ion-icon name='arrow-up-circle'></ion-icon></div>
+              <input required type='file' id='img_vectorizada' name='img_vectorizada' accept='image/*' onchange='document.getElementById(\"subirvectorizada-" . $logo["id"] . "\").submit()' />
+            </label>
           </form>
+          ";
+        }
+        echo "
         </td>
       </tr>";
     }
@@ -154,12 +166,21 @@ $_SESSION["Volver"] = "./clientes.php";
   echo "
   <div class='titulo-mas-boton'>
     <h1>BOCETOS</h1>
+  ";
+  if(!isset($_SESSION['usuario'])) {
+    echo "
     <form action='../../createboceto.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
       <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
       <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirboceto\").submit()'/>
+      <label for='pdf'>
+        <div class='boton-de-pega'>Subir boceto<ion-icon name='arrow-up-circle'></ion-icon></div>
+        <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirboceto\").submit()'/>
+      </label>
     </form>
+    ";
+  }
+  echo "
   </div>
   <table>
     <tr>
@@ -194,11 +215,20 @@ $_SESSION["Volver"] = "./clientes.php";
         </td>
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+        ";
+        if(isset($_SESSION['usuario'])) {
+          echo "
           <form action='../../updateboceto.php' method='post' enctype='multipart/form-data' id='bocetofirmado-" . $boceto["id"] . "'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
             <input name='id_boceto' type='hidden' value=" . $boceto["id"] . "></input>
-            <input required type='file' id='boceto' name='boceto' accept='application/pdf' onchange='document.getElementById(\"bocetofirmado-" . $boceto["id"] . "\").submit()'/>
-        </form>
+            <label for='boceto'>
+              <div class='boton-de-pega'>Añadir boceto firmado<ion-icon name='arrow-up-circle'></ion-icon></div>
+              <input required type='file' id='boceto' name='boceto' accept='application/pdf' onchange='document.getElementById(\"bocetofirmado-" . $boceto["id"] . "\").submit()'/>
+            </label>
+          </form>
+          ";
+        }
+        echo "
         </td>
       </tr>";
     }

@@ -17,8 +17,34 @@ button {
   color: #fff;
   border-radius: 5px;
   font-size: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 0;
   width: max-content;
   height: max-content;
+}
+
+.boton-de-pega {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  justify-self: center;
+  height: min-content;
+  width: max-content;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: 400;
+  cursor: pointer;
 }
 
 form {
@@ -35,6 +61,10 @@ input[type=text] {
 
 input[type=file] {
   font-family: "Tilt Neon", cursive;
+  color: transparent;
+  width: 0;
+  height: 0;
+  cursor: pointer;
 }
 
 input[type=date] {
@@ -296,7 +326,7 @@ ion-icon {
 }
 
 #blueball2 {
-  background-color: #0e1c2e;
+  background-color: #f0cb25;
   height: 20vw;
   width: 20vw;
   top: 25vw;
@@ -335,22 +365,6 @@ ion-icon {
 #divInputs label input {
   width: 98%;
   margin-top: 5px;
-}
-
-.boton-de-pega {
-  align-self: center;
-  justify-self: center;
-  height: min-content;
-  width: max-content;
-  border-radius: 5px;
-  background-color: #0e1c2e;
-  color:rgb(255, 255, 255);
-  border: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  cursor: pointer;
 }
 
 #inputsOcultos {
@@ -456,7 +470,27 @@ input[type=submit]{
 .titulo-mas-boton {
   display: flex;
   align-items: center;
+  margin-top: 30px;
+  margin-bottom: 15px;
 }
+
+.titulo-mas-boton > h1{
+  margin: 0;
+  margin-right: 5px;
+}
+
+.titulo-mas-boton > form{
+  margin: 0;
+  margin-left: 5px;
+}
+
+.titulo-mas-boton > form > label,
+td > form > label {
+  margin: 0;
+  height: min-content;
+  display: flex;
+}
+
 
 #boton-crear {
   margin-left: 20px;
@@ -491,6 +525,9 @@ input[type=submit]{
   flex-direction: column;
 }
 
+#subirlogo > input[type=file]{
+  color: transparent;
+}
 
 @media only screen and (max-width: 1350px) {
   table {
