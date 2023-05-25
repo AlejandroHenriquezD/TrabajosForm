@@ -37,26 +37,56 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
     database: $dbname
   );
 
-  for($i = 0; $i < count($pedidos); $i++) {
-    $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
+  $serverName = "192.168.0.23\SQLEXIT,1433";
+  $connectionOptions = array(
+    "Database" => "ExitERP0415",
+    "Uid" => "programacion",
+    "PWD" => "CU_2023",
+    "CharacterSet" => "UTF-8",
+    "TrustServerCertificate" => true
+  );
+  $connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+
+  for ($i = 0; $i < count($pedidos); $i++) {
+    $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
+    AND PVC.IdDelegacion = '" . $pedidos[$i]['IdDelegacion'] . "' 
+    AND PVC.EjercicioPedido = '" . $pedidos[$i]['EjercicioPedido'] . "'
+    AND PVC.SeriePedido = '" . $pedidos[$i]["SeriePedido"] . "'
+    AND PVC.NumeroPedido = '" . $pedidos[$i]["NumeroPedido"] . "'";
+
+    $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia,array(), array( "Scrollable" => 'static' ));
+
+    $row_count = sqlsrv_num_rows($getResults);
+
+
+    $sql = "SELECT id_boceto,pdf,pdf_firmado FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn1, $sql);
     $row = mysqli_fetch_array($result);
     $estado = array();
     if (mysqli_num_rows($result) > 0) {
-      if ($row[0] == "" || $row[1] == "") {
-        $estado = array(
-          'Estado' => "cancelar",
-        );
+      //Comprobamos si el trabajo tiene boceto o no
+      if ($row[0] != "") {
+
+        //Hacemos la query del boceto para saber si esta firmado o no
+        $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
+        $resultBoceto = mysqli_query($conn1, $sqlBoceto);
+        $rowBoceto = mysqli_fetch_array($resultBoceto);
+
+        // Si esta firmado y el pdf no es null estado correcto
+        if ($rowBoceto["firmado"] == 1 && $row["pdf"] != "" && $row["pdf_firmado"] == 1 && $row_count > 0) {
+          $estado = array('Estado' => "aceptar");
+        } else {
+          $estado = array('Estado' => "cancelar");
+        }
       } else {
-        $estado = array(
-          'Estado' => "aceptar",
-        );
+        $estado = array('Estado' => "cancelar");
       }
     } else {
-      $estado = array(
-        'Estado' => "cancelar",
-      );
+      $estado = array('Estado' => "cancelar");
     }
+    // FALTA LAS CONDICIONES PARA EN LAS QUE NO ESTA LISTA LA DOCUMENTACION Y AÑADIR SI LA MERCANCIA ESTA SERVIDA O NO
+
+
     $pedidos[$i] = array_merge($pedidos[$i], $estado);
   }
   $pedidos = json_encode($pedidos);
@@ -95,7 +125,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       var numero = document.getElementById('filtro_numero').value
       pedidos = pedidos.filter((pedidos) => pedidos.NumeroPedido.toString().includes(numero.toString()));
     }
-    var tabla = '<table id=\"tablaClientes\"><tr><th>Tienda</th><th>Ejercicio</th><th>Serie</th><th>Número</th><th>Código cliente</th><th>Razón social</th><th>Acciones</th><th>Estado</th></tr>';
+    var tabla = '<table id=\"tablaClientes\"><tr><th>Tienda</th><th>Ejercicio</th><th>Serie</th><th>Número</th><th>Código cliente</th><th>Razón social</th><th>Acciones</th><th>Estado Documentación</th></tr>';
     for(pedido of pedidos) {
       tabla += '<tr class=\"fila\" onclick=\"datosPedido(\'' + pedido[\"IdDelegacion\"] + '\',\'' + pedido[\"EjercicioPedido\"] + '\',\'' + pedido[\"SeriePedido\"] + '\',\'' + pedido[\"NumeroPedido\"] + '\',\'' + pedido[\"CodigoCliente\"] + '\',\'' + pedido[\"RazonSocial\"] + '\',\'' + pedido[\"Estado\"] + '\')\">'
       tabla += '<td>' + pedido[\"IdDelegacion\"] + '</td>'
