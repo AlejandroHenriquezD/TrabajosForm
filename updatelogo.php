@@ -10,7 +10,7 @@ $filename = $base . "." . $pathinfo["extension"];
 
 $destination = __DIR__ . "/uploads/" . $filename;
 
-$id = $_POST["id"];
+$id_logo = $_POST["id_logo"];
 
 $img_vectorizada = "./uploads/" . $filename;
 
@@ -24,20 +24,22 @@ $dbname = "centraluniformes";
 $username = "root";
 $password = "";
 
-$conn = mysqli_connect(hostname: $host,
-               username: $username,
-               password: $password,
-               database: $dbname);
+$conn = mysqli_connect(
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
+);
 
 if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
-$sql = "UPDATE `logos` SET  `img_vectorizada`='". $img_vectorizada ."'   WHERE id =" . $id[0] ;
+$sql = "UPDATE `logos` SET  `img_vectorizada`='" . $img_vectorizada . "'   WHERE id =" . $id_logo;
 
 $stmt = mysqli_stmt_init($conn);
 
-if (! mysqli_stmt_prepare($stmt, $sql)) {
+if (!mysqli_stmt_prepare($stmt, $sql)) {
     die(mysqli_errno($conn));
 }
 
@@ -78,5 +80,4 @@ mysqli_stmt_execute($stmt);
 //     ';
 $_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
 $_SESSION['mensajeAccion'] = "Imagen vectorizada añadida";
-header("location:./CRUDS/logos/formañadirimagen.php");
-?>
+header("location:./CRUDS/clientes/datoscliente.php");

@@ -80,5 +80,5 @@ mysqli_stmt_execute($stmt);
 
 // echo "Registro Guardado."; 
 $_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
-$_SESSION['mensajeAccion'] = "Logo subido";
+$_SESSION['mensajeAccion'] = "Boceto subido";
 header("location:./CRUDS/clientes/datoscliente.php");

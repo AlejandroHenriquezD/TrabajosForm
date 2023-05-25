@@ -74,9 +74,9 @@ $_SESSION["Volver"] = "./clientes.php";
   </div>
   <div class='titulo-mas-boton'>
     <h1>LOGOS</h1>
-    <form action='../../createlogo.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
+    <form action='../../createlogo.php' method='post' id='subirlogo' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
-      <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirboceto\").submit()'/>
+      <input required type='file' id='img' name='img' accept='image/*' onchange='document.getElementById(\"subirlogo\").submit()'/>
     </form>
   </div>
   <table id='tablaClientes'>
@@ -88,7 +88,6 @@ $_SESSION["Volver"] = "./clientes.php";
       <th>Acciones</th>
     </tr>
   ";
-
   foreach ($logos as $logo) {
     if ($logo['id_cliente'] == $_SESSION['id']) {
       $obsoleto = "";
@@ -140,9 +139,10 @@ $_SESSION["Volver"] = "./clientes.php";
             <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
             <button>Editar Estado<ion-icon name='create'></button> 
           </form>
-          <form action='../logos/formañadirimagen.php' method='post'> 
-            <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
-            <button>Añadir Imagen Vectorizada<ion-icon name='create'></button> 
+          <form action='../../updatelogo.php' method='post' id='subirvectorizada-" . $logo["id"] . "' enctype='multipart/form-data'>
+            <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
+            <input name='id_logo' type='hidden' value=" . $logo["id"] . "></input>
+            <input required type='file' id='img_vectorizada' name='img_vectorizada' accept='image/*' onchange='document.getElementById(\"subirvectorizada-" . $logo["id"] . "\").submit()' />
           </form>
         </td>
       </tr>";
@@ -158,7 +158,7 @@ $_SESSION["Volver"] = "./clientes.php";
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
       <input name='numero_cliente' type='hidden' value=" . $_SESSION['numero_cliente'] . "></input> 
       <input name='razon_social' type='hidden' value='" . $_SESSION['razon_social'] . "'></input> 
-      <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirlogo\").submit()'/>
+      <input required type='file' id='pdf' name='pdf' accept='application/pdf' onchange='document.getElementById(\"subirboceto\").submit()'/>
     </form>
   </div>
   <table>
@@ -194,11 +194,11 @@ $_SESSION["Volver"] = "./clientes.php";
         </td>
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
-          <form action='../bocetos/formupdateboceto.php' method='post'> 
-            <input name='id_boceto[]' type='hidden' value=" . $boceto["id"] . "></input>
-            <input name='nombre[]' type='hidden' value=" . urlencode($boceto["nombre"]) . "></input> 
-            <button>Añadir Boceto Firmado<ion-icon name='create'></button> 
-          </form>
+          <form action='../../updateboceto.php' method='post' enctype='multipart/form-data' id='bocetofirmado-" . $boceto["id"] . "'>
+            <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
+            <input name='id_boceto' type='hidden' value=" . $boceto["id"] . "></input>
+            <input required type='file' id='boceto' name='boceto' accept='application/pdf' onchange='document.getElementById(\"bocetofirmado-" . $boceto["id"] . "\").submit()'/>
+        </form>
         </td>
       </tr>";
     }
