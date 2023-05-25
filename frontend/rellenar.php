@@ -130,9 +130,9 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $articulos[$i]['NumeroPedido'] == $pedidos[$o]['NumeroPedido']
     ) {
       $arrayArticulos[$o] .= "<div id=\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\">";
-      $arrayArticulos[$o] .= "<label for=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
-      $arrayArticulos[$o] .= "<input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\")'>" . $articulos[$i]['DescripcionArticulo'];
-      $arrayArticulos[$o] .= "<p class='codigo-color'><b>Colores:</b>";
+      $arrayArticulos[$o] .= "<label class='label-articulo' for=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
+      $arrayArticulos[$o] .= "<div><input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\")'>" . $articulos[$i]['DescripcionArticulo'] . "</div>";
+      $arrayArticulos[$o] .= "<p class='referencia-articulo'><b>Referencia:</b> " . $articulos[$i]['CodigoArticulo'] . "</p><p class='codigo-color'><b>Colores:</b>";
       foreach($articulosColor as $articuloColor) {
         if(
           $articulos[$i]['CodigoAlmacen'] == $articuloColor['CodigoAlmacen'] &&
@@ -239,7 +239,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
   }
 }
 
-$desplegables = "<div class='desplegable' id='desplegable-codigos' onclick='desplegable(\"tipo-codigos\")'><div class='flecha' id='flecha-codigos'></div></div>";
+$desplegables = "<div class='desplegable' id='desplegable-codigos' onclick='desplegable(\"tipo-codigos\")'><p>textoPadre</p><div class='flecha' id='flecha-codigos'></div></div>";
 
 $pedidos = json_encode($pedidos);
 $clientes = json_encode($clientes);
