@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION["Volver"] = "./clientes.php";
+$_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@ $_SESSION["Volver"] = "./clientes.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
@@ -168,7 +168,7 @@ $_SESSION["Volver"] = "./clientes.php";
   <div class='titulo-mas-boton'>
     <h1>BOCETOS</h1>
   ";
-  if(!isset($_SESSION['usuario'])) {
+  if(isset($_SESSION['usuario'])) {
     echo "
     <form action='../../createboceto.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
@@ -217,7 +217,7 @@ $_SESSION["Volver"] = "./clientes.php";
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
         ";
-        if(isset($_SESSION['usuario'])) {
+        // if(isset($_SESSION['usuario'])) {
           echo "
           <form action='../../updateboceto.php' method='post' enctype='multipart/form-data' id='bocetofirmado-" . $boceto["id"] . "'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
@@ -228,7 +228,7 @@ $_SESSION["Volver"] = "./clientes.php";
             </label>
           </form>
           ";
-        }
+        // }
         echo "
         </td>
       </tr>";

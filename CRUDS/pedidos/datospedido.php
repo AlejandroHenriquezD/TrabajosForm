@@ -1,6 +1,7 @@
 <?php 
 session_start(); 
 $_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
+$_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,43 +12,94 @@ $_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
 </head>
 
 <body>
   <?php
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
+
+  if(isset($_POST['IdDelegacion'])) {
+    $_SESSION['IdDelegacion'] = $_POST['IdDelegacion'];
+    $_SESSION['EjercicioPedido'] = $_POST['EjercicioPedido'];
+    $_SESSION['SeriePedido'] = $_POST['SeriePedido'];
+    $_SESSION['NumeroPedido'] = $_POST['NumeroPedido'];
+    $_SESSION['CodigoCliente'] = $_POST['CodigoCliente'];
+    $_SESSION['RazonSocial'] = $_POST['RazonSocial'];
+    $_SESSION['Estado'] = $_POST['Estado'];
+  }
+
+  $host = "localhost";
+  $dbname = "centraluniformes";
+  $username = "root";
+  $password = "";
+
+  $conn = mysqli_connect(
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
+  );
+
+  $sql = "SELECT *
+          FROM `clientes` 
+          WHERE numero_cliente = '" . $_SESSION['CodigoCliente'] . "'
+          AND razon_social='" . $_SESSION['RazonSocial'] . "'
+          ";
+  $result = mysqli_query($conn, $sql);
+  $cliente = array();
+  if (mysqli_num_rows($result) >= 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $cliente = $row;
+    }
+  }
+
   echo "
   <h1>DATOS PEDIDO</h1>
   <div id='divDatosPedido'>
     <div>
       <p class='tituloDatos'>Tienda</p>
-      <p>" . $_POST['IdDelegacion'] . "</p>
+      <p>" . $_SESSION['IdDelegacion'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Número pedido venta</p>
-      <p>" . $_POST['EjercicioPedido'] . "/" . $_POST['SeriePedido'] . "/" . $_POST['NumeroPedido'] . "</p>
+      <p>" . $_SESSION['EjercicioPedido'] . "/" . $_SESSION['SeriePedido'] . "/" . $_SESSION['NumeroPedido'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Código Cliente</p>
-      <p>" . $_POST['CodigoCliente'] . "</p>
+      <p>" . $_SESSION['CodigoCliente'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Razón social</p>
-      <p>" . $_POST['RazonSocial'] . "</p>
+      <p>" . $_SESSION['RazonSocial'] . "</p>
       </div>";
 
-  if ($_POST['Estado'] == 'cancelar') {
+  if ($_SESSION['Estado'] == 'cancelar') {
     $estado = "No listo";
   } else {
     $estado = "Listo";
   }
 
-  echo "<div>
+  echo "
+    <div>
       <p class='tituloDatos'>Estado</p>
       <p>" . $estado . "</p>
     </div> 
-  </div>";
+    <div class='datos-boton'>
+      <form action='../clientes/datoscliente.php' method='post'>
+        <input type='hidden' name='id' value='" . $cliente['id'] . "'>
+        <input type='hidden' name='nombre' value='" . $cliente['nombre'] . "'>
+        <input type='hidden' name='correo' value='" . $cliente['correo'] . "'>
+        <input type='hidden' name='cif_nif' value='" . $cliente['cif_nif'] . "'>
+        <input type='hidden' name='dirección' value='" . $cliente['dirección'] . "'>
+        <input type='hidden' name='telefono' value='" . $cliente['telefono'] . "'>
+        <input type='hidden' name='razon_social' value='" . $cliente['razon_social'] . "'>
+        <input type='hidden' name='numero_cliente' value='" . $cliente['numero_cliente'] . "'>
+        <button>Ver datos cliente</button> 
+      </form>
+    </div>
+  </div>
+  ";
 
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
@@ -69,9 +121,9 @@ $_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
   $countTrabajos = 0;
   for ($p = 0; $p < count($trabajos); $p++) {
     if (
-      trim($trabajos[$p]['ejercicio_pedido']) === trim($_POST['EjercicioPedido']) &&
-      trim($trabajos[$p]['serie_pedido']) === trim($_POST['SeriePedido']) &&
-      trim($trabajos[$p]['numero_pedido']) === trim($_POST['NumeroPedido'])
+      trim($trabajos[$p]['ejercicio_pedido']) === trim($_SESSION['EjercicioPedido']) &&
+      trim($trabajos[$p]['serie_pedido']) === trim($_SESSION['SeriePedido']) &&
+      trim($trabajos[$p]['numero_pedido']) === trim($_SESSION['NumeroPedido'])
     ) {
       $posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
       $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
