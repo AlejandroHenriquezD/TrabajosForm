@@ -274,9 +274,7 @@ echo "
 
   function desplegable(elemento) {
     elemento = CSS.escape(elemento.replaceAll(' ', ''));
-    console.log(elemento);
     var divElemento = document.getElementById(elemento);
-    console.log(divElemento);
     var hijos = divElemento.children;
     var indices = elemento.substring(elemento.indexOf('-'));
     
