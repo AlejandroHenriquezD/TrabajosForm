@@ -138,8 +138,9 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
         <td>" . $_SESSION['razon_social'] . "</td>
         <td> 
           <form action='../logos/deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
-          <form action='../logos/formupdatelogo.php' method='post'> 
+          <form action='../logos/updatelogo.php' method='post'> 
             <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
+            <input name='obsoleto[]' type='hidden' value=" . $logo["obsoleto"] . "></input> 
             <button>Editar Estado<ion-icon name='create'></button> 
           </form>
         ";

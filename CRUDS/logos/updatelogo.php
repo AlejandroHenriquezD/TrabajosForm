@@ -2,8 +2,15 @@
 session_start();
 
 $id = $_POST["id"];
-$obsoleto = $_POST["obsoleto"];
+$obsoleto = $_POST["obsoleto"][0];
 
+echo json_encode($_POST["obsoleto"]);
+
+if ($obsoleto == ""){
+    $obsoleto = 1;
+}else{
+    $obsoleto = 0;
+}
 
 
 $host = "localhost";
@@ -39,5 +46,5 @@ mysqli_stmt_execute($stmt);
 
 $_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
 $_SESSION['mensajeAccion'] = "Estado modificado";
-header("location:./formupdatelogo.php");
+header("location:../clientes/datoscliente.php");
 ?>
