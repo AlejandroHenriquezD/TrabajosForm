@@ -86,6 +86,29 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     $pedidos[$i] = array_merge($pedidos[$i], $estado);
   }
 
+  for ($i = 0; $i < count($pedidosnopen); $i++) {
+    $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidosnopen[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidosnopen[$i]["NumeroPedido"] . "'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($result);
+    $estado = array();
+    if (mysqli_num_rows($result) > 0) {
+      if ($row[0] == "" || $row[1] == "") {
+        $estado = array(
+          'Estado' => "cancelar",
+        );
+      } else {
+        $estado = array(
+          'Estado' => "aceptar",
+        );
+      }
+    } else {
+      $estado = array(
+        'Estado' => "cancelar",
+      );
+    }
+    $pedidosnopen[$i] = array_merge($pedidosnopen[$i], $estado);
+  }
+
   $pedidos = json_encode($pedidos);
   $pedidosnopen = json_encode($pedidosnopen);
   $trabajos = json_encode($trabajos);
@@ -125,6 +148,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
       if(todos == true) {
         var pedidos = $pedidosnopen
+
       }
       if(document.getElementById('filtro_serie').value != ''){
         var serie = document.getElementById('filtro_serie').value
@@ -164,6 +188,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th></tr>';
     
     for(var p=0; p<trabajos.length; p++) {
+
       tabla += '<tr class=\"fila\">'
       if (trabajos[p]['id_logo'] == null) {
         logoHTML = \"No hay logo\";
@@ -203,6 +228,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       tabla += '</td>'
       tabla += '<td>'
+
       if(pedidos[p][\"Estado\"] == 'cancelar'){
         tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
         tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
