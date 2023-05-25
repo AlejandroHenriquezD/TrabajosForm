@@ -63,13 +63,34 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
   }
 
+  $serverName = "192.168.0.23\SQLEXIT,1433";
+  $connectionOptions = array(
+    "Database" => "ExitERP0415",
+    "Uid" => "programacion",
+    "PWD" => "CU_2023",
+    "CharacterSet" => "UTF-8",
+    "TrustServerCertificate" => true
+  );
+
+  $connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+
   for ($i = 0; $i < count($pedidos); $i++) {
+    $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
+    AND PVC.IdDelegacion = '" . $pedidos[$i]['IdDelegacion'] . "' 
+    AND PVC.EjercicioPedido = '" . $pedidos[$i]['EjercicioPedido'] . "'
+    AND PVC.SeriePedido = '" . $pedidos[$i]["SeriePedido"] . "'
+    AND PVC.NumeroPedido = '" . $pedidos[$i]["NumeroPedido"] . "'";
+
+    $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia, array(), array("Scrollable" => 'static'));
+
+    $row_count = sqlsrv_num_rows($getResults);
+
     $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
     $estado = array();
     if (mysqli_num_rows($result) > 0) {
-      if ($row[0] == "" || $row[1] == "") {
+      if ($row[0] == "" || $row[1] == "" && $row_count > 0) {
         $estado = array(
           'Estado' => "cancelar",
         );
@@ -87,12 +108,22 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   }
 
   for ($i = 0; $i < count($pedidosnopen); $i++) {
+    $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
+    AND PVC.IdDelegacion = '" . $pedidosnopen[$i]['IdDelegacion'] . "' 
+    AND PVC.EjercicioPedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "'
+    AND PVC.SeriePedido = '" . $pedidosnopen[$i]["SeriePedido"] . "'
+    AND PVC.NumeroPedido = '" . $pedidosnopen[$i]["NumeroPedido"] . "'";
+
+    $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia, array(), array("Scrollable" => 'static'));
+
+    $row_count = sqlsrv_num_rows($getResults);
+
     $sql = "SELECT id_boceto,pdf FROM trabajos WHERE ejercicio_pedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidosnopen[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidosnopen[$i]["NumeroPedido"] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
     $estado = array();
     if (mysqli_num_rows($result) > 0) {
-      if ($row[0] == "" || $row[1] == "") {
+      if ($row[0] == "" || $row[1] == "" && $row_count > 0) {
         $estado = array(
           'Estado' => "cancelar",
         );
@@ -213,7 +244,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
       if (trabajos[p]['id_boceto'] != null) {
-        tabla += '<form action=\'../.\" + bocetos[p][\'pdf\'] + \"\'><button>Ver Boceto </button></form>'
+        console.log(bocetos[p][\"pdf\"]);
+        
+        tabla += '<form action=\"../.' + bocetos[p][\"pdf\"] + '\"><button>Ver Boceto </button></form>'
       } else {
         tabla += 'No Existe Boceto'
       }
@@ -222,7 +255,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
 
       if (trabajos[p]['pdf'] != null) {
-        tabla += '<form action=\'../.\" + trabajos[p][\'pdf\'] + \"\'><button>Ver Orden Trabajo</button></form>'
+        tabla += '<form action=\"../.'  + trabajos[p][\"pdf\"] + '\"><button>Ver Orden Trabajo</button></form>'
       } else {
         tabla += 'Falta Orden Trabajo'
       }

@@ -183,8 +183,9 @@ $_SESSION["Volver"] = "./clientes.php";
       echo "
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
-        <td>
-          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
+        <td>";
+        echo ($boceto['pdf']);
+echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
             <button>Ver Boceto</button>
           </form>
         </td>
