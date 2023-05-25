@@ -102,20 +102,22 @@ echo "
     var divElemento = document.getElementById(elemento);
     var numeroArticulo = elemento.split('-')[2];
     var descripcion = elemento.split('-')[3];
+
     descripcion = CSS.escape(descripcion.replaceAll(' ', ''));
+
+    var desplegable = desplegables.replaceAll('tipo', 'tipoArticulos');
+    desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion);
+    desplegable = desplegable.replace('textoPadre', elemento.split('-')[3]);
+    desplegable = elementFromHtml(desplegable);
 
     var tipoArticulo = tipoArticulos.replaceAll('codigoArticulo', numeroArticulo+'-'+descripcion);
     tipoArticulo = elementFromHtml(tipoArticulo);
 
-    var desplegable = desplegables.replaceAll('tipo', 'tipoArticulos');
-    desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion);
-    desplegable = elementFromHtml(desplegable);
-
-    if (divElemento.querySelector(':first-child').querySelector(':first-child').checked) {
+    if (divElemento.querySelector(':first-child').querySelector(':first-child').querySelector(':first-child').checked) {
       divElemento.appendChild(tipoArticulo);
       divElemento.appendChild(desplegable); 
     } else {
-      divElemento.removeChild(divElemento.querySelector('div'));
+      divElemento.removeChild(divElemento.querySelector('.tipoArticulo'));
       divElemento.removeChild(divElemento.querySelector('.desplegable'));
     }
     validar();
@@ -179,11 +181,13 @@ echo "
     trabajo = trabajo.replaceAll('nombrePosicion', cb.name);
     trabajo = elementFromHtml(trabajo);
 
+    var divPosiciones = document.getElementById('posiciones-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
+    var nombrePosicion = divPosiciones.querySelector('label').textContent;
+
     var desplegable = desplegables.replaceAll('tipo', 'trabajos');
     desplegable = desplegable.replaceAll('codigos', numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+    desplegable = desplegable.replace('textoPadre', nombrePosicion);
     desplegable = elementFromHtml(desplegable);
-
-    var divPosiciones = document.getElementById('posiciones-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo);
 
     if (cb.checked) {
       divPosiciones.appendChild(trabajo);
@@ -215,6 +219,7 @@ echo "
     }
 
     var divTrabajos = document.getElementById('trabajos-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
+    var nombreTrabajo = divTrabajos.querySelector('label').textContent;
 
     var radios = document.getElementsByClassName('trabajo-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion);
 
@@ -226,6 +231,7 @@ echo "
       
       var desplegable = desplegables.replaceAll('tipo', 'logos');
       desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroTrabajo);
+      desplegable = desplegable.replace('textoPadre', nombreTrabajo);
       desplegable = elementFromHtml(desplegable);
       for (let r of radios) {
         var nTrabajo = r.id.split('-')[5];
@@ -267,8 +273,10 @@ echo "
   }
 
   function desplegable(elemento) {
-    elemento = CSS.escape(elemento);
+    elemento = CSS.escape(elemento.replaceAll(' ', ''));
+    console.log(elemento);
     var divElemento = document.getElementById(elemento);
+    console.log(divElemento);
     var hijos = divElemento.children;
     var indices = elemento.substring(elemento.indexOf('-'));
     
