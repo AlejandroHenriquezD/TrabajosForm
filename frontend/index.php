@@ -10,7 +10,7 @@ echo "
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Nuevo trabajo</title>
   <link rel='shortcut icon' href='./img/favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
 </head>
 <body onload='validar();'>
 ";
@@ -32,7 +32,9 @@ echo "
       <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>
   </div>
-  <div id='listaCheck'>
+  <div id='contenido-lateral'>
+    <div id='listaCheck'>
+  </div>
   </div>
 ";
 

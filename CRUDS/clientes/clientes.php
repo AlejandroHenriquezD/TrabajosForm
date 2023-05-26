@@ -1,6 +1,7 @@
 <?php 
 session_start(); 
 $_SESSION["VolverDatosCliente"] = "clientes.php";
+unset($_SESSION['usuario_incorrecto']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +12,7 @@ $_SESSION["VolverDatosCliente"] = "clientes.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar()'>
