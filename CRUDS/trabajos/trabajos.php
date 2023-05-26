@@ -17,6 +17,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 <body onload='filtrar()'>
   <?php
 
+  // Obtener trabajos
   $host = "localhost";
   $dbname = "centraluniformes";
   $username = "root";
@@ -29,7 +30,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     database: $dbname
   );
 
-  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, FechaPedido, fecha_inicio, fecha_terminado FROM `trabajos`";
+  $sql = "SELECT DISTINCT num_tienda, ejercicio_pedido, serie_pedido, numero_pedido, id_boceto, pdf, pdf_firmado, FechaPedido, fecha_inicio, fecha_terminado FROM `trabajos`";
 
   $result = mysqli_query($conn, $sql);
   $trabajos = [];
@@ -38,30 +39,8 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     $trabajos[] = $trabajo;
   }
 
-  if (!isset($_SESSION['usuario'])) {
-    include "../../BDReal/numTienda.php";
-    $trabajosTemp = array();
-    foreach ($trabajos as $trabajo) {
-      if ($trabajo['num_tienda'] == $tienda) {
-        array_push($trabajosTemp, $trabajo);
-      }
-    }
-    $trabajos = $trabajosTemp;
-  }
-
-  if (isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
-    $pedidosnopen = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos_nopen.php"), true);
-  } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
-    $pedidosnopen = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_nopen.php"), true);
-  }
-
-  $bocetos = array();
-
-  for ($p = 0; $p < count($trabajos); $p++) {
-    $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
-  }
+  // Obtener pedidos
+  include "../../BDReal/numTienda.php";
 
   $serverName = "192.168.0.23\SQLEXIT,1433";
   $connectionOptions = array(
@@ -71,93 +50,189 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     "CharacterSet" => "UTF-8",
     "TrustServerCertificate" => true
   );
-
   $connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
 
-  for ($i = 0; $i < count($pedidos); $i++) {
-    $pedidosListos[$i] = array();
-    $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
-    AND PVC.IdDelegacion = '" . $pedidos[$i]['IdDelegacion'] . "' 
-    AND PVC.EjercicioPedido = '" . $pedidos[$i]['EjercicioPedido'] . "'
-    AND PVC.SeriePedido = '" . $pedidos[$i]["SeriePedido"] . "'
-    AND PVC.NumeroPedido = '" . $pedidos[$i]["NumeroPedido"] . "'";
+  $trabajos_pendientes = array();
+  $trabajos_todos = array();
+  $pedido = array();
+  if (isset($_SESSION['usuario'])) {
+    foreach ($trabajos as $trabajo) {
+      $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE EX_Serigrafiado = -1 
+            AND EjercicioPedido = " . $trabajo['ejercicio_pedido'] . " 
+            AND SeriePedido = '" . $trabajo['serie_pedido'] . "'
+            AND NumeroPedido = " . $trabajo['numero_pedido'] . "
+        ";
 
-    $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia, array(), array("Scrollable" => 'static'));
+        $getResults = sqlsrv_query($connSQLSERVER, $sql,array(), array( "Scrollable" => 'static' ));
+        $row_count = sqlsrv_num_rows($getResults);
+        if ($row_count > 0) {
+        while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+          $pedido = $row;
+        }
 
-    $row_count = sqlsrv_num_rows($getResults);
+        $datosPedidos = array(
+          'CodigoCliente' => $pedido['CodigoCliente'],
+          'CifDni' => $pedido['CifDni'],
+          'RazonSocial' => $pedido['RazonSocial']
+        );
+        $trabajo = array_merge($trabajo, $datosPedidos);
 
-    $sql = "SELECT id_boceto,pdf,pdf_firmado FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result);
-    $estado = array();
-    if (mysqli_num_rows($result) > 0) {
-      if ($row[0] != "") {
+        $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
+        AND PVC.IdDelegacion = '" . $pedido['IdDelegacion'] . "' 
+        AND PVC.EjercicioPedido = '" . $pedido['EjercicioPedido'] . "'
+        AND PVC.SeriePedido = '" . $pedido["SeriePedido"] . "'
+        AND PVC.NumeroPedido = '" . $pedido["NumeroPedido"] . "'";
 
-        //Hacemos la query del boceto para saber si esta firmado o no
-        $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
-        $resultBoceto = mysqli_query($conn, $sqlBoceto);
-        $rowBoceto = mysqli_fetch_array($resultBoceto);
+        $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia, array(), array("Scrollable" => 'static'));
 
-        // Si esta firmado y el pdf no es null estado correcto
-        if ($rowBoceto["firmado"] == 1 && $row["pdf"] != "" && $row["pdf_firmado"] == 1 && $row_count > 0) {
-          $estado = array('Estado' => "aceptar");
+        $row_count = sqlsrv_num_rows($getResults);
+
+        $estado = array();
+        if (mysqli_num_rows($result) > 0) {
+          if ($trabajo['id_boceto'] != "") {
+
+            //Hacemos la query del boceto para saber si esta firmado o no
+            $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $trabajo['id_boceto'];
+            $resultBoceto = mysqli_query($conn, $sqlBoceto);
+            $rowBoceto = mysqli_fetch_array($resultBoceto);
+
+            // Si esta firmado y el pdf no es null estado correcto
+            if ($rowBoceto["firmado"] == 1 && $trabajo["pdf"] != "" && $trabajo["pdf_firmado"] == 1 && $row_count > 0) {
+              $estado = array('Estado' => "aceptar");
+            } else {
+              $estado = array('Estado' => "cancelar");
+            }
+          } else {
+            $estado = array('Estado' => "cancelar");
+          }
         } else {
           $estado = array('Estado' => "cancelar");
         }
-      } else {
-        $estado = array('Estado' => "cancelar");
-      }
-    } else {
-      $estado = array('Estado' => "cancelar");
-    }
-    $pedidos[$i] = array_merge($pedidos[$i], $estado);
-    if($pedidos[$i]['Estado'] == "aceptar") {
-      $pedidosListos[$i] = $pedidos[$i];
-    }
-  }
-
-  $pedidosnopenListos = array();
-  for ($i = 0; $i < count($pedidosnopen); $i++) {
-    $pedidosnopenListos[$i] = array();
-
-    $sql = "SELECT id_boceto,pdf,pdf_firmado FROM trabajos WHERE ejercicio_pedido = '" . $pedidosnopen[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidosnopen[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidosnopen[$i]["NumeroPedido"] . "'";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result);
-    $estado = array();
-    if (mysqli_num_rows($result) > 0) {
-      if ($row[0] != "") {
-
-        //Hacemos la query del boceto para saber si esta firmado o no
-        $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
-        $resultBoceto = mysqli_query($conn, $sqlBoceto);
-        $rowBoceto = mysqli_fetch_array($resultBoceto);
-
-        // Si esta firmado y el pdf no es null estado correcto
-        if ($rowBoceto["firmado"] == 1 && $row["pdf"] != "" && $row["pdf_firmado"] == 1) {
-          $estado = array('Estado' => "aceptar");
-        } else {
-          $estado = array('Estado' => "cancelar");
+        $trabajo = array_merge($trabajo, $estado);
+        if ($pedido['StatusPedido'] == "P" && $trabajo['Estado'] == "aceptar") {
+          array_push($trabajos_pendientes, $trabajo);
         }
+        array_push($trabajos_todos, $trabajo);
       } else {
-        $estado = array('Estado' => "cancelar");
+        unset($trabajo);
       }
-    } else {
-      $estado = array('Estado' => "cancelar");
     }
-    $pedidosnopen[$i] = array_merge($pedidosnopen[$i], $estado);
-    if($pedidosnopen[$i]['Estado'] == "aceptar") {
-      $pedidosnopenListos[$i] = $pedidosnopen[$i];
-    }
-  }
-
-  if(isset($_SESSION['usuario'])) {
-    $pedidos = json_encode($pedidosListos);
-    $pedidosnopen = json_encode($pedidosnopenListos);
   } else {
-    $pedidos = json_encode($pedidos);
-    $pedidosnopen = json_encode($pedidosnopen);
+    $trabajosTemp = array();
+    foreach ($trabajos as $trabajo) {
+      if ($trabajo['num_tienda'] == $tienda) {
+        array_push($trabajosTemp, $trabajo);
+      }
+    }
+    $trabajos = $trabajosTemp;
+
+    foreach ($trabajos as $trabajo) {
+      $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE EX_Serigrafiado = -1 
+            AND IdDelegacion = '" . $tienda . "' 
+            AND EjercicioPedido = " . $trabajo['ejercicio_pedido'] . " 
+            AND SeriePedido = '" . $trabajo['serie_pedido'] . "'
+            AND NumeroPedido = '" . $trabajo['numero_pedido'] . "'
+        ";
+      $getResults = sqlsrv_query($connSQLSERVER, $sql,array(), array( "Scrollable" => 'static' ));
+      $row_count = sqlsrv_num_rows($getResults);
+      if ($row_count > 0) {
+        while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+          $pedido = $row;
+        }
+
+        $datosPedidos = array(
+          'CodigoCliente' => $pedido['CodigoCliente'],
+          'CifDni' => $pedido['CifDni'],
+          'RazonSocial' => $pedido['RazonSocial']
+        );
+        $trabajo = array_merge($trabajo, $datosPedidos);
+
+        $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
+        AND PVC.IdDelegacion = '" . $pedido['IdDelegacion'] . "' 
+        AND PVC.EjercicioPedido = '" . $pedido['EjercicioPedido'] . "'
+        AND PVC.SeriePedido = '" . $pedido["SeriePedido"] . "'
+        AND PVC.NumeroPedido = '" . $pedido["NumeroPedido"] . "'";
+
+        $getResults = sqlsrv_query($connSQLSERVER, $sqlMercancia, array(), array("Scrollable" => 'static'));
+
+        $row_count = sqlsrv_num_rows($getResults);
+
+        $estado = array();
+        if (mysqli_num_rows($result) > 0) {
+          if ($trabajo['id_boceto'] != "") {
+
+            //Hacemos la query del boceto para saber si esta firmado o no
+            $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $trabajo['id_boceto'];
+            $resultBoceto = mysqli_query($conn, $sqlBoceto);
+            $rowBoceto = mysqli_fetch_array($resultBoceto);
+
+            // Si esta firmado y el pdf no es null estado correcto
+            if ($rowBoceto["firmado"] == 1 && $trabajo["pdf"] != "" && $trabajo["pdf_firmado"] == 1 && $row_count > 0) {
+              $estado = array('Estado' => "aceptar");
+            } else {
+              $estado = array('Estado' => "cancelar");
+            }
+          } else {
+            $estado = array('Estado' => "cancelar");
+          }
+        } else {
+          $estado = array('Estado' => "cancelar");
+        }
+        $trabajo = array_merge($trabajo, $estado);
+        if ($pedido['StatusPedido'] == 'P') {
+          array_push($trabajos_pendientes, $trabajo);
+        }
+        array_push($trabajos_todos, $trabajo);
+      } else {
+        unset($trabajo);
+      }
+    }
   }
-  $trabajos = json_encode($trabajos);
+
+  $bocetos = array();
+
+  for ($p = 0; $p < count($trabajos); $p++) {
+    $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
+  }
+
+  $trabajos = json_encode($trabajos_todos);
+  $trabajos_pendientes = json_encode($trabajos_pendientes);
   $bocetos = json_encode($bocetos);
 
   echo "
@@ -189,12 +264,11 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
     function filtrar() {
       var trabajos = $trabajos
+      var trabajos_pendientes = $trabajos_pendientes
       var bocetos = $bocetos
-      var pedidos = $pedidos
 
-      if(todos == true) {
-        var pedidos = $pedidosnopen
-
+      if(todos == false) {
+        trabajos = $trabajos_pendientes
       }
       if(document.getElementById('filtro_serie').value != ''){
         var serie = document.getElementById('filtro_serie').value
@@ -210,29 +284,24 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       if(document.getElementById('filtro_codigo').value != ''){
         var codigo = document.getElementById('filtro_codigo').value
-        pedidos = pedidos.filter((pedidos) => pedidos.CodigoCliente.toString().includes(codigo.toString()));
+        trabajos = trabajos.filter((trabajos) => trabajos.CodigoCliente.toString().includes(codigo.toString()));
       }
       if(document.getElementById('filtro_cif_nif').value != ''){
         var cif_nif = document.getElementById('filtro_cif_nif').value
-        pedidos = pedidos.filter((pedidos) => pedidos.CifDni.includes(cif_nif));
+        trabajos = trabajos.filter((trabajos) => trabajos.CifDni.includes(cif_nif));
       }
 
-    trabajostemp = [];
-    pedidostemp = [];
-    for(pedido of pedidos){
-      for(trabajo of trabajos){
-        if(pedido.EjercicioPedido == trabajo.ejercicio_pedido && pedido.NumeroPedido == trabajo.numero_pedido && pedido.SeriePedido == trabajo.serie_pedido){
-          trabajostemp.push(trabajo);
-          pedidostemp.push(pedido);
-        }
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th>'
+    ";
+    if (isset($_SESSION['usuario'])) {
+      echo "
+      if(todos == true) {
+        tabla += '<th>Estado</th>'
       }
+      ";
     }
-  
-    trabajos = trabajostemp;
-    pedidos = pedidostemp;
-    
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th></tr>';
-    
+    echo "
+    tabla += '</tr>'
     for(var p=0; p<trabajos.length; p++) {
 
       tabla += '<tr class=\"fila\">'
@@ -243,8 +312,8 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       ";
 
-      if(isset($_SESSION['usuario'])) {
-        echo "
+  if (isset($_SESSION['usuario'])) {
+    echo "
         tabla += '<td><form id=\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_inicio\" type=\"date\" onchange=actualizarFecha(\"fecha-inicio-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_inicio\"] + '>'
         tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
         tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
@@ -255,19 +324,19 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
         tabla += '</form></td>'
         ";
-      } else { 
-        echo "
+  } else {
+    echo "
         var fechaInicio = (trabajos[p][\"fecha_inicio\"] != null ? trabajos[p][\"fecha_inicio\"] : 'Fecha no asignada');
         fechaInicio = fechaInicio.replaceAll('-', '/');
-        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + fechaInicio + '</td>'
+        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + fechaInicio + '</td>'
         ";
-      }
-      echo " 
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"num_tienda\"] + '</td>'
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + trabajos[p][\"FechaPedido\"] + '</td>'
+  }
+  echo " 
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + trabajos[p][\"num_tienda\"] + '</td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + trabajos[p][\"FechaPedido\"] + '</td>'
 
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
       if (trabajos[p]['id_boceto'] != null) {
         console.log(bocetos[p][\"pdf\"]);
         
@@ -277,7 +346,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       }
       tabla += '</td>'
               
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
 
       if (trabajos[p]['pdf'] != null) {
         tabla += '<form action=\"../.'  + trabajos[p][\"pdf\"] + '\"><button>Ver Orden Trabajo</button></form>'
@@ -287,7 +356,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '</td>'
       tabla += '<td>'
 
-      if(pedidos[p][\"Estado\"] == 'cancelar'){
+      if(trabajos[p][\"Estado\"] == 'cancelar'){
         tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
         tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
         tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
@@ -295,14 +364,13 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<button>Borrar trabajo<ion-icon name=\'trash\'></button>' 
         tabla += '</form>'
         tabla += '</td>'
-      } else{
+      } else {
         tabla += '<p>Trabajo en proceso</p>' 
       }
-      tabla += '</td>'
       ";
 
-      if(isset($_SESSION['usuario'])) {
-        echo "
+  if (isset($_SESSION['usuario'])) {
+    echo "
         tabla += '<td><form id=\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\"updateFecha.php\" method=\"post\"><input name=\"fecha_terminado\" type=\"date\" onchange=actualizarFecha(\"fecha-terminado-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\") value=' + trabajos[p][\"fecha_terminado\"] + '>'
         tabla += '<input type=\"hidden\" name=\"num_tienda\" value=' + trabajos[p][\"num_tienda\"] + '>'
         tabla += '<input type=\"hidden\" name=\"ejercicio_pedido\" value=' + trabajos[p][\"ejercicio_pedido\"] + '>'
@@ -312,14 +380,17 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<input type=\"hidden\" name=\"pdf\" value=' + trabajos[p][\"pdf\"] + '>'
         tabla += '<input type=\"hidden\" name=\"FechaPedido\" value=' + trabajos[p][\"FechaPedido\"] + '>'
         tabla += '</form></td>'
+        if(todos == true) {
+          tabla += '<td><img src=\'../../frontend/img/' + trabajos[p][\"Estado\"] + '.png\'/></td>'
+        }
         ";
-      } else {
-        echo "
+  } else {
+    echo "
         var fechaFin = (trabajos[p][\"fecha_terminado\"] != null ? trabajos[p][\"fecha_terminado\"] : 'Fecha no asignada');
         fechaFin = fechaFin.replaceAll('-', '/');
-        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + pedidos[p][\"CodigoCliente\"] + '\',\'' + pedidos[p][\"RazonSocial\"] + '\',\'' + pedidos[p][\"Estado\"] + '\')\">' + fechaFin + '</td>'";
-      }
-      echo "
+        tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + fechaFin + '</td>'";
+  }
+  echo "
       tabla += '</tr>'
     }
   
