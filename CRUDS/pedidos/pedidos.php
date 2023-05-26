@@ -63,8 +63,20 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
     $result = mysqli_query($conn1, $sql);
     $row = mysqli_fetch_array($result);
     $estado = array();
+    $mensajesError = array();
+    $errores = "";
     if (mysqli_num_rows($result) > 0) {
-      //Comprobamos si el trabajo tiene boceto o no
+      $estado = array('Estado' => "aceptar");
+      if ($row[0] == "") {
+
+
+        $estado = array('Estado' => "cancelar");
+        $errores .= "El Boceto No Existe-";
+        // $mensajesError[] = array('MensajeError' => "El Boceto No Existe");
+
+
+      }
+
       if ($row[0] != "") {
 
         //Hacemos la query del boceto para saber si esta firmado o no
@@ -72,22 +84,52 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
         $resultBoceto = mysqli_query($conn1, $sqlBoceto);
         $rowBoceto = mysqli_fetch_array($resultBoceto);
 
-        // Si esta firmado y el pdf no es null estado correcto
-        if ($rowBoceto["firmado"] == 1 && $row["pdf"] != "" && $row["pdf_firmado"] == 1 && $row_count > 0) {
-          $estado = array('Estado' => "aceptar");
-        } else {
+        if ($rowBoceto["firmado"] == 0) {
           $estado = array('Estado' => "cancelar");
+          $errores .= "El Boceto No esta firmado-";
+          // $mensajesError[] = array('MensajeError' => "El Boceto No esta firmado");
+
         }
-      } else {
+      }
+
+
+      if ($row["pdf"] != "") {
+
+        if ($row["pdf_firmado"] == 0) {
+          $estado = array('Estado' => "cancelar");
+          $errores .= "La Orden de Trabajo no esta firmada-";
+          // $mensajesError[] = array("MensajeError" => "La Orden de Trabajo no esta firmada");
+        }
+      }
+
+      if ($row["pdf"] == "") {
         $estado = array('Estado' => "cancelar");
+        $errores .= "La Orden de Trabajo no existe-";
+        // $mensajesError[] = array("MensajeError" => "La Orden de Trabajo no existe");
+
+      }
+
+      if ($row_count == 0) {
+        $estado = array('Estado' => "cancelar");
+        $errores .= "La Mercancia no esta servida en Serigrafía-";
+        // $mensajesError[] = array("MensajeError" => "La Mercancia no esta servida en Serigrafía");
       }
     } else {
       $estado = array('Estado' => "cancelar");
-    }
-    // FALTA LAS CONDICIONES PARA EN LAS QUE NO ESTA LISTA LA DOCUMENTACION Y AÑADIR SI LA MERCANCIA ESTA SERVIDA O NO
+      $errores .= "No hay trabajos de este pedido";
+      // $mensajesError[] = array("MensajeError" => "No hay trabajos de este pedido");
 
+    }
+
+    $mensajesError = array("MensajeError" => $errores);
+    // FALTA LAS CONDICIONES PARA EN LAS QUE NO ESTA LISTA LA DOCUMENTACION Y AÑADIR SI LA MERCANCIA ESTA SERVIDA O NO
+    // echo json_encode($mensajesError);
 
     $pedidos[$i] = array_merge($pedidos[$i], $estado);
+    $pedidos[$i] = array_merge($pedidos[$i], $mensajesError);
+
+
+    // echo json_encode($pedidos[$i]);
   }
   $pedidos = json_encode($pedidos);
   echo "
@@ -135,13 +177,6 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       tabla += '<td>' + pedido[\"CodigoCliente\"] + '</td>'
       tabla += '<td>' + pedido[\"RazonSocial\"] + '</td>'
       tabla += '<td><div class=\"td-botones\">'
-      tabla += '<form action=\'formpdffirmado.php\' method=\'post\'>'
-      tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
-      tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>'
-      tabla += '<input name=\'numero_pedido[]\' type=\'hidden\' value=' + pedido[\"NumeroPedido\"] + '></input>' 
-      tabla += '<input name=\'CodigoCliente[]\' type=\'hidden\' value=' + pedido[\"CodigoCliente\"] + '></input>'
-      tabla += '<button>Añadir orden de trabajo firmada<ion-icon name=\'create\'></button>'
-      tabla += '</form>'
       tabla += '<form action=\'formupdatepedido.php\' method=\'post\'>'
       tabla += '<input name=\'ejercicio_pedido[]\' type=\'hidden\' value=' + pedido[\"EjercicioPedido\"] + '></input>' 
       tabla += '<input name=\'serie_pedido[]\' type=\'hidden\' value=' + pedido[\"SeriePedido\"] + '></input>'
@@ -159,6 +194,16 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       tabla += '</div></td>'
       tabla += '<td>'
       tabla += '<img src=\'../../frontend/img/' + pedido[\"Estado\"] + '.png\'/>'
+
+      if(pedido['Estado'] != 'aceptar'){
+      var mensajes = pedido['MensajeError'].split('-');
+      for(mensaje of mensajes){
+
+
+      tabla += mensaje + '<br>'
+      }
+    }
+
     }
     tabla += '</table>'
     tabla = elementFromHtml(tabla)
