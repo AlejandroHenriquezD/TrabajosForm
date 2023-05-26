@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
-@import url("cabecera.css");
+@import url("cabecera2.css");
 
 html,
 body {
@@ -139,7 +139,7 @@ textarea {
 
 #pagina {
   z-index: 1;
-  width: calc(100vw - 380px);
+  width: calc(100vw - 410px);
   position: absolute;
   left: 20px;
   top: 106px;
@@ -156,12 +156,20 @@ textarea {
   flex-direction: column;
 }
 
-#listaCheck {
+#contenido-lateral {
   z-index: 1;
-  width: 280px;
+  border-radius: 5px;
+  width: 290px;
   position: fixed;
-  right: 20px;
+  right: 40px;
   top: 106px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100%;
+  max-height: calc(100vh - 140px);
+}
+
+#listaCheck {
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -171,7 +179,7 @@ textarea {
 
 #div-pdf {
   position: absolute;
-  width: 280px;
+  width: 100%;
   height: 400px;
   top: calc(100% + 20px);
   border-radius: 5px;
@@ -202,10 +210,8 @@ textarea {
 
 .div-boceto {
   width: 100%;
-  position: relative;
   float: left;
-  position: absolute;
-  top: calc(100% + 20px);
+  margin-top: 20px;
   background-color: rgba(225, 225, 225, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 5px;
@@ -456,52 +462,27 @@ textarea {
   left: 90vw;
 }
 
-.slider::-webkit-scrollbar {
+/* Barra chrome */
+*::-webkit-scrollbar {
   width: 10px; /* ancho de la barra de desplazamiento */
   height: 10px;
   background-color: unset; /* color de fondo de la barra de desplazamiento */
 }
 
-.slider::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: rgba(0, 187, 44, 0.7); /* color del pulgar de la barra de desplazamiento */
   border-radius: 5px;
 }
 
 /* Estilo de la barra de desplazamiento al hacer hover */
-.slider:hover::-webkit-scrollbar-thumb {
+*:hover::-webkit-scrollbar-thumb {
   background-color: rgba(0, 135, 21, 0.7); /* color del pulgar de la barra de desplazamiento al hacer hover */
 }
 
-#pagina::-webkit-scrollbar {
-  width: 10px; /* ancho de la barra de desplazamiento */
-  height: 10px;
-  background-color: unset; /* color de fondo de la barra de desplazamiento */
-}
-
-#pagina::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 187, 44, 0.7); /* color del pulgar de la barra de desplazamiento */
-  border-radius: 5px;
-}
-
-/* Estilo de la barra de desplazamiento al hacer hover */
-#pagina:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 135, 21, 0.7); /* color del pulgar de la barra de desplazamiento al hacer hover */
-}
-
-select::-webkit-scrollbar {
-  width: 10px; /* ancho de la barra de desplazamiento */
-  height: 10px;
-  background-color: unset; /* color de fondo de la barra de desplazamiento */
-}
-
-select::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 187, 44, 0.7); /* color del pulgar de la barra de desplazamiento */
-  border-radius: 5px;
-}
-
-/* Estilo de la barra de desplazamiento al hacer hover */
-select:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 135, 21, 0.7); /* color del pulgar de la barra de desplazamiento al hacer hover */
+/* Barra firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 187, 44, 0.7) transparent;
 }
 
 msg-ped {
@@ -562,6 +543,16 @@ msg-ped {
 
 .codigo-color {
   margin: 0;
+}
+
+ar {
+  display: flex;
+  justify-content: center;
+}
+
+ar p {
+  width: 144px;
+  color: red;
 }
 
 @media only screen and (max-width: 1500px) {

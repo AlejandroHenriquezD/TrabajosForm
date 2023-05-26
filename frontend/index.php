@@ -32,7 +32,9 @@ echo "
       <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>
   </div>
-  <div id='listaCheck'>
+  <div id='contenido-lateral'>
+    <div id='listaCheck'>
+  </div>
   </div>
 ";
 

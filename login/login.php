@@ -1,10 +1,10 @@
 <?php
 
-  session_start();
+session_start();
 
-  if(isset($_SESSION['usuario'])){
-    header("location: ../frontend/index.php");
-  }
+if (isset($_SESSION['usuario'])) {
+  header("location: ../frontend/index.php");
+}
 
 ?>
 
@@ -17,34 +17,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar sesión</title>
   <link rel="shortcut icon" href="../frontend/favicon.png">
-  <link rel="stylesheet" href="./login2.css">
+  <link rel="stylesheet" href="./login.css">
 </head>
 
 <body>
   <script>
-
     function entrarSinSesion() {
       window.location = "../CRUDS/clientes/clientes.php";
     }
-
   </script>
 
-  <div id='pagina'>
-    <img src='./cu.png' alt=''/>
-    <form action='./verificarLogin.php' method="post">
-      <label>Nombre de usuario
-        <input type='text' id='usuario' name='usuario' value=''>
-      </label>
-      <label>Contraseña
-        <input type='password' id='contraseña' name='contraseña' value=''>
-      </label>
-      <div class='button'>
-        <input type='submit' value='Iniciar sesión'>
-        <div class='div-button' onclick='entrarSinSesion()'>
-          <p>Entrar sin sesión</p>
-        </div>
+  <?php
+  if (isset($_SESSION['usuario_incorrecto'])) {
+    echo "<div id='pagina' class='login-incorrecto'>";
+  } else {
+    echo "<div id='pagina'>";
+  }
+  ?>
+    <img src='./cu.png' alt='' />
+    <?php 
+    if (isset($_SESSION['usuario_incorrecto'])) {
+      echo "<p class='texto-error'>" . $_SESSION['usuario_incorrecto'] . "</p>";
+    } else {
+      echo "<p class='texto-error'>Texto error</p>";
+    }
+    ?>
+    <form action='./verificarLogin.php' method='post'>
+    <label>Nombre de usuario
+      <input type='text' id='usuario' name='usuario' value=''>
+    </label>
+    <label>Contraseña
+      <input type='password' id='contraseña' name='contraseña' value=''>
+    </label>
+    <div class='button'>
+      <input type='submit' value='Iniciar sesión'>
+      <div class='div-button' onclick='entrarSinSesion()'>
+        <p>Entrar sin sesión</p>
       </div>
-    </form>
+    </div>
+  </form>
   </div>
   <div id='background'>
     <div class='ball' id='greenball1'></div>

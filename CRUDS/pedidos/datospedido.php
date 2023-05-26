@@ -12,7 +12,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body>
@@ -24,8 +24,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
     $_SESSION['EjercicioPedido'] = $_POST['EjercicioPedido'];
     $_SESSION['SeriePedido'] = $_POST['SeriePedido'];
     $_SESSION['NumeroPedido'] = $_POST['NumeroPedido'];
-    $_SESSION['CodigoCliente'] = $_POST['CodigoCliente'];
-    $_SESSION['RazonSocial'] = $_POST['RazonSocial'];
+    $_SESSION['numero_cliente'] = $_POST['CodigoCliente'];
+    $_SESSION['razon_social'] = $_POST['RazonSocial'];
     $_SESSION['Estado'] = $_POST['Estado'];
   }
 
@@ -43,8 +43,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
 
   $sql = "SELECT *
           FROM `clientes` 
-          WHERE numero_cliente = '" . $_SESSION['CodigoCliente'] . "'
-          AND razon_social='" . $_SESSION['RazonSocial'] . "'
+          WHERE numero_cliente = '" . $_SESSION['numero_cliente'] . "'
+          AND razon_social='" . $_SESSION['razon_social'] . "'
           ";
   $result = mysqli_query($conn, $sql);
   $cliente = array();
@@ -67,11 +67,11 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
     </div>  
     <div>
       <p class='tituloDatos'>Código Cliente</p>
-      <p>" . $_SESSION['CodigoCliente'] . "</p>
+      <p>" . $_SESSION['numero_cliente'] . "</p>
     </div>  
     <div>
       <p class='tituloDatos'>Razón social</p>
-      <p>" . $_SESSION['RazonSocial'] . "</p>
+      <p>" . $_SESSION['razon_social'] . "</p>
       </div>";
 
   if ($_SESSION['Estado'] == 'cancelar') {

@@ -65,7 +65,7 @@ input[type="submit"] {
 
 #pagina img {
   width: 350px;
-  margin-bottom: 50px;
+  margin-bottom: 0px;
 }
 
 .button {
@@ -81,6 +81,16 @@ input[type="submit"] {
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+.texto-error {
+  color: #e1251a;
+  justify-self: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  opacity: 0;
+  font-size: 14px;
 }
 
 .div-button {
@@ -100,6 +110,15 @@ input[type="submit"] {
 .div-button p {
   margin: 0;
   font-size: 14px;
+}
+
+.login-incorrecto input[type="text"],
+.login-incorrecto input[type="password"] {
+  border: 1px solid #e1251a;
+}
+
+.login-incorrecto .texto-error {
+  opacity: 100;
 }
 
 .ball {

@@ -57,7 +57,7 @@ echo "
     var bocetoAntiguo = obtenerElemento(bocetos, 'boceto-'+elementoActual);
     var articuloAntiguo = obtenerElemento(articulos, 'articulos-'+elementoActual);
     if(elementoActual != null) {
-      document.getElementById('listaCheck').removeChild(bocetoAntiguo);
+      document.getElementById('contenido-lateral').removeChild(bocetoAntiguo);
       document.getElementById('pedidos').removeChild(articuloAntiguo);
       // document.getElementById('pedidos').removeChild(document.getElementById('div-cli'));
     }
@@ -74,7 +74,7 @@ echo "
 
       var boceto = obtenerElemento(bocetos, 'boceto-'+seriePedido+'-'+numeroPedido);
       var articulo = obtenerElemento(articulos, 'articulos-'+document.getElementById('selectPedido').value);
-      document.getElementById('listaCheck').appendChild(boceto);
+      document.getElementById('contenido-lateral').appendChild(boceto);
       // document.getElementById('pedidos').appendChild(divcli);
       if(document.getElementById('selectPedido').value != 'pedidoDefault'){
       document.getElementById('pedidos').appendChild(articulo);
