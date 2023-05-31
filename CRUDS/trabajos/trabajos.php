@@ -371,7 +371,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
       tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
       tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
-      tabla += '<button>Generar Orden Trabajo<ion-icon name=\'trash\'></button>' 
+      tabla += '<button>Generar Orden Trabajo</button>' 
       tabla += '</form>'
       tabla += '</td>' 
       
