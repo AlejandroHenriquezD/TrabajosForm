@@ -6,7 +6,9 @@ $serie_pedido = $pedido[1];
 $numero_pedido = $pedido[2];
 $id_boceto = $_POST["numero_boceto"] == "" ? null : $_POST["numero_boceto"];
 
-$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+include "../BDReal/numTienda.php";
+
+$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
 $FechaPedido = null;
 foreach ($pedidos as $ped) {
   if (
@@ -18,7 +20,6 @@ foreach ($pedidos as $ped) {
   }
 }
 
-include "../BDReal/numTienda.php";
 $num_tienda = $tienda;
 
 // $pdf = "/pdf.php?ejercicio_pedido=". $ejercicio_pedido ."&serie_pedido=". $serie_pedido ."&numero_pedido=". $numero_pedido;

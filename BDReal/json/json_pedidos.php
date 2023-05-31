@@ -10,7 +10,7 @@ $connectionOptions = array(
     "TrustServerCertificate" => true
 );
 $conn = sqlsrv_connect($serverName, $connectionOptions);
-
+// echo $tienda . "<br>";
 $sql = "SELECT    
                 EjercicioPedido,
                 SeriePedido,

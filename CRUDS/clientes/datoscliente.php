@@ -144,8 +144,8 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
             <button>Editar Estado<ion-icon name='create'></button> 
           </form>
         ";
-        if(isset($_SESSION['usuario'])) {
-          echo "
+      if (isset($_SESSION['usuario'])) {
+        echo "
           <form action='../../updatelogo.php' method='post' id='subirvectorizada-" . $logo["id"] . "' enctype='multipart/form-data'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
             <input name='id_logo' type='hidden' value=" . $logo["id"] . "></input>
@@ -155,8 +155,8 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
             </label>
           </form>
           ";
-        }
-        echo "
+      }
+      echo "
         </td>
       </tr>";
     }
@@ -168,7 +168,7 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
   <div class='titulo-mas-boton'>
     <h1>BOCETOS</h1>
   ";
-  if(isset($_SESSION['usuario'])) {
+  if (isset($_SESSION['usuario'])) {
     echo "
     <form action='../../createboceto.php' method='post' id='subirboceto' enctype='multipart/form-data'> 
       <input name='id' type='hidden' value=" . $_SESSION['id'] . "></input> 
@@ -217,8 +217,8 @@ echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
         <td> 
           <form action='../bocetos/deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
         ";
-        // if(isset($_SESSION['usuario'])) {
-          echo "
+      // if(isset($_SESSION['usuario'])) {
+      echo "
           <form action='../../updateboceto.php' method='post' enctype='multipart/form-data' id='bocetofirmado-" . $boceto["id"] . "'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
             <input name='id_boceto' type='hidden' value=" . $boceto["id"] . "></input>
@@ -228,22 +228,85 @@ echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
             </label>
           </form>
           ";
-        // }
-        echo "
+      // }
+      echo "
         </td>
       </tr>";
     }
   }
   echo "</table>";
 
-  $pedidos = array();
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
-  if (!isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+  include_once "../../BDReal/numTienda.php";
+  $_SESSION['numTienda'] = $tienda;
+
+  $serverName = "192.168.0.23\SQLEXIT,1433";
+  $connectionOptions = array(
+    "Database" => "ExitERP0415",
+    "Uid" => "programacion",
+    "PWD" => "CU_2023",
+    "CharacterSet" => "UTF-8",
+    "TrustServerCertificate" => true
+  );
+  $connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+  if (isset($_SESSION['usuario'])) {
+    $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 
+            ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+        ";
   } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
+    $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $tienda . "' 
+            ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+        ";
   }
+
+  $getResults = sqlsrv_query($connSQLSERVER, $sql);
+  if (mysqli_connect_errno()) {
+    die("Connection error: " . mysqli_connect_errno());
+  }
+
+  $pedidos = [];
+
+  while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+    $pedidos[] = $row;
+  }
+  sqlsrv_free_stmt($getResults);
 
   $pedidosCliente = array();
   foreach ($pedidos as $pedido) {
