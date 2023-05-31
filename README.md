@@ -129,7 +129,7 @@ Por último, si hacemos click en un pedido podremos ver toda su información má
 
 En la sección "Trabajos serigrafía" podremos ver los datos de las ordenes de trabajo, filtrarlas por cliente, ejercicio, serie y número. Por defecto, solo se mostraran los trabajos pendientes, pero haciendo click en "Mostrar todos" podermos ver todos.
 
-Podremos editar las fechas de inicio y fin. Ver los bocetos y ordenes de trabajo si es que existe alguna y eliminar los trabajos a no ser que ya estén en progreso.
+Podremos editar las fechas de inicio y fin. Ver los bocetos y ordenes de trabajo si es que existen y eliminar los trabajos a no ser que ya estén en progreso.
 
 ![Imagen](./screenshoots/ordenesserigrafia.png)
 
@@ -153,13 +153,13 @@ La primera pantalla que nos aparece al entrar es en la que se muestran los clien
 
 Cuando encontremos el cliente deseado podemos hacer click en él y entrar para ver sus todos sus datos.
 
-![Imagen](./screenshoots/datoscliente.png)
+![Imagen](./screenshoots/datosclientetienda.png)
 
 En este menú podremos ver, además de los datos del cliente, sus logotipos, bocetos y ordenes de trabajo. También podremos editar la información del usuario y añadir logotipos y bocetos.
 
-En la pantalla de editar cliente podremos modificar cualquier dato salvo el CIF/NIF.
+En la pantalla de editar cliente podremos modificar cualquier dato salvo el CIF/NIF y el número de cliente.
 
-![Imagen](./screenshoots/editarcliente.png)
+![Imagen](./screenshoots/editarclientetienda.png)
 
 ### Logos
 
@@ -167,19 +167,19 @@ Al hacer click en el botón "Subir logo" se abrirá un selector de archivos en e
 
 ![Imagen](./screenshoots/subirlogo.png)
 
-Una vez subido el logo podremos editar su estado de "activo" a "obsoleto" y viceversa y añadir una imagen vectorizada
+Una vez subido el logo podremos editar su estado de "activo" a "obsoleto" y viceversa.
 
-![Imagen](./screenshoots/tablalogos.png)
+![Imagen](./screenshoots/menulogos.png)
 
 ### Bocetos
 
-Siguiendo el mismo procedimiento podemos subir un boceto el cuál debe tener formato pdf. Una vez subido tendremos la opción de ver dicho pdf y añadir una versión firmada del mismo boceto.
+En la tabla de bocetos tendremos la opción de ver dicho boceto y añadir una versión firmada del mismo.
 
-![Imagen](./screenshoots/subirboceto.png)
+![Imagen](./screenshoots/menubocetos.png)
 
 ### Ordenes de trabajo
 
-En la tabla de ordenes de trabajo se mostrará la información de los pedidos que tengan ordenes de trabajo. Serigrafía no puede realizar ordenes de trabajo.
+En la tabla de ordenes de trabajo se mostrará la información de los pedidos que tengan ordenes de trabajo.
 
 ![Imagen](./screenshoots/tablaordenesserigrafia.png)
 
@@ -189,37 +189,13 @@ En la opción "Nuevo Trabajo" del menú lateral podremos elegir un pedido y gene
 
 Arriba a la derecha hay un menú que nos indica si falta algún dato por concretar en el formulario. Debajo de este, hay otro menú que nos permite seleccionar un boceto para asociarlo a esta orden de trabajo y previsualizarlo. Sin embargo, no es obligatorio ya que como veremos lo podremos asociar más tarde.
 
-El usuario de serigrafía no puede enviar ordenes de trabajo, pero si puede usarlo para hacer pruebas.
-
 ![Imagen](./screenshoots/formularioseri.png)
-
-### Posiciones
-
-En la sección "Posiciones", podremos crear nuevas posiones en las que podremos colocar los logotipos, además de editarlas y deshabilitarlas.
-
-![Imagen](./screenshoots/tablaposiciones.png)
-
-### Tipos de artículos
-
-En la sección "Tipos de artículos", podremos crear nuevas tipos de artículos que podremos asociar a los artículos de los pedidos, además de editarlos, deshabilitarlas y asociarles posiciones.
-
-![Imagen](./screenshoots/tiposarticulos.png)
-
-Para asociar posiciones a los tipos de artículo, hacemos click en "Editar posiciones" y podremos eliminar y añadir posiciones a un determinado tipo de artículo.
-
-![Imagen](./screenshoots/editarposiciones.png)
-
-### Tipos de trabajo
-
-En la sección "Tipos de trabajo" podremos crear, editar y deshabilitar los diferentes tipos de trabajo.
-
-![Imagen](./screenshoots/tipostrabajos.png)
 
 ### Pedidos de venta
 
-En la sección "Pedidos de venta" podremos ver los datos de todos los pedidos de venta, el estado de la documentación y los motivos por los que no está en proceso. Podremos filtrarlos por ejercicio, serie y número.
+En la sección "Pedidos de venta" podremos ver los datos de todos los pedidos de venta hechos en la tienda en la que nos encontremos, el estado de la documentación y los motivos por los que no está en proceso. Podremos filtrarlos por ejercicio, serie y número.
 
-![Imagen](./screenshoots/pedidosventa.png)
+![Imagen](./screenshoots/pedidostienda.png)
 
 También podremos añadir un boceto después de haberlo asociado al cliente haciendo click en "Añadir boceto".
 
@@ -235,9 +211,9 @@ Por último, si hacemos click en un pedido podremos ver toda su información má
 
 ### Trabajos serigrafía
 
-En la sección "Trabajos serigrafía" podremos ver los datos de las ordenes de trabajo, filtrarlas por cliente, ejercicio, serie y número. Por defecto, solo se mostraran los trabajos pendientes, pero haciendo click en "Mostrar todos" podermos ver todos.
+En la sección "Trabajos serigrafía" podremos ver los datos de las ordenes de trabajo de la tienda, filtrarlas por cliente, ejercicio, serie y número. Por defecto, solo se mostraran los trabajos pendientes, pero haciendo click en "Mostrar todos" podermos ver todos los de la tienda.
 
-Podremos editar las fechas de inicio y fin. Ver los bocetos y ordenes de trabajo si es que existe alguna y eliminar los trabajos a no ser que ya estén en progreso.
+Podremos ver los bocetos y ordenes de trabajo si es que existen y eliminar los trabajos a no ser que ya estén en progreso.
 
 ![Imagen](./screenshoots/ordenesserigrafia.png)
 
