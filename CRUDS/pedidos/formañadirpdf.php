@@ -15,7 +15,7 @@ $_SESSION["Volver"] = "./pedidos.php";
 <body>
 
 
-    <form action="../../createpdf.php" method="post" enctype="multipart/form-data">
+    <form class='form-añadir' action="../../createpdf.php" method="post" enctype="multipart/form-data">
 
 
         <?php
@@ -51,11 +51,11 @@ $_SESSION["Volver"] = "./pedidos.php";
                 <input name='serie_pedido[]' type='hidden' value=" . $_SESSION["serie_pedido"] . "></input> 
                 <input name='numero_pedido[]' type='hidden' value=" . $_SESSION["numero_pedido"] . "></input> 
 
-                <label for='pdf'>Añadir PDF</label>
+                <label for='pdf'><div class='boton-de-pega'>Añadir PDF</div></label>
                 <input required accept='application/pdf' type='file' id='pdf' name='pdf'/>
-                <label for='firmado'>Firmado</label>
-                <input type='checkbox' name='firmado' id='firmado' value='1' onclick='clickado()'></input>
-
+                <label for='firmado'>Firmado<input type='checkbox' name='firmado' id='firmado' value='1' onclick='clickado()'></input>
+                </label>
+                
                 <script>
                 function clickado(){
                     var firmadoInput = document.getElementById('firmado');
