@@ -206,7 +206,6 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
       <tr class='fila'>
         <td>" . $boceto["nombre"] . "</td>
         <td>";
-        echo ($boceto['pdf']);
 echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
             <button>Ver Boceto</button>
           </form>
