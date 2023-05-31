@@ -36,7 +36,7 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-$_SESSION['confirmarAccion'] = "./trabajos/trabajos.php";
-$_SESSION['mensajeAccion'] = "Orden de trabajo borrada";
+// $_SESSION['confirmarAccion'] = "./trabajos/trabajos.php";
+// $_SESSION['mensajeAccion'] = "Orden de trabajo borrada";
 header("location:./trabajos.php");
 ?>

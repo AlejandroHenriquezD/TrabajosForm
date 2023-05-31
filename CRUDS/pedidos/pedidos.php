@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body onload='filtrar();'>
@@ -290,18 +290,16 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       tabla += '<button>Añadir Orden Trabajo<ion-icon name=\'create\'></button>' 
       tabla += '</form>'
       tabla += '</div></td>'
-      tabla += '<td>'
+      tabla += '<td><div class=\"estado-pedido\">'
       tabla += '<img src=\'../../frontend/img/' + pedido[\"Estado\"] + '.png\'/>'
 
       if(pedido['Estado'] != 'aceptar'){
-      var mensajes = pedido['MensajeError'].split('-');
-      for(mensaje of mensajes){
-
-
-      tabla += mensaje + '<br>'
+        var mensajes = pedido['MensajeError'].split('-');
+        for(mensaje of mensajes){
+          tabla += mensaje + '<br>'
+        }
       }
-    }
-
+      tabla += '</div></td>'
     }
     tabla += '</table>'
     tabla = elementFromHtml(tabla)

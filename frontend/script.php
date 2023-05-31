@@ -229,10 +229,10 @@ echo "
       logo = logo.replaceAll('idTiposTrabajos', numeroTrabajo);
       logo = logo.replaceAll('idPosicion', numeroPosicion);
       
-      var desplegable = desplegables.replaceAll('tipo', 'logos');
-      desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroTrabajo);
-      desplegable = desplegable.replace('textoPadre', nombreTrabajo);
-      desplegable = elementFromHtml(desplegable);
+      // var desplegable = desplegables.replaceAll('tipo', 'logos');
+      // desplegable = desplegable.replaceAll('codigos', elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+numeroTrabajo);
+      // desplegable = desplegable.replace('textoPadre', nombreTrabajo);
+      // desplegable = elementFromHtml(desplegable);
       for (let r of radios) {
         var nTrabajo = r.id.split('-')[5];
 
@@ -241,12 +241,12 @@ echo "
           logo = elementFromHtml(logo);
           if(!document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo)) {
             divTrabajos.appendChild(logo);
-            divTrabajos.appendChild(desplegable);
+            // divTrabajos.appendChild(desplegable);
           }
         } else {
           if (document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo)) {
             divTrabajos.removeChild(document.getElementById('logos-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
-            divTrabajos.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
+            // divTrabajos.removeChild(document.getElementById('desplegable-'+elementoActual+'-'+numeroArticulo+'-'+descripcion+'-'+numeroTipoArticulo+'-'+numeroPosicion+'-'+nTrabajo));
           }
         }
       }
@@ -365,6 +365,16 @@ echo "
         });
       }
     }
+  }
+
+  function generarOrdenTrabajo() {
+    document.getElementById('fondo-confirmar-accion').classList.remove('oculto');
+    document.getElementById('formulario').submit();
+  }
+
+  function recargar() {
+    document.getElementById('fondo-confirmar-accion').classList.add('oculto');
+    window.location.reload();
   }
 
 </script>

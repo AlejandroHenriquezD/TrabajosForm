@@ -1,5 +1,5 @@
-<?php 
-session_start(); 
+<?php
+session_start();
 $_SESSION["Volver"] = $_SESSION['VolverDatosPedidos'];
 $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
 ?>
@@ -12,14 +12,14 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body>
   <?php
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 
-  if(isset($_POST['IdDelegacion'])) {
+  if (isset($_POST['IdDelegacion'])) {
     $_SESSION['IdDelegacion'] = $_POST['IdDelegacion'];
     $_SESSION['EjercicioPedido'] = $_POST['EjercicioPedido'];
     $_SESSION['SeriePedido'] = $_POST['SeriePedido'];
@@ -110,12 +110,12 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
       <th>Tienda</th>
       <th>Num Pedido Venta</th>
       <th>Fecha de pedido</th>
+      <th>Boceto</th>
+      <th>Orden de Trabajo</th>
       <th>Posición</th>
       <th>Cod Artículo</th>
       <th>Tipo de trabajo</th>
       <th>Logo</th>
-      <th>Boceto</th>
-      <th>Orden de Trabajo</th>
     </tr>
   ";
   $countTrabajos = 0;
@@ -138,8 +138,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
 
       echo "<tr class='fila'>";
       $mismoTrabajo = false;
-      if($countTrabajos == 0) {
-        foreach($trabajos as $trabajo) {
+      if ($countTrabajos == 0) {
+        foreach ($trabajos as $trabajo) {
           if (
             $trabajo['ejercicio_pedido'] === $trabajos[$p]['ejercicio_pedido'] &&
             $trabajo['serie_pedido'] === $trabajos[$p]['serie_pedido'] &&
@@ -152,18 +152,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
         <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['num_tienda'] . "</td> 
         <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['ejercicio_pedido'] . '/' . $trabajos[$p]['serie_pedido'] . '/' . $trabajos[$p]['numero_pedido']  . "</td> 
         <td rowspan='" . $countTrabajos . "'>" . $trabajos[$p]['FechaPedido'] . "</td>
+        <td rowspan='" . $countTrabajos . "'>
         ";
-        $mismoTrabajo = true;
-      }
-      echo "
-      <td>" . $posicion['descripcion'] . "</td> 
-      <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
-      <td>" . $tipo_trabajo['nombre'] . "</td>
-      <td>" . $colLogo . "</td>
-      ";
-
-      if($mismoTrabajo == true) {
-        echo "<td rowspan='" . $countTrabajos . "'>";
         if ($trabajos[$p]['id_boceto'] != null) {
           echo "
           <form action='../." . $boceto['pdf'] . "' target='_blank'>
@@ -188,8 +178,14 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
           echo "Falta Orden Trabajo";
         }
         echo "</td>";
-    }
-      echo "</tr>";
+      }
+      echo "
+      <td>" . $posicion['descripcion'] . "</td> 
+      <td>" . $trabajos[$p]['codigo_articulo'] . "</td>
+      <td>" . $tipo_trabajo['nombre'] . "</td>
+      <td>" . $colLogo . "</td>
+      </tr>
+      ";
     }
   }
   echo "</table>";

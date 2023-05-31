@@ -10,7 +10,7 @@ echo "
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Nuevo trabajo</title>
   <link rel='shortcut icon' href='./img/favicon.png'>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='styles2.css'>
 </head>
 <body onload='validar();'>
 ";
@@ -27,14 +27,20 @@ echo "
         <h1>Observaciones</h1>
         <textarea id='observaciones2' name='observaciones' onchange='validar()' placeholder='Escriba aquí otras demandas'></textarea>
       </div>
-      <input type='submit' id='enviar' value='Enviar orden de trabajo' disabled>
-      <input type='text' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
-      <input type='text' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
+      <input type='hidden' id='numero_pedido' class='input-hidden' name='numero_pedido' value=''>
+      <input type='hidden' id='numero_boceto' class='input-hidden' name='numero_boceto' value=''>
     </form>
+    <button id='enviar' onclick='generarOrdenTrabajo()' disabled>Enviar orden de trabajo</button>
   </div>
   <div id='contenido-lateral'>
     <div id='listaCheck'>
   </div>
+  </div>
+  <div id='fondo-confirmar-accion' class='oculto'>
+    <div id='cuadro-confirmar-accion'>
+      <p>Orden de trabajo generada</p>
+      <button onclick='recargar()'>Aceptar</button>
+    </div>
   </div>
 ";
 

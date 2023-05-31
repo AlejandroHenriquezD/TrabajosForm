@@ -128,6 +128,11 @@ td {
   border-top: 1px solid #000;
   border-right: 1px solid #000;
   border-left: 1px solid #000;
+  vertical-align: top;
+}
+
+td img {
+  height: 60px;
 }
 
 .td-img {
@@ -535,6 +540,39 @@ td > form > label {
   display: flex;
   align-items: center;
   margin-left: 20px;
+}
+
+.estado-pedido {
+  display: flex;
+  color:#e1251a;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+}
+
+.estado-pedido img {
+  width: 60px;
+  align-self: center;
+}
+
+.oculto {
+  visibility: hidden;
+}
+
+#botones-cuadro {
+  display: flex;
+}
+
+#botones-cuadro button {
+  height: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+  align-items: center;
+  display: flex;
+}
+
+.boton-rojo {
+  background-color: #e1251a;
 }
 
 @media only screen and (max-width: 1350px) {

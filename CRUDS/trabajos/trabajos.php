@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds3.css">
 </head>
 
 <body onload='filtrar()'>
@@ -81,9 +81,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
             AND NumeroPedido = " . $trabajo['numero_pedido'] . "
         ";
 
-        $getResults = sqlsrv_query($connSQLSERVER, $sql,array(), array( "Scrollable" => 'static' ));
-        $row_count = sqlsrv_num_rows($getResults);
-        if ($row_count > 0) {
+      $getResults = sqlsrv_query($connSQLSERVER, $sql, array(), array("Scrollable" => 'static'));
+      $row_count = sqlsrv_num_rows($getResults);
+      if ($row_count > 0) {
         while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
           $pedido = $row;
         }
@@ -169,7 +169,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
             AND SeriePedido = '" . $trabajo['serie_pedido'] . "'
             AND NumeroPedido = '" . $trabajo['numero_pedido'] . "'
         ";
-      $getResults = sqlsrv_query($connSQLSERVER, $sql,array(), array( "Scrollable" => 'static' ));
+      $getResults = sqlsrv_query($connSQLSERVER, $sql, array(), array("Scrollable" => 'static'));
       $row_count = sqlsrv_num_rows($getResults);
       if ($row_count > 0) {
         while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
@@ -293,14 +293,14 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
     var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th>'
     ";
-    if (isset($_SESSION['usuario'])) {
-      echo "
+  if (isset($_SESSION['usuario'])) {
+    echo "
       if(todos == true) {
         tabla += '<th>Estado</th>'
       }
       ";
-    }
-    echo "
+  }
+  echo "
     tabla += '</tr>'
     for(var p=0; p<trabajos.length; p++) {
 
@@ -357,11 +357,11 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '<td>'
 
       if(trabajos[p][\"Estado\"] == 'cancelar'){
-        tabla += '<form action=\'deletetrabajo.php\' method=\'get\'>' 
+        tabla += '<button onclick=\"confirmarBorrar(\'form-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\')\">Borrar trabajo<ion-icon name=\'trash\'></button>' 
+        tabla += '<form id=\"form-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\'deletetrabajo.php\' method=\'get\'>' 
         tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
         tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
         tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
-        tabla += '<button>Borrar trabajo<ion-icon name=\'trash\'></button>' 
         tabla += '</form>'
         tabla += '</td>'
       } else {
@@ -417,6 +417,28 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     }
     filtrar();
   }
+
+  function confirmarBorrar(formulario) {
+    var cuadro = \"<div id='fondo-confirmar-accion'>\"
+    cuadro += \"<div id='cuadro-confirmar-accion'>\"
+    cuadro += \"<p>¿Está seguro de que quiere borrar esta orden de trabajo?</p>\"
+    cuadro += \"<div id='botones-cuadro'><button class='boton-rojo' onclick='cancelarBorrar()'>Cancelar</button>\"
+    cuadro += '<button onclick=\"eliminarTrabajo(\'' + formulario + '\')\">Eliminar<ion-icon name=\'trash\'></button></div>'
+    cuadro += \"</form>\"
+    cuadro += \"</div>\"
+    cuadro += \"</div>\"
+    cuadro = elementFromHtml(cuadro);
+    document.body.appendChild(cuadro);
+  }
+
+  function cancelarBorrar() {
+    document.body.removeChild(document.getElementById('fondo-confirmar-accion'));
+  }
+
+  function eliminarTrabajo(formulario) {
+    document.getElementById(formulario).submit();
+  }
+  
   </script>
   ";
 
@@ -442,9 +464,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   echo "
     <div id='divTabla'></div>
   ";
-  if (isset($_SESSION['confirmarAccion'])) {
-    include "../confirmarAccion.php";
-  }
+  // if (isset($_SESSION['confirmarAccion'])) {
+  //   include "../confirmarAccion.php";
+  // }
   ?>
   <?php include "./menuTrabajos.php" ?>
 

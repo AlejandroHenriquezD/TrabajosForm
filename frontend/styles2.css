@@ -79,6 +79,25 @@ input[type=submit]:disabled {
   cursor: default;
 }
 
+button {
+  width: max-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  font-size: 14px
+}
+
+button:disabled {
+  background-color:rgba(128, 128, 128, 1);
+  cursor: default;
+}
+
 .boton-de-pega {
   width: min-content;
   border-radius: 5px;
@@ -553,6 +572,44 @@ ar {
 ar p {
   width: 144px;
   color: red;
+}
+
+#fondo-confirmar-accion {
+  position: fixed !important;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oculto {
+  visibility: hidden;
+}
+
+#cuadro-confirmar-accion {
+  height: 200px;
+  width: max-content;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  background-color: rgba(225, 225, 225, 1);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#cuadro-confirmar-accion p {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 40px;
 }
 
 @media only screen and (max-width: 1500px) {
