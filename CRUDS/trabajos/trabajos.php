@@ -363,10 +363,18 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
         tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
         tabla += '</form>'
-        tabla += '</td>'
+
       } else {
         tabla += '<p>Trabajo en proceso</p>' 
       }
+      tabla += '<form action=\'../../frontend/pdf.php\' method=\'get\'>' 
+      tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
+      tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
+      tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
+      tabla += '<button>Generar Orden Trabajo<ion-icon name=\'trash\'></button>' 
+      tabla += '</form>'
+      tabla += '</td>' 
+      
       ";
 
   if (isset($_SESSION['usuario'])) {
