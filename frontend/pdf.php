@@ -5,8 +5,49 @@ require('../fpdf/fpdf.php');
 $ejercicio_pedido = $_GET["ejercicio_pedido"];
 $serie_pedido = $_GET["serie_pedido"];
 $numero_pedido = $_GET["numero_pedido"];
-$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
-$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+
+$serverName = "192.168.0.23\SQLEXIT,1433";
+$connectionOptions = array(
+	"Database" => "ExitERP0415",
+	"Uid" => "programacion",
+	"PWD" => "CU_2023",
+	"CharacterSet" => "UTF-8",
+	"TrustServerCertificate" => true
+);
+$connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+$sql = "SELECT    
+			EjercicioPedido,
+			SeriePedido,
+			NumeroPedido,
+			FechaPedido,
+			IdDelegacion,
+			CodigoCliente,
+			CifDni,
+			RazonSocial,
+			Nombre,
+			Domicilio,
+			CodigoPostal,
+			Municipio,
+			Email1,
+			Telefono,
+			StatusPedido,
+			EX_Serigrafiado
+		FROM PedidoVentaCabecera
+		WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $_SESSION['numTienda'] . "' 
+		ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+	";
+
+$getResults = sqlsrv_query($connSQLSERVER, $sql);
+if (mysqli_connect_errno()) {
+	die("Connection error: " . mysqli_connect_errno());
+}
+
+$pedidos = [];
+
+while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+	$pedidos[] = $row;
+}
+sqlsrv_free_stmt($getResults);
 
 class PDF extends FPDF
 {
@@ -527,5 +568,5 @@ $pdf->firma();
 
 $pdf->AliasNbPages();
 
-$pdf->Output('D','orden_trabajo_pedido_'. $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
+$pdf->Output('D', 'orden_trabajo_pedido_' . $ejercicio_pedido . '_' . $serie_pedido . '_' . $numero_pedido . '.pdf');
 // $pdf->Output();

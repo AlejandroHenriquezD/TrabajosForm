@@ -1,6 +1,69 @@
 <?php
 session_start();
 
+include_once "../BDReal/numTienda.php";
+$_SESSION['numTienda'] = $tienda;
+
+$serverName = "192.168.0.23\SQLEXIT,1433";
+$connectionOptions = array(
+  "Database" => "ExitERP0415",
+  "Uid" => "programacion",
+  "PWD" => "CU_2023",
+  "CharacterSet" => "UTF-8",
+  "TrustServerCertificate" => true
+);
+$connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+if (isset($_SESSION['usuario'])) {
+  $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 
+            ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+        ";
+} else {
+  $sql = "SELECT    
+                EjercicioPedido,
+                SeriePedido,
+                NumeroPedido,
+                FechaPedido,
+                IdDelegacion,
+                CodigoCliente,
+                CifDni,
+                RazonSocial,
+                Nombre,
+                Domicilio,
+                CodigoPostal,
+                Municipio,
+                Email1,
+                Telefono,
+                StatusPedido,
+                EX_Serigrafiado
+            FROM PedidoVentaCabecera
+            WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $tienda . "' 
+            ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+        ";
+}
+
+$getResults = sqlsrv_query($connSQLSERVER, $sql);
+if (mysqli_connect_errno()) {
+  die("Connection error: " . mysqli_connect_errno());
+}
+
 $host = "localhost";
 $dbname = "centraluniformes";
 $username = "root";
@@ -13,11 +76,60 @@ $conn = mysqli_connect(
   database: $dbname
 );
 
-if (isset($_SESSION['usuario'])) {
-  $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
-} else {
-  $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+$pedidos = [];
+
+while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+  $pedidos[] = $row;
+  $numero_cliente = $row["CodigoCliente"];
+  $cif_nif = $row["CifDni"];
+
+  // Compruebo si los datos están en la otra base de datos
+  $condicion = mysqli_query($conn, "
+                SELECT 
+                    1
+                FROM clientes WHERE 
+                    razon_social = '" . $row["RazonSocial"] . "' AND
+                    numero_cliente = '" . $row["CodigoCliente"] . "' AND
+                    cif_nif = '" . $row["CifDni"] . "'
+            ");
+
+  // Si no están los introduzco
+  if (mysqli_num_rows($condicion) == 0) {
+    $sql2 = "
+                    INSERT INTO clientes (
+                        numero_cliente,
+                        cif_nif,
+                        razon_social,
+                        nombre,
+                        dirección,
+                        correo,
+                        telefono) 
+                    VALUES (?,?,?,?,?,?,?)
+                ";
+
+    $stmt = mysqli_stmt_init($conn);
+
+    if (!mysqli_stmt_prepare($stmt, $sql2)) {
+      die(mysqli_errno($conn));
+    }
+
+    mysqli_stmt_bind_param(
+      $stmt,
+      "sssssss",
+      $row["CodigoCliente"],
+      $row["CifDni"],
+      $row["RazonSocial"],
+      $row["Nombre"],
+      $row["Domicilio"],
+      $row["Email1"],
+      $row["Telefono"]
+    );
+
+    mysqli_stmt_execute($stmt);
+  }
 }
+sqlsrv_free_stmt($getResults);
+
 
 $clientes = json_decode(file_get_contents("http://localhost/trabajosform/clientes"), true);
 
@@ -84,7 +196,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
           AND serie_pedido ='" . $pedidos[$o]['SeriePedido'] .  "'
           AND numero_pedido =" . $pedidos[$o]['NumeroPedido'];
   $result = mysqli_query($conn, $sql);
-  if (mysqli_num_rows($result) == 0) { 
+  if (mysqli_num_rows($result) == 0) {
     $divPedidos .= "<option id='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}' value='{$pedidos[$o]['SeriePedido']}-{$pedidos[$o]['NumeroPedido']}'>{$pedidos[$o]['EjercicioPedido']}" . "/" . "{$pedidos[$o]['SeriePedido']}" . "/" . "{$pedidos[$o]['NumeroPedido']}</option>";
   }
 }
@@ -133,8 +245,8 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $arrayArticulos[$o] .= "<label class='label-articulo' for=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\">";
       $arrayArticulos[$o] .= "<div><input type='checkbox' id=\"articulo-{$articulos[$i]['CodigoArticulo']}-{$articulos[$i]['DescripcionArticulo']}\" name='articulo[]' value=\"{$articulos[$i]['DescripcionArticulo']}\" onclick='mostrarTiposArticulos(\"form-control-{$articulos[$i]['CodigoArticulo']}-" . str_replace('-', '[guion]', $articulos[$i]['DescripcionArticulo']) . "\")'>" . $articulos[$i]['DescripcionArticulo'] . "</div>";
       $arrayArticulos[$o] .= "<p class='referencia-articulo'><b>Referencia:</b> " . $articulos[$i]['CodigoArticulo'] . "</p><p class='codigo-color'><b>Colores:</b>";
-      foreach($articulosColor as $articuloColor) {
-        if(
+      foreach ($articulosColor as $articuloColor) {
+        if (
           $articulos[$i]['CodigoAlmacen'] == $articuloColor['CodigoAlmacen'] &&
           $articulos[$i]['CodigoArticulo'] == $articuloColor['CodigoArticulo'] &&
           $articulos[$i]['EjercicioPedido'] == $articuloColor['EjercicioPedido'] &&

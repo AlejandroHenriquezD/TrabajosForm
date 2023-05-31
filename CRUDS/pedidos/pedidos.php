@@ -17,25 +17,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
 <body onload='filtrar();'>
 
   <?php
-
-  $pedidos = array();
-  if (isset($_SESSION['usuario'])) {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
-  } else {
-    $pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
-  }
-
-  $host = "localhost";
-  $dbname = "centraluniformes";
-  $username = "root";
-  $password = "";
-
-  $conn1 = mysqli_connect(
-    hostname: $host,
-    username: $username,
-    password: $password,
-    database: $dbname
-  );
+  include_once "../../BDReal/numTienda.php";
 
   $serverName = "192.168.0.23\SQLEXIT,1433";
   $connectionOptions = array(
@@ -46,6 +28,122 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
     "TrustServerCertificate" => true
   );
   $connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+  if (isset($_SESSION['usuario'])) {
+    $sql = "SELECT    
+                  EjercicioPedido,
+                  SeriePedido,
+                  NumeroPedido,
+                  FechaPedido,
+                  IdDelegacion,
+                  CodigoCliente,
+                  CifDni,
+                  RazonSocial,
+                  Nombre,
+                  Domicilio,
+                  CodigoPostal,
+                  Municipio,
+                  Email1,
+                  Telefono,
+                  StatusPedido,
+                  EX_Serigrafiado
+              FROM PedidoVentaCabecera
+              WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 
+              ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+          ";
+  } else {
+    $sql = "SELECT    
+                  EjercicioPedido,
+                  SeriePedido,
+                  NumeroPedido,
+                  FechaPedido,
+                  IdDelegacion,
+                  CodigoCliente,
+                  CifDni,
+                  RazonSocial,
+                  Nombre,
+                  Domicilio,
+                  CodigoPostal,
+                  Municipio,
+                  Email1,
+                  Telefono,
+                  StatusPedido,
+                  EX_Serigrafiado
+              FROM PedidoVentaCabecera
+              WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $tienda . "' 
+              ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
+          ";
+  }
+  
+  $getResults = sqlsrv_query($connSQLSERVER, $sql);
+  if (mysqli_connect_errno()) {
+    die("Connection error: " . mysqli_connect_errno());
+  }
+  
+  $host = "localhost";
+  $dbname = "centraluniformes";
+  $username = "root";
+  $password = "";
+  
+  $conn = mysqli_connect(
+    hostname: $host,
+    username: $username,
+    password: $password,
+    database: $dbname
+  );
+  
+  $pedidos = [];
+  
+  while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+    $pedidos[] = $row;
+    $numero_cliente = $row["CodigoCliente"];
+    $cif_nif = $row["CifDni"];
+  
+    // Compruebo si los datos están en la otra base de datos
+    $condicion = mysqli_query($conn, "
+                  SELECT 
+                      1
+                  FROM clientes WHERE 
+                      razon_social = '" . $row["RazonSocial"] . "' AND
+                      numero_cliente = '" . $row["CodigoCliente"] . "' AND
+                      cif_nif = '" . $row["CifDni"] . "'
+              ");
+  
+    // Si no están los introduzco
+    if (mysqli_num_rows($condicion) == 0) {
+      $sql2 = "
+                      INSERT INTO clientes (
+                          numero_cliente,
+                          cif_nif,
+                          razon_social,
+                          nombre,
+                          dirección,
+                          correo,
+                          telefono) 
+                      VALUES (?,?,?,?,?,?,?)
+                  ";
+  
+      $stmt = mysqli_stmt_init($conn);
+  
+      if (!mysqli_stmt_prepare($stmt, $sql2)) {
+        die(mysqli_errno($conn));
+      }
+  
+      mysqli_stmt_bind_param(
+        $stmt,
+        "sssssss",
+        $row["CodigoCliente"],
+        $row["CifDni"],
+        $row["RazonSocial"],
+        $row["Nombre"],
+        $row["Domicilio"],
+        $row["Email1"],
+        $row["Telefono"]
+      );
+  
+      mysqli_stmt_execute($stmt);
+    }
+  }
+  sqlsrv_free_stmt($getResults);
 
   for ($i = 0; $i < count($pedidos); $i++) {
     $sqlMercancia = "SELECT PVC.EjercicioPedido, PVC.SeriePedido, PVC.NumeroPedido FROM PedidoVentaCabecera AS PVC LEFT JOIN PedidoIntercambioCabecera AS PIC ON PIC.CodigoEmpresa = PVC.CodigoEmpresa AND PIC.EjercicioPedido = PVC.EjercicioPedido AND PIC.SeriePedido = PVC.EX_SeriePedidoIntercambio AND PIC.NumeroPedido = PVC.EX_NumeroPedidoIntercambio WHERE PVC.StatusPedido = 'P' AND PIC.StatusPedido = 'S' AND PIC.AlmacenContrapartida = '55' AND PVC.EX_Serigrafiado = -1 AND PIC.UnidadesPendientes = 0
@@ -60,7 +158,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
 
 
     $sql = "SELECT id_boceto,pdf,pdf_firmado FROM trabajos WHERE ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'";
-    $result = mysqli_query($conn1, $sql);
+    $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
     $estado = array();
     $mensajesError = array();
@@ -81,7 +179,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
 
         //Hacemos la query del boceto para saber si esta firmado o no
         $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
-        $resultBoceto = mysqli_query($conn1, $sqlBoceto);
+        $resultBoceto = mysqli_query($conn, $sqlBoceto);
         $rowBoceto = mysqli_fetch_array($resultBoceto);
 
         if ($rowBoceto["firmado"] == 0) {
