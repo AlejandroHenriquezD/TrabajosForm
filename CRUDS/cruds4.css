@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 @import url("./cabecera.css");
+@import url("./trabajos/mensajes.css");
 
 body {
   display: flex;
@@ -587,6 +588,29 @@ td > form > label {
 
 form > select {
   margin-bottom: 20px;
+}
+
+/* Barra chrome */
+*::-webkit-scrollbar {
+  width: 10px; /* ancho de la barra de desplazamiento */
+  height: 10px;
+  background-color: unset; /* color de fondo de la barra de desplazamiento */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 187, 44, 0.7); /* color del pulgar de la barra de desplazamiento */
+  border-radius: 5px;
+}
+
+/* Estilo de la barra de desplazamiento al hacer hover */
+*:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 135, 21, 0.7); /* color del pulgar de la barra de desplazamiento al hacer hover */
+}
+
+/* Barra firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 187, 44, 0.7) transparent;
 }
 
 @media only screen and (max-width: 1350px) {

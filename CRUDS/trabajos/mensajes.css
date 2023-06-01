@@ -1,0 +1,116 @@
+#divChat {
+  margin-top: 20px;
+  width: calc(80vw - 30px);
+  height: calc(80vh - 30px);
+  border-radius: 5px;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  padding: 30px;
+}
+
+#divChat form {
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 60px);
+  height: 60px;
+}
+
+#divChat form input[type="text"]{
+  position: absolute;
+  bottom: 30px;
+  width: calc(100% - 15px);
+  height: 40px;
+  border-radius: 20px;
+  font-size: 18px;
+  padding-left: 10px;
+}
+
+#divChat form button{
+  position: absolute;
+  bottom: 30px;
+  right: 0px;
+  width: 90px;
+  height: 45px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#divChat form button ion-icon {
+  color: white;
+  height: 25px;
+  width: 25px;
+}
+
+#chat {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 70px);
+  width: calc(100% + 20px);
+  overflow-y: scroll;
+}
+
+.mensaje-defecto {
+  align-self: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 50px;
+}
+
+.mensaje-fecha{
+  align-self: center;
+  background-color: #0e1c2e;
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 24px;
+}
+
+.mensaje-fecha p {
+  margin: 12px;
+  font-size: 14px;
+}
+
+.receptor {
+  background-color: rgba(225, 37, 26, 0.5);
+  border: 1px solid rgb(0, 0, 0, 0.5);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  min-width: 200px;
+  width: max-content;
+  max-width: calc(100% - 30px);
+  align-self: flex-start;
+  word-wrap: break-word;
+}
+
+.emisor {
+  background-color: rgb(0, 187, 45, 0.5);
+  border: 1px solid rgb(0, 0, 0, 0.5);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  text-align: end;
+  min-width: 200px;
+  width: max-content;
+  max-width: calc(100% - 30px);
+  align-self: flex-end;
+  word-wrap: break-word;
+}
+
+.fecha-mensaje {
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  color:rgb(67, 67, 67);
+  font-size: 14px;
+}
+
+.texto-mensaje {
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
