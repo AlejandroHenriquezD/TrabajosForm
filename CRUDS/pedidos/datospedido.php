@@ -12,10 +12,10 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds4.css">
+  <link rel="stylesheet" href="../cruds7.css">
 </head>
 
-<body>
+<body onload='chat()'>
   <?php
   $logos = json_decode(file_get_contents("http://localhost/trabajosform/logos"), true);
 
@@ -54,7 +54,75 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
     }
   }
 
+  $sql = "SELECT * FROM `chats` WHERE `ejercicio_pedido` = " . $_SESSION['EjercicioPedido'] . " AND `serie_pedido` = '" . $_SESSION['SeriePedido'] . "' AND `numero_pedido` = " . $_SESSION['NumeroPedido'] . " ORDER BY `fecha` ASC";
+
+  $result = mysqli_query($conn, $sql);
+  $mensajes = [];
+
+  while ($mensaje = mysqli_fetch_assoc($result)) {
+    if (isset($_SESSION['usuario'])) {
+      switch ($mensaje['emisor']) {
+        case 'serigrafia':
+          $mensajes[] = array_merge($mensaje, array('usuario' => 'emisor'));
+          break;
+        case 'tienda':
+          $mensajes[] = array_merge($mensaje, array('usuario' => 'receptor'));
+          break;
+      }
+    } else {
+      switch ($mensaje['emisor']) {
+        case 'serigrafia':
+          $mensajes[] = array_merge($mensaje, array('usuario' => 'receptor'));
+          break;
+        case 'tienda':
+          $mensajes[] = array_merge($mensaje, array('usuario' => 'emisor'));
+          break;
+      }
+    }
+  }
+
+  $mensajes = json_encode($mensajes);
+
   echo "
+  <script>
+    function elementFromHtml(html) {
+      const template = document.createElement('template');
+
+      template.innerHTML = html.trim();
+
+      return template.content.firstElementChild;
+    }
+
+    function chat() {
+      var mensajes = $mensajes;
+      var chat = '<div id=\"chat\">';
+      var fechaActual;
+      console.log(mensajes.length > 0);
+      if(mensajes.length > 0) {
+        for (mensaje of mensajes) {
+          console.log(mensaje['fecha'].toString());
+          var fecha = mensaje['fecha'].toString().split(' ')[0];
+          var hora = mensaje['fecha'].toString().split(' ')[1];
+          hora = hora.split(':')[0] + ':' + hora.split(':')[1];
+          if(fechaActual !== fecha) {
+              fechaActual = fecha;
+              chat += '<div class=\"mensaje-fecha\">';
+              chat += '<p>' + fecha + '</p>';
+              chat += '</div>';
+          }
+          chat += '<div class=\"' + mensaje['usuario'] + '\">';
+          chat += '<p class=\"fecha-mensaje\">' + hora + '</p>';
+          chat += '<p class=\"texto-mensaje\">' + mensaje['mensaje'] + '</p>';
+          chat += '</div>';
+        } 
+      } else {
+        chat += '<p class=\"mensaje-defecto\">Iniciar conversación</p>';
+      }
+      chat += '</div>';
+      chat = elementFromHtml(chat);
+      document.getElementById('divChat').appendChild(chat);
+    }
+  </script>
   <h1>DATOS PEDIDO</h1>
   <div id='divDatosPedido'>
     <div>
@@ -72,7 +140,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
     <div>
       <p class='tituloDatos'>Razón social</p>
       <p>" . $_SESSION['razon_social'] . "</p>
-      </div>";
+    </div>";
 
   if ($_SESSION['Estado'] == 'cancelar') {
     $estado = "No listo";
@@ -104,19 +172,21 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   $trabajos = json_decode(file_get_contents("http://localhost/trabajosform/trabajos"), true);
 
   echo "
-  <h1>Ordenes de trabajo Serigrafía</h1>
-  <table>
-    <tr>
-      <th>Tienda</th>
-      <th>Num Pedido Venta</th>
-      <th>Fecha de pedido</th>
-      <th>Boceto</th>
-      <th>Orden de Trabajo</th>
-      <th>Posición</th>
-      <th>Cod Artículo</th>
-      <th>Tipo de trabajo</th>
-      <th>Logo</th>
-    </tr>
+  <div id='pantalla-datos-pedido'>
+    <div class='mitad-pantalla'>
+      <h1>Orden de trabajo Serigrafía</h1>
+      <table>
+        <tr>
+          <th>Tienda</th>
+          <th>Num Pedido Venta</th>
+          <th>Fecha de pedido</th>
+          <th>Boceto</th>
+          <th>Orden de Trabajo</th>
+          <th>Posición</th>
+          <th>Cod Artículo</th>
+          <th>Tipo de trabajo</th>
+          <th>Logo</th>
+        </tr>
   ";
   $countTrabajos = 0;
   for ($p = 0; $p < count($trabajos); $p++) {
@@ -188,7 +258,23 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
       ";
     }
   }
-  echo "</table>";
+  echo "
+      </table>
+    </div>
+    <div class='mitad-pantalla'>
+      <h1>Registro de mensajes</h1>
+      <div id='divChat'>
+        <form action='mensajesenviar.php' method='post'>
+          <input type='hidden' name='ejercicio_pedido' value='" . $_SESSION['EjercicioPedido'] . "'>
+          <input type='hidden' name='serie_pedido' value='" . $_SESSION['SeriePedido'] . "'>
+          <input type='hidden' name='numero_pedido' value='" . $_SESSION['NumeroPedido'] . "'>
+          <input type='text' name='mensaje' placeholder='Escriba aquí su mensaje'>
+          <button><ion-icon name='paper-plane-outline'></ion-icon></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  ";
   ?>
   <?php include "./menuPedidos.php" ?>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

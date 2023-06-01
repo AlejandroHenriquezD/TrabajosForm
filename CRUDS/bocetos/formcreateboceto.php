@@ -8,7 +8,7 @@ $_SESSION["Volver"] = "../clientes/datoscliente.php";
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../cruds4.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>

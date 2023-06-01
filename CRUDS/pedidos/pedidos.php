@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds4.css">
+  <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body onload='filtrar();'>

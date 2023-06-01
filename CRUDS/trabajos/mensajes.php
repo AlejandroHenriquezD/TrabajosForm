@@ -12,7 +12,7 @@ $_SESSION["Volver"] = "trabajos.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de mensajes</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds4.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body onload='chat()'>
@@ -101,6 +101,7 @@ $_SESSION["Volver"] = "trabajos.php";
         }
     </script>
     <h1>Registro de mensajes</h1>
+    <h2>Número pedido venta: " . $_GET['ejercicio_pedido'] . "/" . $_GET['serie_pedido'] . "/" . $_GET['numero_pedido'] . "</h2>
     <div id='divChat'>
         <form action='mensajesenviar.php' method='post'>
             <input type='hidden' name='ejercicio_pedido' value='" . $_GET['ejercicio_pedido'] . "'>

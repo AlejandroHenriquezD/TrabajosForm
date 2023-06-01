@@ -9,7 +9,7 @@ $_SESSION["Volver"] = "./pedidos.php";
     <meta charset="UTF-8" />
     <title>Pedidos de Venta</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds4.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
