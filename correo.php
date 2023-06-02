@@ -13,6 +13,10 @@ $mail = new PHPMailer(true);
 
 try {
     //Server settings
+    $redirectUri = 'http://localhost/phpmailer/get_oauth_token.php';
+    $clientId = '370975719595-3ik7ste0j0lvkgfrcmkner9o28kkcjdl.apps.googleusercontent.com';
+    $clientSecret = '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';
+
     $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = "smtp.gmail.com";                     //Set the SMTP server to send through
