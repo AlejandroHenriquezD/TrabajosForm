@@ -11,6 +11,13 @@ require 'vendor/autoload.php';
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 
+/* 
+Entrar en: 
+http://localhost/centraluniformes/vendor/phpmailer/phpmailer/get_oauth_token.php
+
+Introducir el ClientId y ClientSecret que estan mas abajo
+
+*/
 try {
     //Server settings
     $redirectUri = 'http://localhost/phpmailer/get_oauth_token.php';
