@@ -17,6 +17,8 @@ http://localhost/centraluniformes/vendor/phpmailer/phpmailer/get_oauth_token.php
 
 Introducir el ClientId y ClientSecret que estan mas abajo
 
+Seguir los pasos de la siguiente página a partir de fetch the token:
+https://github.com/PHPMailer/PHPMailer/wiki/Using-Gmail-with-XOAUTH2
 */
 try {
     //Server settings
