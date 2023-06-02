@@ -1,9 +1,16 @@
 <?php
-
+session_start();
 
 $id = $_POST["id"];
-$obsoleto = $_POST["obsoleto"];
+$obsoleto = $_POST["obsoleto"][0];
 
+echo json_encode($_POST["obsoleto"]);
+
+if ($obsoleto == ""){
+    $obsoleto = 1;
+}else{
+    $obsoleto = 0;
+}
 
 
 $host = "localhost";
@@ -30,9 +37,14 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
+// echo '
+//         <script>
+//             alert("Cambios guardados");
+//             window.location = "../clientes/clientes.php";
+//         </script>
+//     ';
 
-echo "<form action='logos.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Estado modificado";
+header("location:../clientes/datoscliente.php");
 ?>

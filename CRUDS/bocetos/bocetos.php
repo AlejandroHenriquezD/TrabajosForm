@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bocetos</title>
-    <link rel="shortcut icon" href="../../frontend/favicon.png">
-    <link rel="stylesheet" href="../../cruds.css">
+    <link rel="shortcut icon" href="../../frontend/img/favicon.png">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
@@ -34,8 +34,13 @@
         echo
             "<tr class='fila'>
                     <td>" . $boceto["nombre"] . "</td>
-                    <td>" . $boceto["pdf"] . "</td>
-                    <td>" . $cliente["nombre"] . "</td>
+                    
+                    <td>";
+                        echo "<form action='../.".$boceto['pdf']."'>
+                                <button>Ver Boceto</button>
+                              </form>";
+                    echo"</td>
+                    <td>" . $boceto["CodigoCliente"] . "</td>
                     <td> 
                         <form action='deleteboceto.php'> <input name='id[]' type='hidden' value=" . $boceto["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
                         

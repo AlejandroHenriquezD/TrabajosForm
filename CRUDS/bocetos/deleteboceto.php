@@ -32,10 +32,7 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Borrado."; 
-echo "<form action='bocetos.php'>
-        <button >Volver</button>
-      </form>";
-
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Boceto borrado";
+header("location:../clientes/datoscliente.php");
 ?>
-<?php include "./menuBoceto.php" ?>

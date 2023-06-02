@@ -1,11 +1,14 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./posiciones.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../cruds.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
@@ -18,6 +21,11 @@
             <button>Crear</button>
         </form>
     </div>
+    <?php
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "./menuPosiciones.php" ?>
 </body>
 

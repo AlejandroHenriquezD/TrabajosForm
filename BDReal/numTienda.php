@@ -20,9 +20,34 @@
 
     $ip = getRealIP();
     // echo getRealIP();
-    $sede       = ['0' => 'Almacén Central', '1' => 'T02 - Las Palmas', '2' => 'T03 - S. Fernando', '3' => 'T04 - S/C Tenerife', '4' => 'T05 - Americas', '5' => 'T06 - Pto. Rosario', '6' => 'T07 - Pto. Cruz', '7' => 'T08 - Lanzarote', '8' => 'T12 - Cristianos', '10' => 'T14 - Morro Jable', '12' => 'T17 - Galdar', '13' => 'T51 - M. Larache', '14' => 'T13 - Vecindario', '15' => 'T52 - LEOS', '16' => 'T56 - Travieso', '17' => 'T57 - Telde', '18' => 'T18 - La Palma', '20' => 'T15 - Arguineguín', '21' => 'T16 - Jinamar'];
-    $almacen    = ['0' => '01', '1' => '02', '2' => '03', '3' => '04', '4' => '05', '5' => '06', '6' => '07', '7' => '08', '8' => '12', '10' => '14', '12' => '17', '13' => '51', '14' => '13', '15' => '52', '16' => '56', '17' => '57', '18' => '18', '20' => '15', '21' => '16'];
-    $virtual    = ['0' => 'CT', '1' => 'LP', '2' => 'SR', '3' => 'TF', '4' => 'AM', '5' => 'PR', '6' => 'PC', '7' => 'LZ', '8' => 'CR', '10' => 'MJ', '12' => 'GA', '13' => 'ML', '14' => 'VC', '15' => 'LE', '16' => 'TR', '17' => 'TE', '18' => 'PA', '20' => 'AR', '21' => 'JN'];
+    
+    global $tienda;
+    global $vstore;
+    global $nombre;
+    global $almacen;
+    
+    $almacen    = ['0' => '01', '1' => '02', '2' => '03', '3' => '04', '4' => '05', '5' => '06', '6' => '07', '7' => '08', '8' => '12', '9' => '09', '10' => '14', '12' => '17', '13' => '51', '14' => '13', '15' => '52', '16' => '56', '17' => '57', '18' => '18', '20' => '15', '21' => '16'];
+    $virtual    = ['0' => 'CT', '1' => 'LP', '2' => 'SR', '3' => 'TF', '4' => 'AM', '5' => 'PR', '6' => 'PC', '7' => 'LZ', '8' => 'CR', '9' => 'LL', '10' => 'MJ', '12' => 'GA', '13' => 'ML', '14' => 'VC', '15' => 'LE', '16' => 'TR', '17' => 'TE', '18' => 'PA', '20' => 'AR', '21' => 'JN'];
+    $sede       = [ '0' => 'Almacén Central', 
+                    '1' => 'T02 - Las Palmas', 
+                    '2' => 'T03 - S. Fernando',
+                    '3' => 'T04 - S/C Tenerife',
+                    '4' => 'T05 - Americas', 
+                    '5' => 'T06 - Pto. Rosario', 
+                    '6' => 'T07 - Pto. Cruz', 
+                    '7' => 'T08 - Lanzarote', 
+                    '8' => 'T12 - Cristianos', 
+                    '9' => 'T09 - La Laguna',
+                    '10' => 'T14 - Morro Jable', 
+                    '12' => 'T17 - Galdar', 
+                    '13' => 'T51 - M. Larache',
+                    '14' => 'T13 - Vecindario', 
+                    '15' => 'T52 - LEOS', 
+                    '16' => 'T56 - Travieso', 
+                    '17' => 'T57 - Telde', 
+                    '18' => 'T18 - La Palma', 
+                    '20' => 'T15 - Arguineguín', 
+                    '21' => 'T16 - Jinamar'];
 
     $n = posicion($ip);
     // echo $n;

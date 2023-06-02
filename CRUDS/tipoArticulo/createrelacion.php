@@ -1,7 +1,7 @@
 <?php include "../sesion.php" ?>
 <?php
 
-$id_tipo_articulo = $_POST["id_tipoarticulo"];
+$id_tipo_articulo = $_SESSION["id_tipoArticulo"];
 $id_posicion = $_POST["id_posicion"];
 
 $host = "localhost";
@@ -32,10 +32,8 @@ mysqli_stmt_bind_param($stmt, "ii",
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado."; 
-
-echo "<form action='tiposarticulo.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./tipoArticulo/TEMP.php";
+$_SESSION['mensajeAccion'] = "Posición añadida";
+header("location:../tipoArticulo/TEMP.php");
 ?>
 <?php include "./menuTipoArticulo.php" ?>

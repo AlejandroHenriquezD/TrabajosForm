@@ -2,37 +2,39 @@
 
 if(isset($_SESSION['usuario'])) {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
-        <a href='../../frontend/index.php'>Formulario</a>
+        <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
-        <a class='seleccionado' href='../logos/logos.php'>Logos</a>
+        <a class='enlace-seleccionado' href='../logos/logos.php'>Logos</a>
         <a href='../posicion/posiciones.php'>Posiciones</a>
         <a href='../tipoArticulo/tiposarticulo.php'>Tipos de artículo</a>
         <a href='../tipoTrabajo/tipostrabajo.php'>Tipos de trabajo</a>
-        <a href='../pedidos/pedidos.php'>Pedidos</a>
-        <a href='../trabajos/trabajos.php'>Trabajos</a>
+        <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
+        <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/cerrarSesion.php'>Cerrar sesión</a>
       </div>
     </div>
   ";
 } else {
   echo "
-    <link rel='stylesheet' href='../menu.css'>
+    <link rel='stylesheet' href='../../menu3.css'>
     <div id='menu-lateral'>
       <div id='desplegable-lateral' onclick='desplegarMenu()'>
         <div id='flecha-lateral'></div>
       </div>
       <div id='enlaces-menu'>
-        <a href='../../frontend/index.php'>Formulario</a>
+        <a href='../../frontend/index.php'>Nuevo Trabajo</a>
         <a href='../bocetos/bocetos.php'>Bocetos</a>
         <a href='../clientes/clientes.php'>Clientes</a>
-        <a class='seleccionado' href='../logos/logos.php'>Logos</a>
+        <a class='enlace-seleccionado' href='../logos/logos.php'>Logos</a>
+        <a href='../pedidos/pedidos.php'>Pedidos de Venta</a>
+        <a href='../trabajos/trabajos.php'>Trabajos Serigrafía</a>
         <a class='sesion' href='../../login/login.php'>Iniciar sesión</a>
       </div>
     </div>

@@ -1,11 +1,14 @@
-<?php include "../sesion.php" ?>
+<?php 
+include "../sesion.php";
+$_SESSION["Volver"] = "./tiposarticulo.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../cruds.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
@@ -17,10 +20,15 @@
             <input required type="text" id="nombre" name="nombre" placeholder="Nombre" />
 
             <label for="image">Image file</label>
-            <input type="file" id="image" name="image">
+            <input type="file" id="image" name="image" accept="image/*">
             <button>Crear</button>
         </form>
     </div>
+    <?php
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "./menuTipoArticulo.php" ?>
 </body>
 

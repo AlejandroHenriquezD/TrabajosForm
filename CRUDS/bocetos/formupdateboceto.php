@@ -1,41 +1,39 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+$_SESSION["Volver"] = "../clientes/datoscliente.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../cruds.css">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
 
     <h1>Boceto</h1>
     <?php
-    
-    $nombre = str_replace('+',' ',$_POST["nombre"][0]);
+    if(isset($_POST["nombre"])) {
+        $_SESSION["nombre_boceto"] = $_POST["nombre"][0];
+    }
+    $nombre = str_replace('+',' ',$_SESSION["nombre_boceto"]);
     echo "
     <div id='div-form'>
-        <form action='updateboceto.php' method='post' enctype='multipart/form-data'>
-
-            <label for='nombre'>Nombre</label>
-            <input name='id[]' type='hidden' value=". $_POST["id"][0] ."></input>
-            <input required value='" . $nombre ."' type='text' id='nombre' name='nombre' placeholder='Nombre' />
-
-            <button>Editar</button>
-        </form>
-    </div>";
+		<form action='../../updateboceto.php' method='post' enctype='multipart/form-data'>
+			<label for='boceto'>Boceto</label>
+			<input name='id[]' type='hidden' value=" . $_SESSION["id"] . "></input>
+            <input name='id_boceto[]' type='hidden' value=" . $_POST["id_boceto"][0] . "></input>
+			<input required type='file' id='boceto' name='boceto' accept='application/pdf'/>
+			<button>Editar</button>
+		</form>
+	</div>";
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
     ?>
-    <?php include "./menuBoceto.php" ?>
-
-<!-- "    <form action="updatepos.php" method="post" enctype="multipart/form-data">
-        <label for="descripcion">Descripción</label>
-        <input required type="text" id="descripcion" name="descripcion" placeholder="Descripción" />
-
-        </br> 
-
-        <button>Editar</button>
-    </form>" -->
+    <?php include "../clientes/menuCliente.php" ?>
 </body>
 
 </html>

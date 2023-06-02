@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pathinfo = pathinfo($_FILES["img"]["name"]);
 
 $base = $pathinfo["filename"];
@@ -9,20 +10,9 @@ $filename = $base . "." . $pathinfo["extension"];
 
 $destination = __DIR__ . "/uploads/" . $filename;
 
-
-// $pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
-
-// $base1 = $pathinfo1["filename"];
-
-// $base1 = preg_replace("/[^\w-]/", "_", $base1);
-
-// $filename1 = $base1 . "." . $pathinfo1["extension"];
-
-// $destination1 = __DIR__ . "/uploads/" . $filename1;
-
 $img = "./uploads/" . $filename;
 $img_vectorizada = "FALTA";
-$id_cliente = $_POST["id_cliente"];
+$id_cliente = $_POST["id"];
 
 // if ( ! $terms){
 //     die("Terms must be accepted");
@@ -62,11 +52,12 @@ mysqli_stmt_bind_param(
 
 mysqli_stmt_execute($stmt);
 
-echo "Registro Guardado.";
-
-echo "<form action='CRUDS/logos/logos.php'>
-        <button >Volver</button>
-      </form>";
+// echo '
+//         <script>
+//             alert("Registro Guardado");
+//             window.location = "./CRUDS/clientes/clientes.php";
+//         </script>
+//     ';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit('POST request method required');
@@ -133,17 +124,6 @@ $filename = $base . "." . $pathinfo["extension"];
 $destination = __DIR__ . "/uploads/" . $filename;
 
 
-
-// $pathinfo1 = pathinfo($_FILES["img_vectorizada"]["name"]);
-
-// $base1 = $pathinfo1["filename"];
-
-// $base1 = preg_replace("/[^\w-]/", "_", $base1);
-
-// $filename1 = $base1 . "." . $pathinfo1["extension"];
-
-// $destination1 = __DIR__ . "/uploads/" . $filename1;
-
 // Add a numeric suffix if the file already exists
 $i = 1;
 
@@ -160,17 +140,7 @@ if (!move_uploaded_file($_FILES["img"]["tmp_name"], $destination)) {
     exit("Can't move uploaded file");
 }
 
+$_SESSION['confirmarAccion'] = "./clientes/datoscliente.php";
+$_SESSION['mensajeAccion'] = "Logo subido";
+header("location:./CRUDS/clientes/datoscliente.php");
 
-
-// while (file_exists($destination1)) {
-
-//     $filename1 = $base1 . "($i)." . $pathinfo1["extension"];
-//     $destination1 = __DIR__ . "/uploads/" . $filename1;
-
-//     $i++;
-// }
-
-// if (!move_uploaded_file($_FILES["img_vectorizada"]["tmp_name"], $destination1)) {
-
-//     exit("Can't move uploaded file");
-// }

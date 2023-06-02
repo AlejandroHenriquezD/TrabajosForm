@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+
+html,
+body {
+  background-color: #0e1c2e;
+  font-family: "Tilt Neon", cursive;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+form {
+  display: grid;
+  row-gap: 30px;
+  align-items: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+}
+
+input[type="text"],
+input[type="password"] {
+  border-radius: 20px;
+  border: 1px solid #000;
+  height: 20px;
+  font-size: 16px;
+  font-family: "Tilt Neon", cursive;
+  width: 300px;
+}
+
+input[type="submit"] {
+  justify-self: center;
+  width: min-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: "Tilt Neon", cursive;
+}
+
+#pagina {
+  z-index: 1;
+  width: max-content;
+  height: max-content;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#pagina img {
+  width: 350px;
+  margin-bottom: 0px;
+}
+
+.button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.texto-error {
+  color: #e1251a;
+  justify-self: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  opacity: 0;
+  font-size: 14px;
+}
+
+.div-button {
+  justify-self: center;
+  width: max-content;
+  border-radius: 5px;
+  background-color: #0e1c2e;
+  color:rgb(255, 255, 255);
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.div-button p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.login-incorrecto input[type="text"],
+.login-incorrecto input[type="password"] {
+  border: 1px solid #e1251a;
+}
+
+.login-incorrecto .texto-error {
+  opacity: 100;
+}
+
+.ball {
+  border-radius: 50%;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  position: fixed;
+}
+
+#greenball1 {
+  background-color: #00bb2d;
+  height: 10vw;
+  width: 10vw;
+  top: 25vw;
+  left: 25vw;
+}
+
+#greenball2 {
+  background-color: #00bb2d;
+  height: 20vw;
+  width: 20vw;
+  top: 5vw;
+  left: 80vw;
+}
+
+#greenball3 {
+  background-color: #00bb2d;
+  height: 30vw;
+  width: 30vw;
+  top: -15vw;
+  left: -15vw;
+}
+
+#redball1 {
+  background-color: #e1251a;
+  height: 10vw;
+  width: 10vw;
+  top: -5vw;
+  left: 40vw;
+}
+
+#redball2 {
+  background-color: #e1251a;
+  height: 20vw;
+  width: 20vw;
+  top: 40vw;
+  left: -10vw;
+}
+
+#redball3 {
+  background-color: #e1251a;
+  height: 30vw;
+  width: 30vw;
+  top: 60vw;
+  left: 40vw;
+}
+
+#yellowball1 {
+  background-color: #f0cb25;
+  height: 10vw;
+  width: 10vw;
+  top: 80vw;
+  left: 20vw;
+}
+
+#yellowball2 {
+  background-color: #f0cb25;
+  height: 20vw;
+  width: 20vw;
+  top: 25vw;
+  left: 50vw;
+}
+
+#yellowball3 {
+  background-color: #f0cb25;
+  height: 30vw;
+  width: 30vw;
+  top: 50vw;
+  left: 90vw;
+}

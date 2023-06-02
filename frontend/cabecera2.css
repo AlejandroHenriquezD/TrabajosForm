@@ -1,0 +1,40 @@
+#logoCabecera {
+  top: 20px;
+  z-index: -1;
+  position: absolute;
+  left: 20px;
+  height: 46px;
+  background-color: rgba(225, 225, 225, 0.7);
+  border-radius: 5px;
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#datosTienda {
+  top: 20px;
+  z-index: -1;
+  height: 46px;
+  width: 260px;
+  position: absolute;
+  right: 50px;
+  border-radius: 5px;
+  background-color: rgba(225, 225, 225, 0.7);
+  backdrop-filter: blur(5px);
+  display: grid;
+  row-gap: 10px;
+  padding: 10px;
+}
+
+.tituloDatos {
+  font-weight: 700;
+}
+
+#datosTienda p {
+  margin: 0;
+  font-size: 14px;
+  float: left;
+  position: relative; 
+  margin-right: 3px;
+}

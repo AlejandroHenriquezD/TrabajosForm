@@ -34,10 +34,8 @@ if (! mysqli_stmt_prepare($stmt, $sql)) {
 
 mysqli_stmt_execute($stmt);
 
-echo "Cambios Guardados."; 
-
-echo "<form action='tiposarticulo.php'>
-        <button >Volver</button>
-      </form>";
+$_SESSION['confirmarAccion'] = "./tipoArticulo/tiposArticulo.php";
+$_SESSION['mensajeAccion'] = "Nombre modificado";
+header("location:./formupdatetipoarticulo.php");
 ?>
 <?php include "./menuTipoArticulo.php" ?>

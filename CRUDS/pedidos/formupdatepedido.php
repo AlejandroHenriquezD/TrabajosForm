@@ -1,21 +1,31 @@
-<?php include "../sesion.php" ?>
+<?php 
+session_start(); 
+$_SESSION["Volver"] = "./pedidos.php";
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../../cruds.css">
+    <title>Pedidos de Venta</title>
+    <link rel="shortcut icon" href="../../frontend/img/favicon.png">
+    <link rel="stylesheet" href="../cruds7.css">
 </head>
 
 <body>
 
-    
+
     <form action="../../updatepedido.php" method="post" enctype="multipart/form-data">
-
-
+        
         <?php
-        echo "<h1>Pedido ". $_POST["id"][0]."</h1>";
+        if(isset($_POST["CodigoCliente"][0])) {
+            $_SESSION["ejercicio_pedido"] = $_POST["ejercicio_pedido"][0];
+            $_SESSION["serie_pedido"] = $_POST["serie_pedido"][0];
+            $_SESSION["numero_pedido"] = $_POST["numero_pedido"][0];
+            $_SESSION["CodigoCliente"] = $_POST["CodigoCliente"][0];
+        }
+        echo "<h1>Pedido " . $_SESSION["ejercicio_pedido"] . '/' . $_SESSION["serie_pedido"] .  '/' . $_SESSION["numero_pedido"] . "</h1>";
+        echo "<h2>Cliente " . $_SESSION["CodigoCliente"] . "</h2>";
         $host = "localhost";
         $dbname = "centraluniformes";
         $username = "root";
@@ -28,32 +38,35 @@
             database: $dbname
         );
 
-        $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $_POST["id_cliente"][0];
+        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"] .  " AND firmado=1";;
 
         $result = mysqli_query($conn, $sql);
 
 
-        // echo "Cliente".$_POST["id_cliente"][0];
-        // echo "id";
-        
-        $bocetos = json_decode(file_get_contents("http://localhost/trabajosform/bocetos"), true);
-        // echo $bocetos[4]["id"];
+
         echo "
                 <label for='id_boceto'>Añadir Boceto al pedido</label>
-                <input name='id_pedido' type='hidden' value='".$_POST["id"][0] ."'/>
-                <select name='id_boceto'>";
-                
-                
-                if (mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='" . [$row["id"]][0] . "' id='id_boceto' name='id_boceto'>" . [$row["nombre"]][0] . "</option>";
-                    }
-                }
+                <input name='ejercicio_pedido[]' type='hidden' value=" . $_SESSION["ejercicio_pedido"] . "></input> 
+                <input name='serie_pedido[]' type='hidden' value=" . $_SESSION["serie_pedido"] . "></input> 
+                <input name='numero_pedido[]' type='hidden' value=" . $_SESSION["numero_pedido"] . "></input> 
+                <select required name='id_boceto'>
+                <option value='' id='id_boceto' name='id_boceto'>--</option>";
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<option value='" . [$row["id"]][0] . "' id='id_boceto' name='id_boceto'>" . [$row["nombre"]][0] . "</option>";
+            }
+        }
 
         echo "  </select>
-                    <button>Crear</button>"
+                    <button>Añadir</button>"
         ?>
     </form>
+    <?php
+    if(isset($_SESSION['confirmarAccion'])) {
+        include "../confirmarAccion.php";
+    }
+    ?>
     <?php include "./menuPedidos.php" ?>
 
 </body>
