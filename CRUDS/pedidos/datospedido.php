@@ -12,7 +12,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds7.css">
+  <link rel="stylesheet" href="../cruds1.css">
 </head>
 
 <body onload='chat()'>
@@ -122,6 +122,12 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
       chat = elementFromHtml(chat);
       document.getElementById('divChat').appendChild(chat);
     }
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //   var chat = document.getElementById('chat');
+    //   chat.scrollTop = chat.scrollHeight;
+    // });
+
   </script>
   <h1>DATOS PEDIDO</h1>
   <div id='divDatosPedido'>
@@ -173,8 +179,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
 
   echo "
   <div id='pantalla-datos-pedido'>
-    <div class='mitad-pantalla'>
-      <h1>Orden de trabajo Serigrafía</h1>
+    <div class='mitad-pantalla1'>
+      <h2>Orden de trabajo Serigrafía</h2>
       <table>
         <tr>
           <th>Tienda</th>
@@ -261,8 +267,8 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   echo "
       </table>
     </div>
-    <div class='mitad-pantalla'>
-      <h1>Registro de mensajes</h1>
+    <div class='mitad-pantalla2'>
+      <h2>Registro de mensajes</h2>
       <div id='divChat'>
         <form action='mensajesenviar.php' method='post'>
           <input type='hidden' name='ejercicio_pedido' value='" . $_SESSION['EjercicioPedido'] . "'>

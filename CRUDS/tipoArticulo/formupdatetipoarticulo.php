@@ -8,7 +8,7 @@ $_SESSION["Volver"] = "./tiposarticulo.php";
 <head>
     <title>Formulario</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../cruds7.css">
+    <link rel="stylesheet" href="../cruds1.css">
 </head>
 
 <body>

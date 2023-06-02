@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds7.css">
+  <link rel="stylesheet" href="../cruds1.css">
 </head>
 
 <body onload='filtrar()'>
@@ -291,7 +291,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         trabajos = trabajos.filter((trabajos) => trabajos.CifDni.includes(cif_nif));
       }
 
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Mensajes</th><th>Fecha fin</th>'
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th>'
     ";
   if (isset($_SESSION['usuario'])) {
     echo "
@@ -373,16 +373,6 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
       tabla += '<button>Generar Orden Trabajo</button>' 
       tabla += '</form>'
-      tabla += '</td>'
-      tabla += '<td>'
-      tabla += '<form action=\'./mensajes.php\' method=\'get\'>' 
-      tabla += '<input name=\'ejercicio_pedido\' type=\'hidden\' value=' + trabajos[p][\"ejercicio_pedido\"] + '></input>' 
-      tabla += '<input name=\'serie_pedido\' type=\'hidden\' value=' + trabajos[p][\"serie_pedido\"] + '></input>' 
-      tabla += '<input name=\'numero_pedido\' type=\'hidden\' value=' + trabajos[p][\"numero_pedido\"] + '></input>' 
-      tabla += '<button>Ver Registro de Mensajes</button>' 
-      tabla += '</form>'
-      tabla += '</td>'
-      
       ";
 
   if (isset($_SESSION['usuario'])) {
@@ -454,7 +444,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   function eliminarTrabajo(formulario) {
     document.getElementById(formulario).submit();
   }
-  
+
   </script>
   ";
 

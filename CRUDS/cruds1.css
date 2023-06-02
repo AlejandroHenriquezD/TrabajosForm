@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 @import url("./cabecera.css");
-@import url("./trabajos/datospedidos.css");
+@import url("./pedidos/datospedidos1.css");
 
 body {
   display: flex;
