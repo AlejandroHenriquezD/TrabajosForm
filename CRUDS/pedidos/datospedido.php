@@ -12,7 +12,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del pedido</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds1.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='chat()'>
@@ -40,6 +40,33 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
     password: $password,
     database: $dbname
   );
+
+  if (isset($_SESSION['usuario'])) {
+    $sql = "UPDATE `chats` 
+    SET `leido` = '1' 
+    WHERE `leido` = '0' 
+      AND `emisor` = 'tienda' 
+      AND `ejercicio_pedido` = " . $_SESSION['EjercicioPedido'] . " 
+      AND `serie_pedido` = '" . $_SESSION['SeriePedido'] . "' 
+      AND `numero_pedido` = " . $_SESSION['NumeroPedido'];
+  } else {
+    $sql = "UPDATE `chats`
+    SET `leido` = '1'
+    WHERE `leido` = '0'
+    AND `emisor` = 'serigrafia'
+    AND `ejercicio_pedido` = {$_SESSION['EjercicioPedido']}
+    AND `serie_pedido` = '{$_SESSION['SeriePedido']}'
+    AND `numero_pedido` = {$_SESSION['NumeroPedido']}";
+  }
+  // die($sql);
+  
+  $stmt = mysqli_stmt_init($conn);
+
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    die(mysqli_errno($conn));
+  }
+
+  mysqli_stmt_execute($stmt);
 
   $sql = "SELECT *
           FROM `clientes` 

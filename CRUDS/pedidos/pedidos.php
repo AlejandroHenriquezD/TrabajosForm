@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds1.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar();'>
@@ -228,7 +228,34 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
 
 
     // echo json_encode($pedidos[$i]);
+    if (isset($_SESSION['usuario'])) {
+      $sql = "SELECT *
+      FROM `chats` 
+      WHERE leido = '0'
+      AND emisor = 'tienda'
+      AND ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' 
+      AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' 
+      AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'
+      ";
+    } else {
+      $sql = "SELECT *
+      FROM `chats` 
+      WHERE leido = '0'
+      AND emisor = 'serigrafia'
+      AND ejercicio_pedido = '" . $pedidos[$i]['EjercicioPedido'] . "' 
+      AND serie_pedido = '" . $pedidos[$i]["SeriePedido"] . "' 
+      AND numero_pedido ='" . $pedidos[$i]["NumeroPedido"] . "'
+      ";
+    }
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+      $mensaje = array('Mensaje' => true);
+    } else {
+      $mensaje = array('Mensaje' => false);
+    }
+    $pedidos[$i] = array_merge($pedidos[$i], $mensaje);
   }
+
   $pedidos = json_encode($pedidos);
   echo "
 <script>
@@ -300,6 +327,9 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
         }
       }
       tabla += '</div></td>'
+      if(pedido['Mensaje'] == true) {
+        tabla += '<td class=\"td-mensaje\"><ion-icon name=\"mail-outline\"></ion-icon></td>'
+      }
     }
     tabla += '</table>'
     tabla = elementFromHtml(tabla)

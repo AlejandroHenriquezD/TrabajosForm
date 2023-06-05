@@ -11,7 +11,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds1.css">
+  <link rel="stylesheet" href="../cruds2.css">
 </head>
 
 <body onload='filtrar()'>
@@ -127,6 +127,24 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
           $estado = array('Estado' => "cancelar");
         }
         $trabajo = array_merge($trabajo, $estado);
+
+        $sql = "SELECT *
+        FROM `chats` 
+        WHERE leido = '0'
+        AND emisor = 'tienda'
+        AND ejercicio_pedido = '" . $pedido['EjercicioPedido'] . "' 
+        AND serie_pedido = '" . $pedido["SeriePedido"] . "' 
+        AND numero_pedido ='" . $pedido["NumeroPedido"] . "'
+        ";
+        
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+          $mensaje = array('Mensaje' => true);
+        } else {
+          $mensaje = array('Mensaje' => false);
+        }
+        $trabajo = array_merge($trabajo, $mensaje);
+
         if ($pedido['StatusPedido'] == "P" && $trabajo['Estado'] == "aceptar") {
           array_push($trabajos_pendientes, $trabajo);
         }
@@ -215,6 +233,24 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
           $estado = array('Estado' => "cancelar");
         }
         $trabajo = array_merge($trabajo, $estado);
+
+        $sql = "SELECT *
+        FROM `chats` 
+        WHERE leido = '0'
+        AND emisor = 'serigrafia'
+        AND ejercicio_pedido = '" . $pedido['EjercicioPedido'] . "' 
+        AND serie_pedido = '" . $pedido["SeriePedido"] . "' 
+        AND numero_pedido ='" . $pedido["NumeroPedido"] . "'
+        ";
+        
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+          $mensaje = array('Mensaje' => true);
+        } else {
+          $mensaje = array('Mensaje' => false);
+        }
+        $trabajo = array_merge($trabajo, $mensaje);
+
         if ($pedido['StatusPedido'] == 'P') {
           array_push($trabajos_pendientes, $trabajo);
         }
@@ -354,7 +390,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += 'Falta Orden Trabajo'
       }
       tabla += '</td>'
-      tabla += '<td>'
+      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
 
       if(trabajos[p][\"Estado\"] == 'cancelar'){
         tabla += '<button onclick=\"confirmarBorrar(\'form-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\')\">Borrar trabajo<ion-icon name=\'trash\'></button>' 
@@ -397,9 +433,12 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + fechaFin + '</td>'";
   }
   echo "
+      if(trabajos[p]['Mensaje'] == true) {
+        tabla += '<td class=\"td-mensaje\"><ion-icon name=\"mail-outline\"></ion-icon></td>'
+      }
       tabla += '</tr>'
     }
-  
+
     tabla += '</table>';
     tabla = elementFromHtml(tabla);
   

@@ -590,6 +590,18 @@ form > select {
   margin-bottom: 20px;
 }
 
+.td-mensaje {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  z-index: -100;
+  position: fixed;
+}
+
+.td-mensaje ion-icon {
+  color:#0e1c2e;
+  z-index: 1;
+}
+
 /* Barra chrome */
 *::-webkit-scrollbar {
   width: 10px; /* ancho de la barra de desplazamiento */
