@@ -1,4 +1,6 @@
 <?php
+// header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+// header("Expires: Sat, 1 Jul 2000 05:00:00 GMT"); // Fecha en el pasado
 // session_start();
 
 echo "
@@ -10,7 +12,11 @@ echo "
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>Nuevo trabajo</title>
   <link rel='shortcut icon' href='./img/favicon.png'>
-  <link rel='stylesheet' href='styles2.css'>
+  <link rel='stylesheet' href='styles.css'>
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 <body onload='validar();'>
 ";

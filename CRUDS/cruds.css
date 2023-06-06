@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 @import url("./cabecera.css");
-@import url("./pedidos/datospedidos1.css");
+@import url("./pedidos/datospedidos.css");
 
 body {
   display: flex;
@@ -600,6 +600,11 @@ form > select {
 .td-mensaje ion-icon {
   color:#0e1c2e;
   z-index: 1;
+}
+
+.mensaje-td {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* Barra chrome */

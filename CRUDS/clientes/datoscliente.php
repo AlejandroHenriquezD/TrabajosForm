@@ -11,7 +11,11 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datos del cliente</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 
 <body>
@@ -93,6 +97,11 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
   ";
   foreach ($logos as $logo) {
     if ($logo['id_cliente'] == $_SESSION['id']) {
+      $host = "localhost";
+      $dbname = "centraluniformes";
+      $username = "root";
+      $password = "";
+
       $obsoleto = "";
       $vectorizada = "";
 
@@ -137,7 +146,27 @@ $_SESSION["Volver"] = $_SESSION["VolverDatosCliente"];
         <td>" . $obsoleto . "</td>
         <td>" . $_SESSION['razon_social'] . "</td>
         <td> 
-          <form action='../logos/deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> 
+      ";
+
+        $conn = mysqli_connect(
+          hostname: $host,
+          username: $username,
+          password: $password,
+          database: $dbname
+        );
+
+        $sql = "SELECT *
+        FROM `trabajos` 
+        WHERE id_logo =" . $logo['id']; 
+
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) == 0) {
+          echo "<form action='../logos/deletelogo.php'> <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> <button>Borrar<ion-icon name='trash'></button> </form> ";
+        } else {
+          echo "<p class='mensaje-td'>Imagen asignada a trabajo</p>";
+        } 
+          echo "  
           <form action='../logos/updatelogo.php' method='post'> 
             <input name='id[]' type='hidden' value=" . $logo["id"] . "></input> 
             <input name='obsoleto[]' type='hidden' value=" . $logo["obsoleto"] . "></input> 

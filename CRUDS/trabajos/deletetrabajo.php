@@ -23,6 +23,16 @@ if (mysqli_connect_errno()) {
     die("Connection error: " . mysqli_connect_errno());
 }
 
+$sql = "DELETE FROM `chats` WHERE ejercicio_pedido = " . $ejercicio . " AND serie_pedido = '" . $serie . "' AND numero_pedido = " . $numero . ";";
+ 
+$stmt = mysqli_stmt_init($conn);
+
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+    die(mysqli_errno($conn));
+}
+
+mysqli_stmt_execute($stmt);
+
 $sql = "DELETE FROM `trabajos` WHERE ejercicio_pedido = " . $ejercicio . " AND serie_pedido = '" . $serie . "' AND numero_pedido = " . $numero . ";";
     
 $stmt = mysqli_stmt_init($conn);

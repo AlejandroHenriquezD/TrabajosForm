@@ -18,6 +18,10 @@ if (isset($_SESSION['usuario'])) {
   <title>Iniciar sesión</title>
   <link rel="shortcut icon" href="../frontend/favicon.png">
   <link rel="stylesheet" href="./login.css">
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 
 <body>
