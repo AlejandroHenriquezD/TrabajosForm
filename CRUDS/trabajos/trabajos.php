@@ -327,7 +327,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         trabajos = trabajos.filter((trabajos) => trabajos.CifDni.includes(cif_nif));
       }
 
-    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Pdf</th><th>Acciones</th><th>Fecha fin</th>'
+    var tabla = '<table id=\"tablaTrabajos\"><tr><th>Fecha inicio</th><th>Tienda</th><th>Número pedido venta</th><th>Fecha Pedido</th><th>Boceto</th><th>Orden de Trabajo</th><th>Acciones</th><th>Fecha fin</th>'
     ";
   if (isset($_SESSION['usuario'])) {
     echo "
@@ -372,20 +372,20 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + trabajos[p][\"ejercicio_pedido\"] + '/' + trabajos[p][\"serie_pedido\"] + '/' + trabajos[p][\"numero_pedido\"] + '</td>'
       tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">' + trabajos[p][\"FechaPedido\"] + '</td>'
 
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
+      tabla += '<td>'
       if (trabajos[p]['id_boceto'] != null) {
         console.log(bocetos[p][\"pdf\"]);
         
-        tabla += '<form action=\"../.' + bocetos[p][\"pdf\"] + '\"><button>Ver Boceto </button></form>'
+        tabla += '<form action=\"../.' + bocetos[p][\"pdf\"] + '\" target=\"_blank\"><button>Ver Boceto </button></form>'
       } else {
         tabla += 'No Existe Boceto'
       }
       tabla += '</td>'
               
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
+      tabla += '<td>'
 
       if (trabajos[p]['pdf'] != null) {
-        tabla += '<form action=\"../.'  + trabajos[p][\"pdf\"] + '\"><button>Ver Orden Trabajo</button></form>'
+        tabla += '<form action=\"../.'  + trabajos[p][\"pdf\"] + '\" target=\"_blank\"><button>Ver Orden Trabajo</button></form>'
       } else {
         tabla += 'Falta Orden Trabajo'
       }

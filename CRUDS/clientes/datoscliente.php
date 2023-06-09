@@ -386,7 +386,7 @@ echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
           echo "<td rowspan='" . $countTrabajos . "'>";
           if ($trabajos[$p]['id_boceto'] != null) {
             echo "
-            <form action='../." . $boceto['pdf'] . "'>
+            <form action='../." . $boceto['pdf'] . "' target='_blank'>
               <button>Ver Boceto </button>
             </form>
             ";
@@ -399,7 +399,7 @@ echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
           ";
           if ($trabajos[$p]['pdf'] != null) {
             echo "
-            <form action='../." . $trabajos[$p]['pdf'] . "'>
+            <form action='../." . $trabajos[$p]['pdf'] . "' target='_blank'>
               <button>Ver Orden Trabajo</button>
             </form>
             ";
