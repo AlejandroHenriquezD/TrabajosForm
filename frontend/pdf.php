@@ -33,7 +33,7 @@ $sql = "SELECT
 			StatusPedido,
 			EX_Serigrafiado
 		FROM PedidoVentaCabecera
-		WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 AND IdDelegacion = '" . $_SESSION['numTienda'] . "' 
+		WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1  
 		ORDER BY EjercicioPedido DESC, SeriePedido ASC, NumeroPedido ASC
 	";
 
@@ -48,6 +48,10 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 	$pedidos[] = $row;
 }
 sqlsrv_free_stmt($getResults);
+
+
+
+// echo json_encode($empleados);
 
 class PDF extends FPDF
 {
@@ -76,6 +80,9 @@ class PDF extends FPDF
 
 	function Header()
 	{
+		$ejercicio_pedido = $_GET["ejercicio_pedido"];
+		$serie_pedido = $_GET["serie_pedido"];
+		$numero_pedido = $_GET["numero_pedido"];
 		if (
 			!isset(self::$nombre_tienda) &&
 			!isset(self::$calle) &&
@@ -89,10 +96,7 @@ class PDF extends FPDF
 			include "../BDReal/numTienda.php";
 			include "../BDReal/domicilios.php";
 
-			$ejercicio_pedido = $_GET["ejercicio_pedido"];
-			$serie_pedido = $_GET["serie_pedido"];
-			$numero_pedido = $_GET["numero_pedido"];
-			$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos.php"), true);
+			$pedidos = json_decode(file_get_contents("http://localhost/centraluniformes/BDReal/json/json_pedidos_todos.php"), true);
 
 			self::$nombre_tienda = utf8_decode($nombre);
 			self::$calle = utf8_decode("Domicilio: " . $domicilio[array_search($tienda, $almacen)][0]);
@@ -120,6 +124,55 @@ class PDF extends FPDF
 			}
 		}
 
+		$serverName = "192.168.0.23\SQLEXIT,1433";
+		$connectionOptions = array(
+			"Database" => "ExitERP0415",
+			"Uid" => "programacion",
+			"PWD" => "CU_2023",
+			"CharacterSet" => "UTF-8",
+			"TrustServerCertificate" => true
+		);
+		$connSQLSERVER = sqlsrv_connect($serverName, $connectionOptions);
+
+		$sql = "SELECT  
+		COM.CodigoComisionista,
+		COM.Comisionista,
+		PVC.EjercicioPedido,
+		PVC.SeriePedido,
+		PVC.NumeroPedido,
+		PVC.FechaPedido,
+		PVC.IdDelegacion,
+		PVC.CodigoCliente,
+		PVC.CifDni,
+		PVC.RazonSocial,
+		PVC.Nombre,
+		PVC.Domicilio,
+		PVC.CodigoPostal,
+		PVC.Municipio,
+		PVC.Email1,
+		PVC.Telefono,
+		PVC.StatusPedido,
+		PVC.EX_Serigrafiado
+		FROM PedidoVentaCabecera AS PVC
+		LEFT JOIN Comisionistas AS COM
+		ON COM.CodigoComisionista = PVC.CodigoComisionista
+		WHERE StatusPedido = 'P' AND EX_Serigrafiado = -1 
+		AND EjercicioPedido = '$ejercicio_pedido'
+		AND SeriePedido = '$serie_pedido'
+		AND NumeroPedido = '$numero_pedido'";
+
+		$getResults = sqlsrv_query($connSQLSERVER, $sql);
+		if (mysqli_connect_errno()) {
+			die("Connection error: " . mysqli_connect_errno());
+		}
+
+		$empleados = [];
+
+		while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+			$empleados[] = $row;
+		}
+		sqlsrv_free_stmt($getResults);
+
 		$this->Image('../login/cu.png', 10, 14, 50);
 
 		$this->SetXY(70, 10);
@@ -129,95 +182,100 @@ class PDF extends FPDF
 		$this->SetXY(70, 15);
 		$this->SetFont('SourceSansPro', '', 9);
 		$this->Cell(0, 1, self::$nombre_tienda, 0, 1, 'L');
+		$this->SetXY(70, 20);
+		$this->Cell(0, 1, utf8_decode("Código empleado: " . $empleados[0]['CodigoComisionista']), 0, 1, 'L');
+
 		$this->SetXY(110, 10);
 		$this->Cell(0, 1, self::$localidad, 0, 1, 'L');
 		$this->SetXY(110, 15);
 		$this->Cell(0, 1, self::$codigo_postal, 0, 1, 'L');
+		$this->SetXY(110, 20);
+		$this->Cell(0, 1, utf8_decode("Nombre empleado: " . $empleados[0]['Comisionista']), 0, 1, 'L');
 
 		$this->SetXY(150, 10);
 		$this->Cell(0, 1, self::$calle, 0, 1, 'L');
 		$this->SetXY(150, 15);
 		$this->Cell(0, 1, self::$municipio, 0, 1, 'L');
 
-		$this->Line(70, 20, 200, 20);
+		$this->Line(70, 25, 200, 25);
 
-		$this->SetXY(70, 25);
+		$this->SetXY(70, 30);
 		$this->SetFont('SourceSansPro', 'B', 11);
 		$this->Cell(0, 1, utf8_decode('Datos del pedido'), 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 25);
+		$this->SetXY(110, 30);
 		$this->Cell(0, 1, utf8_decode('Fecha pedido: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(130, 25);
+		$this->SetXY(130, 30);
 		$this->Cell(0, 1, self::$fecha_pedido, 0, 1, 'L');
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(150, 25);
+		$this->SetXY(150, 30);
 		$this->Cell(0, 1, utf8_decode('P. venta: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 11);
-		$this->SetXY(163, 25);
+		$this->SetXY(163, 30);
 		$this->Cell(0, 1, self::$n_ped_venta, 0, 1, 'L');
 
-		$this->Line(70, 30, 200, 30);
+		$this->Line(70, 35, 200, 35);
 
-		$this->SetXY(70, 35);
+		$this->SetXY(70, 40);
 		$this->SetFont('SourceSansPro', 'B', 11);
 		$this->Cell(0, 1, utf8_decode('Datos del cliente'), 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(70, 40);
+		$this->SetXY(70, 45);
 		$this->Cell(0, 1, utf8_decode('Teléfono: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(84, 40);
+		$this->SetXY(84, 45);
 		$this->Cell(0, 1, self::$Telefono, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(70, 45);
+		$this->SetXY(70, 50);
 		$this->Cell(0, 1, utf8_decode('Código Postal: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(90, 45);
+		$this->SetXY(90, 50);
 		$this->Cell(0, 1, self::$CodigoPostal, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(70, 50);
+		$this->SetXY(70, 55);
 		$this->Cell(0, 1, utf8_decode('Cif/Dni: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(81, 50);
+		$this->SetXY(81, 55);
 		$this->Cell(0, 1, self::$CifDni, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 35);
+		$this->SetXY(110, 40);
 		$this->Cell(0, 1, utf8_decode('Razón Social: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(129, 35);
+		$this->SetXY(129, 40);
 		$this->Cell(0, 1, self::$RazonSocial, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 40);
+		$this->SetXY(110, 45);
 		$this->Cell(0, 1, utf8_decode('Nombre: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(124, 40);
+		$this->SetXY(124, 45);
 		$this->Cell(0, 1, self::$NombreCliente, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 45);
+		$this->SetXY(110, 50);
 		$this->Cell(0, 1, utf8_decode('Domicilio: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(125, 45);
+		$this->SetXY(125, 50);
 		$this->Cell(0, 1, self::$Domicilio, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 50);
+		$this->SetXY(110, 55);
 		$this->Cell(0, 1, utf8_decode('Municipio: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(125, 50);
+		$this->SetXY(125, 55);
 		$this->Cell(0, 1, self::$Municipio, 0, 1, 'L');
 
 		$this->SetFont('SourceSansPro', '', 9);
-		$this->SetXY(110, 55);
+		$this->SetXY(110, 60);
 		$this->Cell(0, 1, utf8_decode('Email: '), 0, 1, 'L');
 		$this->SetFont('SourceSansPro', 'B', 9);
-		$this->SetXY(120, 55);
+		$this->SetXY(120, 60);
 		$this->Cell(0, 1, self::$Email, 0, 1, 'L');
 	}
 
@@ -228,7 +286,7 @@ class PDF extends FPDF
 		$this->Cell(0, 1, utf8_decode('Página ' . $this->PageNo() . ' de {nb}'), 0, 0, 'R');
 	}
 
-	public $posY = 70;
+	public $posY = 75;
 
 	function SaltarPagina($size)
 	{
@@ -238,18 +296,18 @@ class PDF extends FPDF
 		}
 	}
 
-	function firma()
-	{
-		$this->SaltarPagina(100);
-		$this->SetXY(25, 235);
-		$this->SetFont('SourceSansPro', 'B', 11);
-		$this->Cell(70, 12, self::$RazonSocial, 'B', 0, 'L', false);
-		$this->SetXY(10, 247);
-		$this->SetFont('SourceSansPro', '', 11);
-		$this->Cell(30, 20, 'FIRMA', '', 0, 'L', false);
-		$this->SetXY(25, 247);
-		$this->Cell(70, 20, '', 1, 0, 'L');
-	}
+	// function firma()
+	// {
+	// 	$this->SaltarPagina(100);
+	// 	$this->SetXY(25, 235);
+	// 	$this->SetFont('SourceSansPro', 'B', 11);
+	// 	$this->Cell(70, 12, self::$RazonSocial, 'B', 0, 'L', false);
+	// 	$this->SetXY(10, 247);
+	// 	$this->SetFont('SourceSansPro', '', 11);
+	// 	$this->Cell(30, 20, 'FIRMA', '', 0, 'L', false);
+	// 	$this->SetXY(25, 247);
+	// 	$this->Cell(70, 20, '', 1, 0, 'L');
+	// }
 
 	function TablaArticulo($header, $trabajo, $x)
 	{
@@ -564,7 +622,7 @@ $pdf->TablaReferencia($header, utf8_decode('EPÍGRAFES'), $data3, 'tabla2', 10);
 
 $pdf->posY += 7 * count($data3) + 15;
 
-$pdf->firma();
+// $pdf->firma();
 
 $pdf->AliasNbPages();
 
