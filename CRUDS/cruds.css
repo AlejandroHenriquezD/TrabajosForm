@@ -597,9 +597,22 @@ form > select {
   position: fixed;
 }
 
-.td-mensaje ion-icon {
-  color:#0e1c2e;
+.td-mensaje > div {
+  display: flex;
+  background-color: #0e1c2e;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
+}
+
+.td-mensaje ion-icon {
+  color:#ffffff;
+  height: 28px;
+  width: 28px;
+  margin: 0%;
 }
 
 .mensaje-td {

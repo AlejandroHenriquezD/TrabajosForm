@@ -332,7 +332,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       }
       tabla += '</div></td>'
       if(pedido['Mensaje'] == true) {
-        tabla += '<td class=\"td-mensaje\"><ion-icon name=\"mail-outline\"></ion-icon></td>'
+        tabla += '<td class=\"td-mensaje\"><div><ion-icon name=\"mail-outline\"></div></ion-icon></td>'
       }
     }
     tabla += '</table>'
