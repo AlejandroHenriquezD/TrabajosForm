@@ -11,7 +11,11 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedidos de Venta</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 
 <body onload='filtrar();'>
@@ -328,7 +332,7 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       }
       tabla += '</div></td>'
       if(pedido['Mensaje'] == true) {
-        tabla += '<td class=\"td-mensaje\"><ion-icon name=\"mail-outline\"></ion-icon></td>'
+        tabla += '<td class=\"td-mensaje\"><div><ion-icon name=\"mail-outline\"></div></ion-icon></td>'
       }
     }
     tabla += '</table>'

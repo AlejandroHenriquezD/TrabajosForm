@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 @import url("./cabecera.css");
-@import url("./pedidos/datospedidos1.css");
+@import url("./pedidos/datospedidos.css");
 
 body {
   display: flex;
@@ -597,9 +597,27 @@ form > select {
   position: fixed;
 }
 
-.td-mensaje ion-icon {
-  color:#0e1c2e;
+.td-mensaje > div {
+  display: flex;
+  background-color: #0e1c2e;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
+}
+
+.td-mensaje ion-icon {
+  color:#ffffff;
+  height: 28px;
+  width: 28px;
+  margin: 0%;
+}
+
+.mensaje-td {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* Barra chrome */

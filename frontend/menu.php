@@ -1,5 +1,5 @@
 <?php
-echo "<link rel='stylesheet' href='../menu3.css'>";
+echo "<link rel='stylesheet' href='../menu.css'>";
   if(isset($_SESSION['usuario'])) {
     echo "
       <div id='menu-lateral'>

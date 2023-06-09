@@ -11,7 +11,11 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabajos Serigrafía</title>
   <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-  <link rel="stylesheet" href="../cruds2.css">
+  <link rel="stylesheet" href="../cruds.css">
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 
 <body onload='filtrar()'>
@@ -390,8 +394,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
         tabla += 'Falta Orden Trabajo'
       }
       tabla += '</td>'
-      tabla += '<td onclick=\"datosPedido(\'' + trabajos[p][\"num_tienda\"] + '\',\'' + trabajos[p][\"ejercicio_pedido\"] + '\',\'' + trabajos[p][\"serie_pedido\"] + '\',\'' + trabajos[p][\"numero_pedido\"] + '\',\'' + trabajos[p][\"CodigoCliente\"] + '\',\'' + trabajos[p][\"RazonSocial\"] + '\',\'' + trabajos[p][\"Estado\"] + '\')\">'
-
+      tabla += '<td>'
       if(trabajos[p][\"Estado\"] == 'cancelar'){
         tabla += '<button onclick=\"confirmarBorrar(\'form-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\')\">Borrar trabajo<ion-icon name=\'trash\'></button>' 
         tabla += '<form id=\"form-' + trabajos[p][\"ejercicio_pedido\"] + '-' + trabajos[p][\"serie_pedido\"] + '-' + trabajos[p][\"numero_pedido\"] + '\" action=\'deletetrabajo.php\' method=\'get\'>' 
@@ -434,7 +437,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
   }
   echo "
       if(trabajos[p]['Mensaje'] == true) {
-        tabla += '<td class=\"td-mensaje\"><ion-icon name=\"mail-outline\"></ion-icon></td>'
+        tabla += '<td class=\"td-mensaje\"><div><ion-icon name=\"mail-outline\"></div></ion-icon></td>'
       }
       tabla += '</tr>'
     }

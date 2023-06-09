@@ -8,7 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos Trabajo</title>
     <link rel="shortcut icon" href="../../frontend/img/favicon.png">
-    <link rel="stylesheet" href="../cruds2.css">
+    <link rel="stylesheet" href="../cruds.css">
+  <meta http-equiv='Expires' content='0'>
+  <meta http-equiv='Last-Modified' content='0'>
+  <meta http-equiv='Cache-Control' content='no-cache, mustrevalidate'>
+  <meta http-equiv='Pragma' content='no-cache'>
 </head>
 
 <body>
