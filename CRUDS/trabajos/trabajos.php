@@ -265,15 +265,15 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     }
   }
 
-  $bocetos = array();
+  // $bocetos = array();
 
-  for ($p = 0; $p < count($trabajos); $p++) {
-    $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
-  }
+  // for ($p = 0; $p < count($trabajos); $p++) {
+  //   $bocetos[$p] = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
+  // }
 
   $trabajos = json_encode($trabajos_todos);
   $trabajos_pendientes = json_encode($trabajos_pendientes);
-  $bocetos = json_encode($bocetos);
+  // $bocetos = json_encode($bocetos);
 
   echo "
   <script>
@@ -305,7 +305,7 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
     function filtrar() {
       var trabajos = $trabajos
       var trabajos_pendientes = $trabajos_pendientes
-      var bocetos = $bocetos
+ 
 
       if(todos == false) {
         trabajos = $trabajos_pendientes
@@ -378,9 +378,9 @@ $_SESSION['VolverDatosPedidos'] = '../trabajos/trabajos.php';
 
       tabla += '<td>'
       if (trabajos[p]['id_boceto'] != null) {
-        console.log(bocetos[p][\"pdf\"]);
+
         
-        tabla += '<form action=\"../.' + bocetos[p][\"pdf\"] + '\" target=\"_blank\"><button>Ver Boceto </button></form>'
+        tabla += '<form action=\"../.' + trabajos[p][\"id_boceto\"] + '\" target=\"_blank\"><button>Ver Boceto </button></form>'
       } else {
         tabla += 'No Existe Boceto'
       }

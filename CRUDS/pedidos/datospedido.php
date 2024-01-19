@@ -235,7 +235,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
       $posicion = json_decode(file_get_contents("http://localhost/trabajosform/posiciones/" . $trabajos[$p]['id_posicion']), true);
       $tipo_trabajo = json_decode(file_get_contents("http://localhost/trabajosform/tipo_trabajos/" . $trabajos[$p]['id_tipo_trabajo']), true);
       $logo = json_decode(file_get_contents("http://localhost/trabajosform/logos/" . $trabajos[$p]['id_logo']), true);
-      $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
+      // $boceto = json_decode(file_get_contents("http://localhost/trabajosform/bocetos/" . $trabajos[$p]['id_boceto']), true);
 
       if ($trabajos[$p]['id_logo'] == null) {
         $colLogo = "No hay logo";
@@ -263,7 +263,7 @@ $_SESSION["VolverDatosCliente"] = "../pedidos/datospedido.php";
         ";
         if ($trabajos[$p]['id_boceto'] != null) {
           echo "
-          <form action='../." . $boceto['pdf'] . "' target='_blank'>
+          <form action='../." . $trabajos[$p]['id_boceto'] . "' target='_blank'>
             <button>Ver Boceto </button>
           </form>
           ";

@@ -251,10 +251,7 @@ echo"          <form action='../." . $boceto['pdf'] . "'  target='_blank'>
           <form action='../../updateboceto.php' method='post' enctype='multipart/form-data' id='bocetofirmado-" . $boceto["id"] . "'>
             <input name='id' type='hidden' value=" . $_SESSION["id"] . "></input>
             <input name='id_boceto' type='hidden' value=" . $boceto["id"] . "></input>
-            <label for='boceto'>
-              <div class='boton-de-pega'>Añadir boceto firmado<ion-icon name='arrow-up-circle'></ion-icon></div>
-              <input required type='file' id='boceto' name='boceto' accept='application/pdf' onchange='document.getElementById(\"bocetofirmado-" . $boceto["id"] . "\").submit()'/>
-            </label>
+
           </form>
           ";
       // }

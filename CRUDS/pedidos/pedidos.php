@@ -182,17 +182,20 @@ $_SESSION['VolverDatosPedidos'] = './pedidos.php';
       if ($row[0] != "") {
 
         //Hacemos la query del boceto para saber si esta firmado o no
-        $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
-        $resultBoceto = mysqli_query($conn, $sqlBoceto);
-        $rowBoceto = mysqli_fetch_array($resultBoceto);
+        // $sqlBoceto = "SELECT firmado FROM `bocetos` WHERE id =" . $row[0];
+        // $resultBoceto = mysqli_query($conn, $sqlBoceto);
+        // $rowBoceto = mysqli_fetch_array($resultBoceto);
 
-        if ($rowBoceto["firmado"] == 0) {
-          $estado = array('Estado' => "cancelar");
-          $errores .= "El Boceto No esta firmado-";
-          // $mensajesError[] = array('MensajeError' => "El Boceto No esta firmado");
+        // if ($rowBoceto["firmado"] == 0) {
+        //   $estado = array('Estado' => "cancelar");
+        //   $errores .= "El Boceto No esta firmado-";
+        //   // $mensajesError[] = array('MensajeError' => "El Boceto No esta firmado");
 
-        }
+        // }
+        
       }
+
+      
 
 
       if ($row["pdf"] != "") {

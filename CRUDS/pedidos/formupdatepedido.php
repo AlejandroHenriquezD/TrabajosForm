@@ -42,7 +42,7 @@ $_SESSION["Volver"] = "./pedidos.php";
             database: $dbname
         );
 
-        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"] .  " AND firmado=1";;
+        $sql = "SELECT * FROM `bocetos` WHERE CodigoCliente =" . $_SESSION["CodigoCliente"] .  " ";;
 
         $result = mysqli_query($conn, $sql);
 
@@ -53,17 +53,21 @@ $_SESSION["Volver"] = "./pedidos.php";
                 <input name='ejercicio_pedido[]' type='hidden' value=" . $_SESSION["ejercicio_pedido"] . "></input> 
                 <input name='serie_pedido[]' type='hidden' value=" . $_SESSION["serie_pedido"] . "></input> 
                 <input name='numero_pedido[]' type='hidden' value=" . $_SESSION["numero_pedido"] . "></input> 
-                <select required name='id_boceto'>
-                <option value='' id='id_boceto' name='id_boceto'>--</option>";
 
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<option value='" . [$row["id"]][0] . "' id='id_boceto' name='id_boceto'>" . [$row["nombre"]][0] . "</option>";
-            }
-        }
-
-        echo "  </select>
-                    <button>Añadir</button>"
+                <label for='id_boceto'><div class='boton-de-pega'>Añadir Boceto</div></label>
+                <input required accept='application/pdf' type='file' id='id_boceto' name='id_boceto'/>
+                
+                
+                <script>
+                function clickado(){
+                    var firmadoInput = document.getElementById('firmado');
+                    var firmado = firmadoInput.checked ? 1 : 0;
+                    firmadoInput.value = firmado;
+                }
+                </script>
+                ";
+        echo "
+                <button>Añadir</button>"
         ?>
     </form>
     <?php

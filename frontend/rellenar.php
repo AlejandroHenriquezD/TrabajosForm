@@ -220,7 +220,7 @@ for ($o = 0; $o < $numeroPedidos; $o++) {
       $cliente['cif_nif'] == $pedidos[$o]['CifDni'] &&
       $cliente['razon_social'] == $pedidos[$o]['RazonSocial']
     ) {
-      $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'] .  " AND firmado=1";
+      $sql = "SELECT * FROM `bocetos` WHERE id_cliente =" . $cliente['id'] .  "";
       $result = mysqli_query($conn, $sql);
       if (mysqli_num_rows($result) >= 0) {
         $arrayBocetos[$o] .= "<option id='bocetoDefault' value='bocetoDefault'>Boceto no seleccionado</option>";
